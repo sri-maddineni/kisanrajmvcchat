@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Footer from "../../components/layouts/Footer";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -45,46 +45,6 @@ const Responses = () => {
 
     const navigate = useNavigate("");
 
-
-
-    const handleOk = async (pid, buyerid) => {
-        try {
-            const sellerId = auth?.user._id;
-            const productId = pid;
-            const buyerId = buyerid;
-            const sentBy = auth?.user?._id;
-
-            const res2 = await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/negotiate`, { quantity, price, date, notes, buyerId, sellerId, productId, sentBy });
-
-            if (res2?.data.success) {
-                toast.success("Offer proposed!");
-                setOpen(false);
-                setquantity("")
-                setprice("")
-                setdate("")
-                setnotes("")
-            }
-        } catch (error) {
-            console.log(error);
-            toast.error("Propose failed!");
-        }
-    };
-
-    useEffect(() => {
-        getPotentials(product.name);
-    }, [])
-
-
-
-
-
-
-
-
-
-
-
-
     const getPotentials = async (productName) => {
         setLoading(true)
         try {
@@ -105,15 +65,13 @@ const Responses = () => {
     };
 
 
-
-
+    useEffect(() => {
+        getPotentials(product.name);
+    }, [])
 
     const formattedDate = product.createdAt ? format(new Date(product.createdAt), 'dd MMM yyyy') : '';
 
     const pid = params.pid;
-
-
-
 
     const getProductData = async () => {
         setLoading(true)
@@ -142,6 +100,33 @@ const Responses = () => {
     }, [])
 
 
+    //chat click means post
+    const postoffer = async () => {
+
+        const sentBy = auth?.user?._id
+        const pid = product?._id
+        const sellerId = sentBy
+        const toId = selectedProposal?.sentBy
+
+        console.log(toId)
+
+        const chatData = { pid, sentBy, toId, sellerId, quantity, price, notes, date }
+
+        try {
+
+            const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/chats/post-chat`, chatData)
+
+            if (res.data.success) {
+                toast.success("success posted chat")
+
+            }
+        } catch (error) {
+            toast.error("failed to post chat")
+            console.log(error)
+        }
+    }
+
+
 
 
     const getProposalsRecieved = async () => {
@@ -161,38 +146,43 @@ const Responses = () => {
         }
     }
 
-
     useEffect(() => {
         getProposalsRecieved();
     }, [])
 
+    const endref = useRef(null)
 
-    const getUserData = async (uid) => {
+    
+
+
+    const getChats = async () => {
         try {
-            const result = await axios.get(`${process.env.REACT_APP_API}/api/v1/users/uid`)
-            if (result) {
-                console.log("success")
+
+            const pid = product._id;
+            const uid = auth?.user?._id
+            const sentBy = selectedProposal.sentBy
+            const result = await axios.post(`${process.env.REACT_APP_API}/api/v1/chats/getchats`, { pid, uid, sentBy })
+
+            if (result.data.success) {
+                console.log((result.data.chats))
+                setChats(result.data.chats.chats)
+
             }
             else {
-                console.log("response failed")
+                toast.error("not done")
             }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-
-
-
-    const getProposalChatData = async (pid, sellerId, buyerId) => {
-        try {
-            const { data } = await axios.post(`${process.env.REACT_APP_API}/api/v1/chats/getProposedChatData`, { pid, sellerId, buyerId })
-            console.log(data.chat)
 
         } catch (error) {
             console.log(error)
+            toast.error("error")
         }
     }
+
+    useEffect(() => {
+        endref?.current?.scrollIntoView();
+    }, [])
+
+
 
 
     if (loading) {
@@ -205,10 +195,6 @@ const Responses = () => {
         </>
         )
     }
-
-
-
-
 
     return (
         <>
@@ -244,100 +230,162 @@ const Responses = () => {
                                         </button>
                                     </div>
                                     <>{
-    responsesState && (
-        <div className="container">
-            <div className="text-center h1">
-                Responses
-            </div>
-            <div className="container" style={{ display: "flex", flexDirection: "row" }}>
-                <div className="left col-3 m-1" style={{ border: "solid 1px red", minHeight: "10vh" }}>
-                    {proposalsRecieved.map((proposal, index) => (
-                        <div className="card" style={{ cursor: "pointer" }} onClick={() => { setChatState(true); setSelectedProposal(proposal); }}>
-                            <p style={{ fontSize: "0.9rem" }}><i className="fa-solid fa-user mx-2"></i>{proposal.name} <i className="mx-2 fa-solid fa-clock"></i> {proposal.date}</p>
-                            <div style={{ fontSize: "0.95rem" }}>Rs. <span className="text-muted" style={{ fontWeight: "600" }}>{proposal.price ? proposal.price : "NA"}</span>/- per {proposal?.quantityUnit} <span className="bg-warning px-1">{proposal.quantity} {proposal.quantityUnit}s needed</span> </div>
-                            <div style={{ fontSize: "0.9rem" }}>Note : {proposal.notes}</div>
-                            <div className="row">
-                                <div className="btns">
-                                    <div className="btn btn-sm btn-primary m-1">contact</div>
-                                    <div className="btn btn-sm btn-primary m-1" onClick={() => navigate(`/dashboard/users/${proposal.sellerId}`)}>profile</div>
-                                    <div className="btn btn-sm btn-primary m-1" onClick={() => {
-                                        setChatState(true);
-                                        setSelectedProposal(proposal);
-                                    }}>chat</div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                <div className="right col-9 m-1" style={{ border: "solid 1px red", minHeight: "10vh" }}>
-                    {chatState && selectedProposal ? (
-                        <div style={{ display: "flex", flexDirection: "row", backgroundColor: "cyan", margin: "none", borderBottom: "1px solid red" }}>
-                            <div style={{display:"flex",flexDirection:"row"}}>
-                            <p className="m-2"><i className="fa-solid fa-user"></i> : {selectedProposal.name}</p>
-                                <p className="m-2">Required Date: {selectedProposal.date}</p>
-                                <p className="m-2">Unit Price offered: {selectedProposal.price} per {selectedProposal.quantityUnit}</p>
-                                <p className="m-2">Quantity: {selectedProposal.quantity} {selectedProposal.quantityUnit}s needed</p>
-                                <p className="m-2">Notes: {selectedProposal.notes}</p>
-                            </div>
-                            
-                        </div>
-                    ) : (
-                        <div className="contaier text-center text-warning">
-                            <h1>
-                                Click on a response item to start chatting with buyer
-                            </h1>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
-    )
-}
-
-
-
-                                        {/*
-                                        {responsesState && (
+                                        responsesState && (
                                             <div className="container">
-                                                <h1 className="text-center">Responses</h1>
-                                                <div className="row">
-                                                    {requirements.map((requirement, index) => (
-                                                        <div className="card p-1 mx-2 mb-2" key={index}>
-                                                            <div style={{ display: "flex", flexDirection: "row" }}>
-                                                                <div className="p-2" style={{ width: "70%" }}>
-                                                                    <div className="d-flex justify-content-between">
-                                                                        <p>{product.name}</p>
-                                                                        <p><i className="fa-regular fa-clock p-1"></i>{format(new Date(requirement.date), 'dd MMM yy')}</p>
-                                                                    </div>
-                                                                    <div className="d-flex justify-content-between p-1" style={{ display: "flex", flexDirection: "row" }}>
-                                                                        <p>Rs.{requirement.price} /- per {product.quantityUnit}</p>
-                                                                        <p>Quantity : {requirement.quantity} {product.quantityUnit}s needed</p>
-                                                                        <p>Description : {requirement.notes}</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="card mx-2 p-1" style={{ width: "30%", display: "flex", flexDirection: "column" }}>
-                                                                    <div style={{ display: "flex", flexDirection: "row" }} >
-                                                                        <div style={{ width: "30%" }}>
-                                                                            <i className="fa-solid fa-circle-user fa-2x p-1"></i>
-                                                                        </div>
-                                                                        <div className="p-1" style={{ width: "70%" }}>
-                                                                            <p style={{ fontSize: "15px" }}>{requirement.sentBy.name}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <button className="btn btn-primary btn-sm m-1">Accept</button>
-                                                                        <button onClick={() => showModal(requirement)} className="btn btn-primary btn-sm m-1">Negotiate</button>
-                                                                        <i className="fa-solid fa-phone m-2" style={{ cursor: "pointer" }}></i>
-                                                                        <i className="fa-brands fa-whatsapp m-2" style={{ cursor: "pointer" }}></i>
+                                                <div className="text-center h1">
+                                                    Responses
+                                                </div>
+
+
+
+                                                <div className="card" style={{ display: "flex", flexDirection: "row" }}>
+                                                    <div className="left col-3" style={{ minHeight: "10vh" }}>
+                                                        {proposalsRecieved.map((proposal, index) => (
+                                                            <div className="card" style={{ cursor: "pointer" }} onClick={() => { setChatState(true); setSelectedProposal(proposal); }}>
+                                                                <p style={{ fontSize: "0.9rem" }}><i className="fa-solid fa-user mx-2"></i>{proposal.name} <i className="mx-2 fa-solid fa-clock"></i> {proposal.date}</p>
+                                                                <div style={{ fontSize: "0.95rem" }}>Rs. <span className="text-muted" style={{ fontWeight: "600" }}>{proposal.price ? proposal.price : "NA"}</span>/- per {proposal?.quantityUnit} <span className="bg-warning px-1">{proposal.quantity} {proposal.quantityUnit}s needed</span> </div>
+                                                                <div style={{ fontSize: "0.9rem" }}>Note : {proposal.notes}</div>
+                                                                <div className="row">
+                                                                    <div className="btns">
+                                                                        <div className="btn btn-sm btn-primary m-1">contact</div>
+                                                                        <div className="btn btn-sm btn-primary m-1" onClick={() => navigate(`/dashboard/users/${proposal.sellerId}`)}>profile</div>
+                                                                        <div className="btn btn-sm btn-primary m-1" onClick={() => {
+                                                                            setChatState(true);
+                                                                            setSelectedProposal(proposal);
+                                                                            getChats(); //auth?.user?._id,selectedProposal?.sentBy,selectedProposal.pid
+                                                                        }}>chat</div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        ))}
+                                                    </div>
+
+
+                                                    <div className="right col-9" style={{ minHeight: "10vh", display: "flex", flexDirection: "column", border: "solid 1px black" }}>
+                                                        <div style={{ minHeight: "60vh", borderBottom: "solid 1px black" }}>
+                                                            {chatState && selectedProposal ? (
+
+                                                                <>
+                                                                    <div className="card" style={{ display: "flex", flexDirection: "row", backgroundColor: "cyan", margin: "none" }}>
+                                                                        <div style={{ display: "flex", flexDirection: "row" }}>
+                                                                            <p className="m-2"><i className="fa-solid fa-user"></i> : {selectedProposal.name}</p>
+                                                                            <p className="m-2">Required Date: {selectedProposal.date}</p>
+                                                                            <p className="m-2">Unit Price offered: Rs. {selectedProposal.price} /- per {selectedProposal.quantityUnit}</p>
+                                                                            <p className="m-2">Quantity: {selectedProposal.quantity} {selectedProposal.quantityUnit}s needed</p>
+                                                                            <p className="m-2">Notes: {selectedProposal.notes}</p>
+                                                                        </div>
+
+                                                                    </div>
+
+
+                                                                    <div className="card" style={{ width: "90%", minHeight: "40vh", maxHeight: "50vh", overflowY: "auto" }}>
+                                                                        {chats.map((chat, index) => (
+                                                                            <div key={index} className="card">
+
+                                                                           
+                                                                                <p className="card-text">Quantity: {chat.quantity}</p>
+                                                                                <p className="card-text">Quantity Unit: {chat.quantityUnit}</p>
+                                                                                <p className="card-text">Price: {chat.price}</p>
+                                                                                <p className="card-text">Date: {chat.date}</p>
+                                                                                <p className="card-text">Notes: {chat.notes}</p>
+                                                                            </div>
+                                                                        ))}
+
+                                                                        <div className="" ref={endref}></div>
+
+                                                                    </div>
+
+                                                                </>
+
+
+                                                            ) : (
+                                                                <div className="text-center text-warning">
+                                                                    <h1>
+                                                                        Click on a response item to start chatting with buyer
+                                                                    </h1>
+                                                                </div>
+                                                            )}
                                                         </div>
-                                                    ))}
+
+
+                                                        <div className="p-2">
+                                                            <div style={{ display: "flex", flexDirection: "row" }}>
+                                                                <div className="p-1 m-1">
+                                                                    <input
+                                                                        type="number"
+                                                                        required={true}
+                                                                        value={quantity}
+                                                                        onChange={(e) => setquantity(e.target.value)}
+                                                                        style={{ borderRadius: "5px" }}
+                                                                        className="p-1 m-1"
+                                                                        placeholder="Required quantity"
+                                                                    />{" "}
+                                                                    <label htmlFor="">{product?.quantityUnit}s</label>
+                                                                </div>
+                                                                <div className="p-1 m-1">
+                                                                    Rs.{" "}
+                                                                    <input
+                                                                        type="number"
+                                                                        required={true}
+                                                                        value={price}
+                                                                        onChange={(e) => setprice(e.target.value)}
+                                                                        style={{ borderRadius: "5px" }}
+                                                                        className="p-1 m-1"
+                                                                        placeholder="Offered price"
+                                                                    />{" "}
+                                                                    per  {product?.quantityUnit}
+                                                                </div>
+
+                                                                <div className="p-1 m-1">
+                                                                    Required date:{" "}
+                                                                    <input
+                                                                        type="date"
+                                                                        required={true}
+                                                                        value={date}
+                                                                        onChange={(e) => setdate(e.target.value)}
+                                                                        style={{ borderRadius: "5px" }}
+                                                                        className="p-1 m-1"
+                                                                        placeholder="Required date"
+                                                                    />
+                                                                </div>
+                                                            </div>
+
+                                                            <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                                                                <div style={{ flex: "1", marginRight: "10px" }}>
+                                                                    <input
+                                                                        type="text"
+                                                                        required={true}
+                                                                        value={notes}
+                                                                        onChange={(e) => setnotes(e.target.value)}
+                                                                        style={{ borderRadius: "5px", width: "100%" }}
+                                                                        placeholder="Some notes..."
+                                                                        className="p-1"
+                                                                    />
+                                                                </div>
+                                                                <div className="container">
+                                                                    {JSON.stringify(selectedProposal, 4)}
+                                                                </div>
+                                                                <button className='btn btn-sm btn-primary m-3' onClick={() => {
+                                                                    postoffer(selectedProposal.pid, auth?.user?._id, selectedProposal.sentBy);
+                                                                    getChats();
+                                                                }}>Post offer</button>
+                                                            </div>
+
+
+                                                        </div>
+
+                                                    </div>
                                                 </div>
+
+
+
+
                                             </div>
-                                        )}
-                                        */}
+                                        )
+                                    }
+
+
+
                                         {
                                             !responsesState && (
                                                 <div className="container">

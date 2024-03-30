@@ -66,7 +66,7 @@ function App() {
             <Route path='user/sell-commodity' element={<SellCommodity />} />
             <Route path='user/buy-commodity' element={<BuyCommodity />} />
             <Route path='user/buy-commodity/:id' element={<ProductDetNego />} />
-            <Route path='users/profile/:id' element={<ProductDetNego />} />
+            
             
 
             <Route path='user/history/negotiations' element={<NegHistoy />} />

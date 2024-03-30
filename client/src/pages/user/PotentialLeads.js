@@ -3,16 +3,22 @@ import Nav from '../../components/UIComponents/Nav';
 import Footer from '../../components/layouts/Footer';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import Spinner from './../../components/UIComponents/Spinner'
+import { useNavigate } from 'react-router-dom';
+
 
 const PotentialLeads = () => {
   const [potentials, setPotentials] = useState([]);
+  const [loading, setLoading] = useState(true)
+  const navigate=useNavigate();
 
   const potentialLeads = async () => {
+    setLoading(true)
     try {
       const res = await axios.get(`${process.env.REACT_APP_API}/api/v1/requirements/get-all-potentials`);
       if (res.data.success) {
         setPotentials(res.data.potentials);
-        toast.success('Potentials fetched!');
+
       } else {
         console.log('Something went wrong');
         toast.error('Failed to fetch potentials');
@@ -21,17 +27,30 @@ const PotentialLeads = () => {
       console.error('Error fetching potentials:', error);
       toast.error('Failed to fetch potentials');
     }
+    finally {
+      setLoading(false)
+    }
   };
 
   useEffect(() => {
     potentialLeads();
   }, []);
 
+  if (loading) {
+    return (<>
+      <Nav />
+      <div className="" style={{ minHeight: "50vh" }}>
+        <Spinner />
+      </div>
+      <Footer />
+    </>)
+  }
+
   return (
     <>
       <Nav />
       <div style={{ minHeight: '50vh', display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
-        {potentials.map((potential) => (
+        {potentials && potentials.map((potential) => (
           <div key={potential._id} className="card m-2" style={{ width: '18rem' }}>
             <div className="card-body">
               <h5 className="card-title">{potential.productName}</h5>
@@ -39,10 +58,24 @@ const PotentialLeads = () => {
               <p className="card-text text-muted">Quantity Required: {potential.quantity} {potential.quantityUnit}s</p>
               <p className="card-text">Price offered: Rs.{potential.price}/- per {potential.quantityUnit}</p>
               <p className="card-text">Buyer: {potential?.buyerId?.name}</p>
+              <div className="d-flex justify-content-center">
+                <button className='btn btn-sm btn-primary m-1'>contact</button>
+                <button className='btn btn-sm btn-primary m-1' onClick={()=>{navigate(`/dashboard/users/profile/${potential.buyerId._id}`)}}>profile</button>
+              </div>
               {/* Add more fields as needed */}
             </div>
           </div>
         ))}
+        {
+          !potentials.length && (
+            <>
+              <div className="container d-flex justify-content-center" >
+                <p>No potentials found</p>
+                <button className='btn btn-primary m-3'>Post a Requirement</button>
+              </div>
+            </>
+          )
+        }
       </div>
       <Footer />
     </>

@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 
 const ProposalSchema = new mongoose.Schema({
-  // Define any fields specific to the proposal if needed
-  // For example:
   proposalId: {
     type: mongoose.ObjectId,
     ref: "users",
@@ -56,17 +54,20 @@ const userSchema = new mongoose.Schema(
     },
     proposalsReceived: {
       type: Map,
-      
       default: new Map()
     },
     role: {
       type: String,
       default: '1', // Assuming role is a string
     },
+    chats:{
+      type:Array,
+      default:[]
+    },
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }], // Array to store user IDs of followers
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }] // Array to store user IDs of following
   },
   { timestamps: true }
 );
-
-
 
 export default mongoose.model("users", userSchema);

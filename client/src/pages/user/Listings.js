@@ -110,16 +110,13 @@ const Listings = () => {
                     </div>
                   ))
                 ) : (
-                  <div style={{ display: "flex", flexDirection: "row", justifyContent: "between" }}>
-
-                    <div className=""></div>
-                    <button
-                      className="btn btn-sm btn-primary"
-                      onClick={() => navigate("/dashboard/user/sell-commodity")}>
-                      Start posting commodities
-                    </button>
-                    <div className=""></div>
-                  </div>
+                  <>
+                    <div className="container d-flex justify-content-center" >
+                      <p></p>
+                      <button className="btn btn-primary" onClick={()=>navigate("/dashboard/user/sell-commodity")}>No listings yet, start posting commodities</button>
+                      <p></p>
+                    </div>
+                  </>
                 )}
               </>
             </div>

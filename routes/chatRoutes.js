@@ -10,7 +10,7 @@ router.post("/post-chat", postChatController);
 
 
 //get chats by sent id and toid
-router.post("/get-chats",getChatsController)
+router.post("/getchats",getChatsController)
 
 //get response data through chat and display in responses
 router.post("/getProposedChatData",getProposedChatDataController)

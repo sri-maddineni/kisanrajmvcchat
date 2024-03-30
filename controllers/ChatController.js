@@ -1,73 +1,110 @@
 import express from "express";
 import chatModel from "../models/chatModel.js";
 import userModel from "../models/userModel.js"
-
+import mongoose from "mongoose";
 
 export const postChatController = async (req, res) => {
     try {
-        const { pid, sentBy, sellerId, toId, quantity, price, notes, date } = req.body;
-        const data = { pid: pid, sentBy: sentBy, sellerId: sellerId }
+        const { pid, sentBy, toId, sellerId, quantity, price, notes, date,quantityUnit  } = req.body;
 
-        const result = await chatModel.create({
-            pid, sentBy, sellerId, toId, quantity, price, notes, date
-        })
+        const chatData = {
+            pid: pid,
+            sentBy: sentBy,
+            toId: toId,
+            quantity: quantity,
+            price: price,
+            notes: notes,
+            date: date,
+            sellerId:sellerId,
+            qtyunit:quantityUnit,
+            timestamp: new Date() // Add timestamp field with current date and time
+        };
+
+        // Update the user document with new chat data
+        const result1 = await userModel.findOneAndUpdate(
+            { _id: sentBy }, // Filter: Find the user with sentBy id
+            { $push: { chats: chatData } }, // Update: Push chatData into chats array
+            { new: true } // Options: Return the updated document
+        );
+
+        const result2 = await userModel.findOneAndUpdate(
+            { _id: toId }, // Filter: Find the user with sentBy id
+            { $push: { chats: chatData } }, // Update: Push chatData into chats array
+            { new: true } // Options: Return the updated document
+        );
+
+        if (!result1) {
+            console.log("Chat not  posted successfully1");
+            return res.status(403).send({
+                success: true,
+                message: "Chat posted successfully 1"
+            });
+        }
+
+        if (!result2) {
+            console.log("Chat not  posted successfully2");
+            return res.status(403).send({
+                success: true,
+                message: "Chat posted successfully 2"
+            });
+        }
 
 
-
-        //push data into useid sellerid.chats wehre 
-
-        if (result) {
-            console.log("success")
+        if (result1 && result2) {
+            console.log("Chat posted successfully");
             return res.status(200).send({
                 success: true,
-                message: "Chat posted success"
-            })
-        }
-        else {
-            console.log("failed to post")
+                message: "Chat posted successfully"
+            });
+        } else {
+            console.log("Failed to post chat in DB");
             return res.status(403).send({
                 success: false,
-                message: "failed to post in db"
-            })
+                message: "Failed to post chat in DB"
+            });
         }
-
     } catch (error) {
-        console.log(error)
+        console.error("Error posting chat:", error);
+        return res.status(500).send({
+            success: false,
+            message: "Internal server error"
+        });
     }
 }
 
 
-//for buyer chats only because while buying buyer need to get productid, seller and his own sent id
+
 export const getChatsController = async (req, res) => {
     try {
-        const { sentBy, toId, pid, sellerId, flag } = req.body;
+        const { pid, uid, sentBy } = req.body;
 
-        // Find all chats where sentBy, toId, and pid match the provided values
-        let chats;
+        //const chats=await userModel.findOne({"_id":uid},{sentBy:sentBy},{sentBy:uid},{pid:pid})
+
+        const chats = await userModel.findOne(
+            {
+                "_id": uid, // Match user by _id
+                "chats.pid": pid, // Match chats by pid
+                $or: [ // Match chats where sentBy matches either sentBy or uid
+                    { "chats.sentBy": sentBy },
+                    { "chats.sentBy": uid }
+                ]
+            },
+            { chats: 1 } // Projection to retrieve only the chats array
+        );
 
 
-        if (flag == 0) {
-            chats = await chatModel.find({
+        console.log(chats)
 
-                toId: toId,
-                pid: pid
-            }).populate("pid").populate("sellerId");
-        }
-        else {
-            chats = await chatModel.find({
-                sellerId: sellerId,
-                toId: toId,
-                pid: pid
-            }).populate("pid").populate("sellerId");
-        }
 
-        // Send the found chats as response
+
         res.status(200).json({ success: true, message: "Chats retrieved successfully", chats });
     } catch (error) {
         console.error("Error retrieving chats:", error);
         res.status(500).json({ success: false, message: "Failed to retrieve chats" });
     }
 };
+
+
 
 //get proposed chat data from pid, sellerid, buyerid
 export const getProposedChatDataController = async (req, res) => {
