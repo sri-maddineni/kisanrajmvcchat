@@ -36,6 +36,7 @@ import PostRequirement from "./pages/user/PostRequirement"
 import NegHistoy from './pages/user/NegHistory'
 import PotentialLeads from './pages/user/PotentialLeads';
 import ProductDetNego from './pages/user/ProductDetNego';
+import UserProfile from './pages/user/UserProfile';
 
 
 
@@ -66,8 +67,7 @@ function App() {
             <Route path='user/sell-commodity' element={<SellCommodity />} />
             <Route path='user/buy-commodity' element={<BuyCommodity />} />
             <Route path='user/buy-commodity/:id' element={<ProductDetNego />} />
-            
-            
+            <Route path='users/:uid' element={<UserProfile />} />
 
             <Route path='user/history/negotiations' element={<NegHistoy />} />
 
@@ -77,7 +77,10 @@ function App() {
             <Route path='user/post-equipment' element={<Equipment />} />
             <Route path='user/hire-equipment' element={<HireEquipment />} />
             <Route path='user/my-equipment-listing' element={<EquipmentListing />} />
+
           </Route>
+
+
 
           <Route path='/dashboard' element={<AdminRoute />}>
             <Route path='admin' element={<AdminDashboard />} />
@@ -86,7 +89,7 @@ function App() {
             <Route path='admin/product/:pid' element={<UpdateProduct />} />
             <Route path='admin/users' element={<Users />} />
             <Route path='admin/products' element={<Products />} />
-            <Route path='user/create-equipment-category' element={<EquipmentCategory />} />
+
           </Route>
 
 
