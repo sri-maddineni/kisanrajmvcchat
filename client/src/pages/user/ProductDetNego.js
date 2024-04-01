@@ -24,7 +24,7 @@ const ProductDetNego = () => {
     const messageendref = useRef(null)
 
     const formattedDate = (timestamp) => {
-        return format(new Date(timestamp), 'dd-MMM hh:ss a');
+        return format(new Date(timestamp), 'dd-MMM hh:mm a');
     }
 
     const getProductData = async () => {
@@ -164,7 +164,7 @@ const ProductDetNego = () => {
                                             <p className='mx-2'>seller name: <span style={{ fontWeight: "700" }}>{product?.sellerId?.name}</span></p>
                                         </div>
                                         <div className="contact" style={{ display: "flex", flexDirection: "row", }}>
-                                            <Link to={`/dashboard/users/profile/${product?.sellerId?._id}`}><button className='btn btn-sm btn-primary me-1'>view profile</button></Link>
+                                            <Link to={`/dashboard/users/${product?.sellerId?._id}`}><button className='btn btn-sm btn-primary me-1'>view profile</button></Link>
                                             <p className='fa-brands fa-whatsapp m-2'></p>
                                             <p className='fa-solid fa-phone m-2 fa-1x'></p>
                                         </div>
@@ -179,7 +179,7 @@ const ProductDetNego = () => {
                             {chatLoad && <Spinner />}
                             {!chatLoad && chats.map((chat, index) => (
                                 <>
-                                    <div style={{marginLeft: chat.sentBy === auth?.user?._id ? "auto" : "20px", marginRight: chat.sentBy === auth?.user?._id ? "20px" : "auto"}}>
+                                    <div style={{ marginLeft: chat.sentBy === auth?.user?._id ? "auto" : "20px", marginRight: chat.sentBy === auth?.user?._id ? "20px" : "auto" }}>
                                         <div key={index} className="card" style={{ width: "15rem", color: chat.sentBy === auth?.user?._id ? "black" : "white", backgroundColor: chat.sentBy === auth?.user?._id ? "cyan" : "red", marginLeft: chat.sentBy === auth?.user?._id ? "auto" : "20px", marginRight: chat.sentBy === auth?.user?._id ? "20px" : "auto" }}>
                                             <p style={{ fontSize: "0.9rem" }} className="card-text">Qty: {chat.quantity}</p>
                                             <p style={{ fontSize: "0.9rem" }} className="card-text">Price: {chat.price}</p>
@@ -225,24 +225,34 @@ const ProductDetNego = () => {
                                     per {product?.quantityUnit}
                                 </div>
                             </div>
-                            <div className="" style={{ display: "flex", flexDirection: "row" }}>
+                            <div className="d-flex flex-row align-items-center">
                                 <div className="p-1 m-1">
-                                    Required date:{" "}
-                                    <input type="date" value={date+"T00:00:00.000+00:00"} placeholder='Available date' className='form-control' onChange={(e) => setDate(e.target.value)} />
-                                </div>
+                                    <label htmlFor="requiredDate" className="form-label">Required date:</label>
+                                    <input
+                                        type="date"
+                                        id="requiredDate"
+                                        value={date + "T00:00:00.000+00:00"}
+                                        placeholder="Available date"
+                                        className="form-control"
+                                        onChange={(e) => setDate(e.target.value)}
+                                    />
+                                </div> 
                                 <div className="p-1 m-1">
+                                    <label htmlFor="notes" className="form-label">Notes:</label>
                                     <input
                                         type="text"
+                                        id="notes"
                                         required={true}
                                         value={notes}
                                         onChange={(e) => setNotes(e.target.value)}
                                         style={{ borderRadius: "5px" }}
-                                        className="p-1"
+                                        className="form-control"
                                         placeholder="Some notes..."
                                     />
                                 </div>
-                                <button className='btn btn-sm btn-primary m-3' onClick={postOffer}>Post offer</button>
+                                <button className="btn btn-sm btn-primary m-3" onClick={postOffer}>Post offer</button>
                             </div>
+
                         </div>
                     </div>
                 </div>

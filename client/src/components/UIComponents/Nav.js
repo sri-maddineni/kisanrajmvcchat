@@ -29,7 +29,7 @@ export default function Nav() {
             </header>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark navbar-sm" style={{ '--bs-bg-opacity': '0.8', 'height': '60px' }} >
                 <div className="container-fluid ">
-                    <Link className="navbar-brand text-warning" to="/">Home</Link>
+                    <Link className="navbar-brand text-warning" to="/">KisanRaj</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navi" aria-controls="navi" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -128,7 +128,7 @@ export default function Nav() {
                                     </li>
 
                                     <li className="nav-item dropdown active m-2">
-                                        <a className="nav-link me-auto text-white disabled" href='#' data-bs-toggle="dropdown">{auth?.user?.name}   <i className="fa-solid fa-sort-down"></i></a>
+                                        <a className="nav-link me-auto text-white disabled text-danger" href='#' data-bs-toggle="dropdown"><span className='text-warning'>{auth?.user?.name}</span>   <i className="fa-solid fa-sort-down"></i></a>
                                         <ul className="dropdown-menu">
                                             <li><Link className="dropdown-item" to="/dashboard/user/profile"> Profile</Link></li>
                                             <li><a className="dropdown-item" onClick={handleLogout}> Logout </a></li>

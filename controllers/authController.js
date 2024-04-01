@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 
 export const registerController = async (req, res) => {
   try {
-    const { name, email, password, phone, address, answer,pincode,latitude, longitude } = req.body;
+    const { name, email, password, phone, address, answer, pincode, latitude, longitude } = req.body;
 
     if (!name) {
       return res.send({ message: "Name is required" });
@@ -24,7 +24,7 @@ export const registerController = async (req, res) => {
       return res.send({ message: "phone no is required" });
     }
 
-    if (!address ) {
+    if (!address) {
       return res.send({ message: "address is required" });
     }
 
@@ -96,7 +96,7 @@ export const loginController = async (req, res) => {
 
     const user = await userModel.findOne({ email });
 
-    
+
 
     const match = await comparePassword(password, user.password);
     if (!match) {
@@ -120,13 +120,13 @@ export const loginController = async (req, res) => {
         email: user.email,
         phone: user.phone,
         address: user.address,
-        latitude:user?.latitude,
-        longitude:user?.longitude,
-        pincode:user?.pincode,
+        latitude: user?.latitude,
+        longitude: user?.longitude,
+        pincode: user?.pincode,
         role: user.role,
         proposalsRecieved: user?.proposalsReceived,
         proposalsSent: user.proposalsSent,
-        
+
       },
       token
     });
@@ -247,22 +247,65 @@ export const getUserData = async (req, res) => {
 
 
 
-export const updateUserData = async(req,res)=>{
+export const updateUserData = async (req, res) => {
   const userId = req.params.uid;
-    const updates = req.body; // Assuming the request body contains updated user details
+  const updates = req.body; // Assuming the request body contains updated user details
 
-    try {
-        // Find the user by ID and update the fields
-        const updatedUser = await userModel.findByIdAndUpdate(userId, updates, { new: true });
-        console.log(updateUserData);
-        if (!updatedUser) {
-            return res.status(404).json({ message: 'User not found',success:false });
-        }
-
-        res.json(updatedUser);
-    } catch (error) {
-        console.error('Error updating user:', error);
-        res.status(500).json({ message: 'Server error' });
+  try {
+    // Find the user by ID and update the fields
+    const updatedUser = await userModel.findByIdAndUpdate(userId, updates, { new: true });
+    console.log(updateUserData);
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found', success: false });
     }
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
 }
 
+
+
+export const followController = async (req, res) => {
+  try {
+    const { myid, hisid } = req.body;
+
+    const result1 = await userModel.findByIdAndUpdate(
+      { _id: myid },
+      { $addToSet: { following: hisid } },
+      { new: true } // To return the updated document
+    );
+
+    const result2 = await userModel.findByIdAndUpdate(
+      { _id: hisid },
+      { $addToSet: { followers: myid } },
+      { new: true } // To return the updated document
+    );
+
+
+    if(result1 && result2){
+      res.status(200).send({
+        message:"success",
+        success:true,
+
+      })
+    }
+    else{
+      res.status(256).send({
+        success:false,
+        message:"failed to follow"
+      })
+    }
+
+
+
+  } catch (error) {
+    console.log(error)
+    res.status(256).send({
+      success:false,
+      message:error
+    })
+  }
+}

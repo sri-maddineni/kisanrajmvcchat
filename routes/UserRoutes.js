@@ -1,6 +1,7 @@
 import express from "express";
 import {
-    getUserData,updateUserData
+    getUserData,updateUserData,
+    followController
 } from "../controllers/authController.js";
 
 
@@ -15,6 +16,9 @@ router.get("/:uid", getUserData);
 //change or edit profile
 
 router.post("/updateuserdata/:uid",updateUserData)
+
+//follow clicking routes
+router.post("/follow",followController)
 
 
 

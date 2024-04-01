@@ -56,7 +56,7 @@ const Listings = () => {
                         to={`/dashboard/user/product/${p._id}`}
                         className="text-dark text-decoration-none"
                       >
-                        <div className="card" style={{ width: "18rem" }}>
+                        <div className="card" style={{ width: "16rem" }}>
                           <span className="position-absolute top-0 translate-middle badge rounded-pill bg-danger text-light" style={{ left: "90%", zIndex: "1" }}>{" "}
                             {p?.commodityId?.category}
                           </span>
@@ -113,7 +113,7 @@ const Listings = () => {
                   <>
                     <div className="container d-flex justify-content-center" >
                       <p></p>
-                      <button className="btn btn-primary" onClick={()=>navigate("/dashboard/user/sell-commodity")}>No listings yet, start posting commodities</button>
+                      <button className="btn btn-primary" onClick={() => navigate("/dashboard/user/sell-commodity")}>No listings yet, start posting commodities</button>
                       <p></p>
                     </div>
                   </>

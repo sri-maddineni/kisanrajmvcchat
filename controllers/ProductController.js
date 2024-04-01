@@ -7,10 +7,10 @@ import CommodityModel from "../models/CommodityModel.js";
 
 export const createProductController = async (req, res) => {
     try {
-        console.log("Error")
+        
 
-        const { name, description, price, quantity, shipping, organic } = req.fields;
-        console.log(req.files)
+        const { name, description, price, quantity, shipping,sellerId, availabledate, organic,quantityUnit } = req.fields;
+        
         const { photo } = req.files;
 
         console.log(req.fields)
@@ -50,6 +50,16 @@ export const createProductController = async (req, res) => {
             message: "product created successfully!",
             product
         })
+
+
+
+        const updatedUser = await userModel.findByIdAndUpdate(
+            { _id: sellerId },
+            { $addToSet: { listings: product._id } },
+            { new: true }
+          );
+
+
     } catch (error) {
         console.log(error)
         res.status(500).send({

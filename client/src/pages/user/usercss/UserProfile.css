@@ -1,0 +1,57 @@
+.foltxt {
+    font-family: 'Roboto', sans-serif; /* Specify your desired font family */
+    font-weight: 800; /* Specify the desired font weight */
+    /* Add any other font properties as needed */
+}
+
+.top{
+    display: flex;
+    flex-direction: row;
+    border: solid 2px red;
+    justify-content: center;
+}
+
+
+
+.left{
+    width: 35%;
+}
+
+.overall{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.right{
+    width: 50%;
+}
+
+.network{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+.roe{
+    display: flex;
+    flex-direction: row;
+}
+
+.rtop{
+    display: flex;
+    width: auto;
+    flex-direction: row;
+    justify-content: center;
+    
+}
+
+.right{
+    width: 70%;
+}
+
+.navi{
+    cursor: pointer;
+}

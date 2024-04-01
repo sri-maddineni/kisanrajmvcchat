@@ -73,13 +73,15 @@ const SellCommodity = () => {
     try {
       const productData = new FormData();
 
+      const sellerId=auth?.user?._id;
+
       productData.append("name", name);
       productData.append("description", description);
       productData.append("price", price);
       productData.append("quantity", quantity);
       productData.append("photo", photo);
       productData.append("shipping", shipping);
-      productData.append("sellerId", auth.user._id)
+      productData.append("sellerId", sellerId)
       productData.append("availableDate", availableDate)
       productData.append("organic", organic)
       productData.append("quantityUnit", quantityUnit)

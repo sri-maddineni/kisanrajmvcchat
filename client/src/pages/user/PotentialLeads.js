@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const PotentialLeads = () => {
   const [potentials, setPotentials] = useState([]);
   const [loading, setLoading] = useState(true)
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const potentialLeads = async () => {
     setLoading(true)
@@ -60,7 +60,7 @@ const PotentialLeads = () => {
               <p className="card-text">Buyer: {potential?.buyerId?.name}</p>
               <div className="d-flex justify-content-center">
                 <button className='btn btn-sm btn-primary m-1'>contact</button>
-                <button className='btn btn-sm btn-primary m-1' onClick={()=>{navigate(`/dashboard/users/profile/${potential.buyerId._id}`)}}>profile</button>
+                <button className='btn btn-sm btn-primary m-1' onClick={() => { navigate(`/dashboard/users/profile/${potential.buyerId._id}`) }}>profile</button>
               </div>
               {/* Add more fields as needed */}
             </div>
@@ -70,8 +70,8 @@ const PotentialLeads = () => {
           !potentials.length && (
             <>
               <div className="container d-flex justify-content-center" >
-                <p>No potentials found</p>
-                <button className='btn btn-primary m-3'>Post a Requirement</button>
+
+                <button className='btn btn-primary m-3'>No potentials found, Post a Requirement</button>
               </div>
             </>
           )

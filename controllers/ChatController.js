@@ -5,18 +5,19 @@ import mongoose from "mongoose";
 
 export const postChatController = async (req, res) => {
     try {
-        const { pid, sentBy, toId, sellerId, quantity, price, notes, date,quantityUnit  } = req.body;
+        const { pid, sentBy, toId, sellerId, quantity,qunit, price, notes, date, quantityUnit } = req.body;
 
         const chatData = {
             pid: pid,
             sentBy: sentBy,
             toId: toId,
             quantity: quantity,
+            qunit:qunit,
             price: price,
             notes: notes,
             date: date,
-            sellerId:sellerId,
-            qtyunit:quantityUnit,
+            sellerId: sellerId,
+            qtyunit: quantityUnit,
             timestamp: new Date() // Add timestamp field with current date and time
         };
 
@@ -84,7 +85,7 @@ export const getChatsController = async (req, res) => {
             {
                 "_id": uid, // Match user by _id
                 "chats.pid": pid, // Match chats by pid
-                $or: [ // Match chats where sentBy matches either sentBy or uid
+                $or: [
                     { "chats.sentBy": sentBy },
                     { "chats.sentBy": uid }
                 ]
@@ -93,7 +94,7 @@ export const getChatsController = async (req, res) => {
         );
 
 
-        console.log(chats)
+        console.log(chats,"chats")
 
 
 

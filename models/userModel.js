@@ -32,17 +32,17 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    pincode:{
-      type:Number,
-      required:true,
+    pincode: {
+      type: Number,
+      required: true,
     },
-    latitude:{
-      type:Number,
-      required:true
+    latitude: {
+      type: Number,
+      required: true
     },
-    longitude:{
-      type:Number,
-      required:true
+    longitude: {
+      type: Number,
+      required: true
     },
     answer: {
       type: String,
@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema(
     },
     proposalsSent: {
       type: mongoose.Schema.Types.Mixed,
-      default:[]
+      default: []
     },
     proposalsReceived: {
       type: Map,
@@ -60,12 +60,33 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: '1', // Assuming role is a string
     },
-    chats:{
-      type:Array,
-      default:[]
+    chats: {
+      type: Array,
+      default: []
     },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }], // Array to store user IDs of followers
-    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }] // Array to store user IDs of following
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }], // Array to store user IDs of following
+    roles: {
+      type: Array,
+      default: ["farmer", "buyer"]
+    },
+    rating: {
+      type: Number,
+      default: 0
+    },
+    description: {
+      type: String,
+      default: "Member of KisanRaj"
+    },
+    links: {
+      type: Array,
+      default: ["https://www.google.com"]
+    },
+    listings: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'products'
+    }]
+
   },
   { timestamps: true }
 );
