@@ -37,6 +37,7 @@ import NegHistoy from './pages/user/NegHistory'
 import PotentialLeads from './pages/user/PotentialLeads';
 import ProductDetNego from './pages/user/ProductDetNego';
 import UserProfile from './pages/user/UserProfile';
+import CreateColdstorage from './pages/admin/CreateColdstorage';
 
 
 
@@ -89,6 +90,8 @@ function App() {
             <Route path='admin/product/:pid' element={<UpdateProduct />} />
             <Route path='admin/users' element={<Users />} />
             <Route path='admin/products' element={<Products />} />
+            <Route path='admin/create-coldstorage' element={<CreateColdstorage />} />
+
 
           </Route>
 

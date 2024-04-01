@@ -11,17 +11,18 @@ import UserRoutes from "./routes/UserRoutes.js"
 import EquipmentRoutes from "./routes/EquipmentRoutes.js"
 import RequirementRoutes from "./routes/RequirementRoutes.js"
 import chatRoutes from "./routes/chatRoutes.js"
+import coldroutes from "./routes/coldroutes.js"
 
 //configure environment
 dotenv.config();
 
-//database config
+//database configs
 connectDB();
 
 //rest object
 const app = express();
 
-//middlewares
+//middlewaresf
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
@@ -51,6 +52,8 @@ app.use("/api/v1/chats",chatRoutes)
 //to get userdata
 app.use("/api/v1/users", UserRoutes)
 
+////to get userdata
+app.use("/api/v1/cold", coldroutes)
 
 //rest api
 app.get("/", (req, res) => {
