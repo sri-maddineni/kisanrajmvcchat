@@ -10,6 +10,7 @@ import {
     declineOfferController,
     negotiateController,
     getAllPotentialsController,
+    addidcontroller
  } from "../controllers/RequirementController.js";
 
 import { isAdmin, isUser, requireSignIn } from "../middlewares/authMiddleware.js";
@@ -49,6 +50,9 @@ router.post("/get-product-potentials",requireSignIn,isUser, getProductPotentialC
 
 //get all potentials posted by a user
 router.get("/get-all-potentials",requireSignIn,isUser, getAllPotentialsController);
+
+//post an id to auths proposalssentids 
+router.post("/addid",requireSignIn,isUser,addidcontroller)
 
 
 

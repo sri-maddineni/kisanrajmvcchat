@@ -13,7 +13,7 @@ const ProposalsRecieved = () => {
   const [proposals, setProposals] = useState({}); //for listing proposals count and data related
   const [posted, setPosted] = useState([]);
   const [productData, setProductData] = useState({});
-  const [loading,setLoading]=useState(true)
+  const [loading, setLoading] = useState(true)
   const [activeSection, setActiveSection] = useState("responses"); // State to manage active section
 
   const getProductData = async (pid) => {
@@ -31,7 +31,7 @@ const ProposalsRecieved = () => {
       console.log("Error fetching product data:", error);
       return "abc";
     }
-    finally{
+    finally {
       setLoading(false)
     }
   };
@@ -65,7 +65,7 @@ const ProposalsRecieved = () => {
     } catch (error) {
       console.log("Error fetching proposals:", error);
     }
-    finally{
+    finally {
       setLoading(false)
     }
   };
@@ -76,14 +76,14 @@ const ProposalsRecieved = () => {
 
   if (loading) {
     return (<>
-        <Nav />
-        <div className="container" style={{ minHeight: "50vh" }}>
-            <Spinner />
-        </div>
-        <Footer />
+      <Nav />
+      <div className="container" style={{ minHeight: "50vh" }}>
+        <Spinner />
+      </div>
+      <Footer />
     </>
     )
-}
+  }
 
 
   return (
@@ -132,6 +132,17 @@ const ProposalsRecieved = () => {
             </div>
           </div>
         ))}
+        {
+          !Object.entries(proposals).length && (
+            <>
+              <div className="container my-5">
+                <div className="container my-5" style={{ display: "flex", flexDirection: "row", justifyContent: 'center' }}>
+                  <button className="btn btn-danger m-5">No Responses for any of the products yet</button>
+                </div>
+              </div>
+            </>
+          )
+        }
 
       </div >
       <Footer />

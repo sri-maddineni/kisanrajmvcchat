@@ -52,6 +52,10 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.Mixed,
       default: []
     },
+    proposalsSentids: {
+      type: Array, 
+      default: []
+    },
     proposalsReceived: {
       type: Map,
       default: new Map()

@@ -20,7 +20,7 @@ const Responses = () => {
     const [leads, setLeads] = useState([]);
 
     const [auth, setAuth] = useContext(AuthContext);//to maintain user state and logged-in details for profile page
-     
+
     const [responsesState, setResponsesState] = useState(true)
 
     const [quantity, setquantity] = useState("")        //these are for new proposal or negotiation details
@@ -119,7 +119,7 @@ const Responses = () => {
 
             if (res.data.success) {
                 toast.success("success posted chat")
-                getChats(auth?.user?._id,selectedProposal?.pid,selectedProposal.sentBy)
+                getChats(auth?.user?._id, selectedProposal?.pid, selectedProposal.sentBy)
 
             }
         } catch (error) {
@@ -246,7 +246,7 @@ const Responses = () => {
 
 
 
-                                                <div className="card" style={{ display: "flex", flexDirection: "row" }}>
+                                                <div style={{ display: "flex", flexDirection: "row" }}>
                                                     <div className="left col-3" style={{ minHeight: "10vh" }}>
                                                         {proposalsRecieved.map((proposal, index) => (
                                                             <div className="card" style={{ cursor: "pointer" }} onClick={() => { setChatState(true); setSelectedProposal(proposal); }}>
@@ -260,11 +260,11 @@ const Responses = () => {
                                                                         <div className="btn btn-sm btn-primary m-1" onClick={() => {
                                                                             setChatState(true);
                                                                             setSelectedProposal(proposal);
-                                                                           
+
                                                                             getChats(proposal.sellerId, product._id, proposal.buyerId);
-                                                                             //auth?.user?._id,selectedProposal?.sentBy,selectedProposal.pid
+                                                                            //auth?.user?._id,selectedProposal?.sentBy,selectedProposal.pid
                                                                         }}>chat</div>
-                                                                        
+
 
                                                                     </div>
                                                                 </div>
@@ -298,13 +298,13 @@ const Responses = () => {
                                                                         {chats.map((chat, index) => (
                                                                             <>
                                                                                 <div style={{ marginLeft: chat.sentBy === auth?.user?._id ? "auto" : "20px", marginRight: chat.sentBy === auth?.user?._id ? "20px" : "auto" }}>
-                                                                                    <div key={index} style={{ backgroundColor: chat.sentBy === auth?.user?._id ? "cyan" : "red",width:"15rem" }} className="card">
+                                                                                    <div key={index} style={{ backgroundColor: chat.sentBy === auth?.user?._id ? "cyan" : "red", width: "15rem", color: chat.sentBy === auth?.user?._id ? "black" : "white" }} className="card">
                                                                                         <p className="card-text">quantity: {chat.quantity} {chat.qunit}s</p>
                                                                                         <p className="card-text">Price: {chat.price}</p>
                                                                                         <p className="card-text">Date: {chat.date}</p>
                                                                                         <p className="card-text">Notes: {chat.notes}</p>
                                                                                     </div>
-                                                                                    <p style={{fontSize:"0.8rem",marginLeft:"100px"}}>{formattedDater(chat.timestamp)}</p>
+                                                                                    <p style={{ fontSize: "0.8rem", marginLeft: "100px" }}>{formattedDater(chat.timestamp)}</p>
                                                                                 </div>
                                                                             </>
                                                                         ))}
@@ -380,7 +380,7 @@ const Responses = () => {
                                                                         className="p-1"
                                                                     />
                                                                 </div>
-                                                                
+
                                                                 <button className='btn btn-sm btn-primary m-3' onClick={() => {
                                                                     postoffer();
                                                                     getChats(selectedProposal.sellerId, product._id, selectedProposal.buyerId); //auth?.user?._id,selectedProposal?.sentBy,selectedProposal.pid

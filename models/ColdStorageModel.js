@@ -6,10 +6,7 @@ const coldSchema = new mongoose.Schema(
             type: String,
             trim: true,
         },
-        email: {
-            type: String,
-            unique: true,
-        },
+        
         phone: {
             type: String,
         },
@@ -35,8 +32,10 @@ const coldSchema = new mongoose.Schema(
             unique: true
         },
         owner: {
-            type: mongoose.ObjectId,
-            ref: "users",
+            type: String,
+        },
+        capacity:{
+            type:String
         }
     },
     { timestamps: true }

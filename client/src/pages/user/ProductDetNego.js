@@ -7,6 +7,7 @@ import AuthContext from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import Spinner from '../../components/UIComponents/Spinner';
 import { format } from 'date-fns';
+import { Button, Modal } from 'antd';
 
 const ProductDetNego = () => {
     const [auth, setAuth] = useContext(AuthContext);
@@ -20,17 +21,52 @@ const ProductDetNego = () => {
     const [chats, setChats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [chatLoad, setChatLoad] = useState(true);
+    
+    const [proposals,setproposals]=useState([])
+
+    const [postbtn,setpostbtn]=useState(false)
+
+    
 
     const messageendref = useRef(null)
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = async() => {
+        await proposeOffer();
+        setIsModalOpen(false);
+
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
     const formattedDate = (timestamp) => {
         return format(new Date(timestamp), 'dd-MMM hh:mm a');
     }
 
+    const authdata=async()=>{
+        try {
+            const res=await axios.get(`${process.env.REACT_APP_API}/api/users/${auth?.user?._id}`)
+            if(res.data.success){
+                setproposals(res?.data?.user?.proposalsSentids)
+                console.log(res.data.user)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(()=>{
+        authdata();
+    },[])
+
     const getProductData = async () => {
         setLoading(true);
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API}/api/v1/products/get-product/${params.id}`);
+            const res = await axios.get(`${process.env.REACT_APP_API}/api/v1/products/get-product/${params.pid}`);
             if (res.data.success) {
                 setProduct(res.data.product);
             }
@@ -42,6 +78,7 @@ const ProductDetNego = () => {
     };
 
     const postOffer = async () => {
+        
         setLoading(true);
         const sentBy = auth?.user?._id;
         const pid = product?._id;
@@ -49,6 +86,9 @@ const ProductDetNego = () => {
         const toId = sellerId;
         const quantityUnit = product?.quantityUnit;
 
+        if(!proposals.includes(params.id)){
+            showModal();
+        }
 
         const chatData = { pid, sentBy, toId, sellerId, quantity, price, notes, date, quantityUnit };
 
@@ -68,7 +108,7 @@ const ProductDetNego = () => {
 
     useEffect(() => {
         messageendref?.current?.scrollIntoView();
-    }, [chats])
+    }, [])
 
     const proposeOffer = async () => {
         setLoading(true);
@@ -88,6 +128,7 @@ const ProductDetNego = () => {
                 setDate('');
                 setQuantity('');
                 toast.success(result.data.message);
+                setpostbtn(true)
             }
         } catch (error) {
             console.log(error);
@@ -99,7 +140,7 @@ const ProductDetNego = () => {
     const getChats = async () => {
         setChatLoad(true);
         try {
-            const pid = product._id;
+            const pid = params.pid;
             const uid = auth?.user?._id;
             const sentBy = product?.sellerId?._id;
             const result = await axios.post(`${process.env.REACT_APP_API}/api/v1/chats/getchats`, { pid, uid, sentBy });
@@ -111,11 +152,12 @@ const ProductDetNego = () => {
             }
         } catch (error) {
             console.log(error);
-            toast.error("Error");
         } finally {
             setChatLoad(false);
         }
     };
+
+
 
     useEffect(() => {
         getProductData();
@@ -124,6 +166,8 @@ const ProductDetNego = () => {
     useEffect(() => {
         getChats();
     }, [product]);
+
+
 
     if (loading) {
         return (
@@ -236,7 +280,7 @@ const ProductDetNego = () => {
                                         className="form-control"
                                         onChange={(e) => setDate(e.target.value)}
                                     />
-                                </div> 
+                                </div>
                                 <div className="p-1 m-1">
                                     <label htmlFor="notes" className="form-label">Notes:</label>
                                     <input
@@ -250,13 +294,27 @@ const ProductDetNego = () => {
                                         placeholder="Some notes..."
                                     />
                                 </div>
-                                <button className="btn btn-sm btn-primary m-3" onClick={postOffer}>Post offer</button>
+                                <button className="btn btn-sm btn-primary m-3"  onClick={() => {
+                                   
+
+                                    if(quantity || price || notes || date){
+                                       showModal();
+                                    }
+                                    else{
+                                        toast("please enter some value to start chat")
+                                    }
+
+                                }}>Post offer</button>
                             </div>
 
                         </div>
                     </div>
                 </div>
             </div>
+
+            <Modal title="Propose offer" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <p>Are you sure you want to propose offer?</p>
+            </Modal>
             <Footer />
         </>
     );

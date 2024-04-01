@@ -2,13 +2,14 @@ import axios from 'axios'
 import React, { useContext, useState } from 'react'
 import Nav from '../../components/UIComponents/Nav'
 import Footer from '../../components/layouts/Footer'
-import useConfig from 'antd/es/config-provider/hooks/useConfig'
+
 import AuthContext from '../../context/AuthContext'
+import toast from 'react-hot-toast'
 
 const CreateColdstorage = () => {
 
     const [name, setname] = useState("")
-    const [email, setemail] = useState("")
+    const [capacity, setcapacity] = useState("")
     const [phone, setphone] = useState("")
     const [address, setAddress] = useState("")
     const [pincode, setPincode] = useState("")
@@ -24,8 +25,8 @@ const CreateColdstorage = () => {
 
         e.preventDefault();
 
-        setowner(auth?.user?._id)
-        const datar = { name, email, phone, address, pincode, description, link, license, owner }
+       
+        const datar = { name, capacity, phone, address, pincode, description, link, license, owner }
 
 
 
@@ -34,8 +35,10 @@ const CreateColdstorage = () => {
             if (res.data.success) {
                 console.log("done")
 
+                toast.success("created cold storage")
+
                 setname("");
-                setemail("");
+                setcapacity("");
                 setphone("");
                 setAddress("");
                 setPincode("");
@@ -59,7 +62,7 @@ const CreateColdstorage = () => {
             <Nav />
 
             <div className="d-flex justify-content-between">
-                <div className=""></div>
+               <div className='row'></div>
                 <div className="register my-2">
                     <h1 className="my-2 text-center">Register user</h1>
                     <form className="text-center m-3" onSubmit={handleSubmit}>
@@ -79,11 +82,24 @@ const CreateColdstorage = () => {
                             <input
                                 type="text"
                                 className="form-control"
-                                value={email}
+                                value={capacity}
                                 onChange={(e) => {
-                                    setemail(e.target.value);
+                                    setcapacity(e.target.value);
                                 }}
-                                placeholder="Enter Email"
+                                placeholder="Enter capacity"
+                                required
+                            />
+                        </div>
+
+                        <div className="mb-3">
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={owner}
+                                onChange={(e) => {
+                                    setowner(e.target.value);
+                                }}
+                                placeholder="Enter owner"
                                 required
                             />
                         </div>
@@ -124,7 +140,7 @@ const CreateColdstorage = () => {
                                 onChange={(e) => {
                                     setdescription(e.target.value);
                                 }}
-                                placeholder="Enter descriptin"
+                                placeholder="Enter description"
                                 required
                             />
                         </div>
@@ -137,7 +153,7 @@ const CreateColdstorage = () => {
                                 onChange={(e) => {
                                     setlink(e.target.value);
                                 }}
-                                placeholder="Enter Address"
+                                placeholder="Enter link"
                                 required
                             />
                         </div>
@@ -150,7 +166,7 @@ const CreateColdstorage = () => {
                                 onChange={(e) => {
                                     setlicense(e.target.value);
                                 }}
-                                placeholder="Enter link"
+                                placeholder="Enter license"
                                 required
                             />
                         </div>

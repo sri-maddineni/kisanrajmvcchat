@@ -335,8 +335,6 @@ export const proposeOfferController = async (req, res) => {
     const seller = await userModel.findOne({ _id: sellerId });
 
 
-
-
     if (buyerResult && sellerResult) {
       console.log("Proposal sent and received successfully");
       return res.status(200).json({
@@ -420,6 +418,30 @@ export const getAllPotentialsController = async (req, res) => {
     else {
       console.log("spmething went werong")
     }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+export const addidcontroller=async(req,res)=>{
+  try {
+    const {uid,pid}=req.body;
+    
+    const result = await userModel.findOneAndUpdate(
+      { _id: uid },
+      { $addToSet: { proposalsSentids: pid } }
+    );
+
+    if(result){
+      console.log("done adding id")
+      return res.status(200).send({
+        success:true,
+        message:"done",
+        result
+      })
+    }
+    
   } catch (error) {
     console.log(error)
   }

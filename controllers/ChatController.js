@@ -92,7 +92,7 @@ export const getChatsController = async (req, res) => {
             },
             { chats: 1 } // Projection to retrieve only the chats array
         );
-
+ 
 
         console.log(chats,"chats")
 
