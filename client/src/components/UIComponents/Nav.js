@@ -28,8 +28,8 @@ export default function Nav() {
                 <h1 className="mt-3">KisanRaj</h1>
             </header>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark navbar-sm" style={{ '--bs-bg-opacity': '0.8', 'height': '60px' }} >
-                <div className="container-fluid ">
-                    <Link className="navbar-brand text-warning" to="/">KisanRaj</Link>
+                <div className="container-fluid" style={{ height: "50px" }}>
+                    <Link className="navbar-brand text-warning" to="/">Home</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navi" aria-controls="navi" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -68,7 +68,7 @@ export default function Nav() {
 
 
                             <li className="nav-item">
-                                <Link className="nav-link active p-3" aria-current="page" to="/coldstorages">Cold Storages</Link>
+                                <Link className="nav-link active p-3" aria-current="page" to={auth?.user? "/dashboard/user/coldstorages":"/coldstorages"}>Cold Storages</Link>
                             </li>
 
                             { /*<li className="nav-item">

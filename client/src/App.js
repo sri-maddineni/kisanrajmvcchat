@@ -38,6 +38,7 @@ import PotentialLeads from './pages/user/PotentialLeads';
 import ProductDetNego from './pages/user/ProductDetNego';
 import UserProfile from './pages/user/UserProfile';
 import CreateColdstorage from './pages/admin/CreateColdstorage';
+import ColdStorages from './pages/user/ColdStorages';
 
 
 
@@ -75,6 +76,8 @@ function App() {
             <Route path='user/responses/:pid' element={<Responses />} />
             <Route path='user/post-potential' element={<PostRequirement />} />
 
+            <Route path='/dashboard/user/coldstorages' element={<ColdStorages />} />
+
             <Route path='user/post-equipment' element={<Equipment />} />
             <Route path='user/hire-equipment' element={<HireEquipment />} />
             <Route path='user/my-equipment-listing' element={<EquipmentListing />} />
@@ -91,12 +94,16 @@ function App() {
             <Route path='admin/users' element={<Users />} />
             <Route path='admin/products' element={<Products />} />
             <Route path='admin/create-coldstorage' element={<CreateColdstorage />} />
+            <Route path='admin/coldstorages' element={<ColdStorages />} />
 
 
-          </Route>
+          </Route> 
 
 
           <Route path='/forgot-password' element={<ForgotPassword />} />
+
+
+          <Route path='/coldstorages' element={<ColdStorages />} />
 
 
           <Route path='/about' element={<About />} />

@@ -8,15 +8,18 @@ import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { format } from "date-fns";
 import Nav from "../../components/UIComponents/Nav";
+import Spinner from "../../components/UIComponents/Spinner";
 
 const Listings = () => {
   const [products, setProducts] = useState([]);
+  const [loading,setloading]=useState(true)
 
   const navigate = useNavigate();
 
   //get all products
 
   const getAllProducts = async () => {
+    setloading(true)
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/products/get-posted-products`);
       if (data?.success) {
@@ -26,11 +29,24 @@ const Listings = () => {
       console.log(error);
       toast.error("something went wrong in getting products!");
     }
+    finally{
+      setloading(false)
+    }
   };
 
   useEffect(() => {
     getAllProducts();
   }, []);
+
+  if(loading){
+    return(
+      <>
+        <Nav/>
+        <Spinner/>
+        <Footer/>
+      </>
+    )
+  }
 
   return (
     <>
