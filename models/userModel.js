@@ -72,11 +72,11 @@ const userSchema = new mongoose.Schema(
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }], // Array to store user IDs of following
     roles: {
       type: Array,
-      default: ["farmer", "buyer"]
+      default: ["seller", "buyer"]
     },
     rating: {
       type: Number,
-      default: 0
+      default: 3
     },
     description: {
       type: String,

@@ -21,12 +21,12 @@ const ProductDetNego = () => {
     const [chats, setChats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [chatLoad, setChatLoad] = useState(true);
-    
-    const [proposals,setproposals]=useState([])
 
-    const [postbtn,setpostbtn]=useState(false)
+    const [proposals, setproposals] = useState([])
 
-    
+    const [postbtn, setpostbtn] = useState(false)
+
+
 
     const messageendref = useRef(null)
 
@@ -34,23 +34,26 @@ const ProductDetNego = () => {
     const showModal = () => {
         setIsModalOpen(true);
     };
-    const handleOk = async() => {
+    const handleOk = async () => {
         await proposeOffer();
         setIsModalOpen(false);
+        postOffer();
 
     };
     const handleCancel = () => {
+        postOffer();
         setIsModalOpen(false);
+        
     };
 
     const formattedDate = (timestamp) => {
         return format(new Date(timestamp), 'dd-MMM hh:mm a');
     }
 
-    const authdata=async()=>{
+    const authdata = async () => {
         try {
-            const res=await axios.get(`${process.env.REACT_APP_API}/api/users/${auth?.user?._id}`)
-            if(res.data.success){
+            const res = await axios.get(`${process.env.REACT_APP_API}/api/users/${auth?.user?._id}`)
+            if (res.data.success) {
                 setproposals(res?.data?.user?.proposalsSentids)
                 console.log(res.data.user)
             }
@@ -59,9 +62,9 @@ const ProductDetNego = () => {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         authdata();
-    },[])
+    }, [])
 
     const getProductData = async () => {
         setLoading(true);
@@ -78,7 +81,7 @@ const ProductDetNego = () => {
     };
 
     const postOffer = async () => {
-        
+
         setLoading(true);
         const sentBy = auth?.user?._id;
         const pid = product?._id;
@@ -86,7 +89,7 @@ const ProductDetNego = () => {
         const toId = sellerId;
         const quantityUnit = product?.quantityUnit;
 
-        if(!proposals.includes(params.id)){
+        if (!proposals.includes(params.id)) {
             showModal();
         }
 
@@ -187,12 +190,12 @@ const ProductDetNego = () => {
             <div className="c" style={{ minHeight: "50vh" }}>
                 <div className="d-flex justify-content-around">
                     <div className="cls">
-                        <div className="card">
-                            <div className="img">
+                        <div className="card" style={{ width: "18rem" }}>
+                            <div>
                                 <span className="position-absolute top-0 translate-middle badge rounded-pill bg-danger text-light" style={{ left: "90%", zIndex: "1" }}>
                                     {product?.commodityId?.category}
                                 </span>
-                                <img src={`/api/v1/products/product-photo/${product._id}`} alt="" />
+                                <img src={`/api/v1/products/product-photo/${product._id}`} style={{ width: "15rem", height: "auto" }} alt="" />
                             </div>
                             <div className="card-body">
                                 <div className="card-title d-flex justify-content-around">
@@ -294,13 +297,13 @@ const ProductDetNego = () => {
                                         placeholder="Some notes..."
                                     />
                                 </div>
-                                <button className="btn btn-sm btn-primary m-3"  onClick={() => {
-                                   
+                                <button className="btn btn-sm btn-primary m-3" onClick={() => {
 
-                                    if(quantity || price || notes || date){
-                                       showModal();
+
+                                    if (quantity || price || notes || date) {
+                                        showModal();
                                     }
-                                    else{
+                                    else {
                                         toast("please enter some value to start chat")
                                     }
 

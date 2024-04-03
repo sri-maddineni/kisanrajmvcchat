@@ -278,7 +278,6 @@ const BuyCommodity = () => {
             {filteredProducts.length > 0
               ? filteredProducts.map((p) => (
                 
-
                   <div
                     className="card m-3 text-center"
                     style={{ width: "18rem" }}
@@ -317,6 +316,7 @@ const BuyCommodity = () => {
                           {p.quantityUnit})
                         </span>
                       </p>
+                     
 
 
 
@@ -388,6 +388,7 @@ const BuyCommodity = () => {
                           ({p.quantity} {p.quantityUnit}s Available)
                         </span>
                       </p>
+                      <p>seller : {p.sellerId.name}</p>
 
 
                       <button

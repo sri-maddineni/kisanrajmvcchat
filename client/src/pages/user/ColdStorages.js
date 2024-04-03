@@ -53,7 +53,6 @@ const ColdStorages = () => {
               <div className="card" style={{ width: "18rem", minHeight:"18rem"}}>
 
               <div className="card" style={{ width: "18rem" }}>
-
                 <div className="card-img">
                   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZyvAhKAugumJj0TveFUEfRIpZ8qTeKf939w&usqp=CAU" style={{ width: "100px", objectFit: "cover" }} alt="cold" />
                 </div>

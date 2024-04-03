@@ -40,6 +40,10 @@ const UserProfile = () => {
     getuserdata();
   }, [])
 
+  useEffect(()=>{
+    getuserdata();
+  },[])
+
   const [auth, setAuth] = useContext(AuthContext)
 
   const followfun = async () => {
@@ -129,7 +133,7 @@ const UserProfile = () => {
                   </button>
                 </div>
                 <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
-                  <p className="foltxt">36</p>
+                  <p className="foltxt">{user?.transactions? user?.transactions:"0"}</p>
                   <p>Transactions</p>
                   <button className="btn btn-sm btn-primary" onClick={copylink}>
                     copy link
