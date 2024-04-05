@@ -7,7 +7,7 @@ import AuthContext from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import Spinner from '../../components/UIComponents/Spinner';
 import { format } from 'date-fns';
-import { Button, Modal } from 'antd';
+import { Modal } from 'antd';
 
 const ProductDetNego = () => {
     const [auth, setAuth] = useContext(AuthContext);
@@ -26,6 +26,8 @@ const ProductDetNego = () => {
 
     const [postbtn, setpostbtn] = useState(false)
 
+    const [start, setStart] = useState(false)
+
 
 
     const messageendref = useRef(null)
@@ -35,15 +37,14 @@ const ProductDetNego = () => {
         setIsModalOpen(true);
     };
     const handleOk = async () => {
-        await proposeOffer();
+
         setIsModalOpen(false);
-        postOffer();
 
     };
     const handleCancel = () => {
-        postOffer();
+
         setIsModalOpen(false);
-        
+
     };
 
     const formattedDate = (timestamp) => {
@@ -72,6 +73,7 @@ const ProductDetNego = () => {
             const res = await axios.get(`${process.env.REACT_APP_API}/api/v1/products/get-product/${params.pid}`);
             if (res.data.success) {
                 setProduct(res.data.product);
+                getchats();
             }
         } catch (error) {
             console.log(error);
@@ -79,97 +81,44 @@ const ProductDetNego = () => {
             setLoading(false);
         }
     };
-
-    const postOffer = async () => {
-
-        setLoading(true);
-        const sentBy = auth?.user?._id;
-        const pid = product?._id;
-        const sellerId = product?.sellerId._id;
-        const toId = sellerId;
-        const quantityUnit = product?.quantityUnit;
-
-        if (!proposals.includes(params.id)) {
-            showModal();
-        }
-
-        const chatData = { pid, sentBy, toId, sellerId, quantity, price, notes, date, quantityUnit };
-
-        try {
-            const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/chats/post-chat`, chatData);
-            if (res.data.success) {
-                toast.success("Success posted chat");
-                getChats();
-            }
-        } catch (error) {
-            toast.error("Failed to post chat");
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        messageendref?.current?.scrollIntoView();
-    }, [])
-
-    const proposeOffer = async () => {
-        setLoading(true);
-        const pid = product._id;
-        const sentBy = auth?.user?._id;
-        const buyerId = sentBy;
-        const sellerId = product?.sellerId?._id;
-        const name = auth?.user?.name;
-        const quantityUnit = product?.quantityUnit;
-        const proposedata = { pid, sentBy, quantity, price, notes, date, buyerId, sellerId, name, quantityUnit };
-
-        try {
-            const result = await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/propose-offer`, proposedata);
-            if (result.data.success) {
-                setNotes('');
-                setPrice('');
-                setDate('');
-                setQuantity('');
-                toast.success(result.data.message);
-                setpostbtn(true)
-            }
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const getChats = async () => {
-        setChatLoad(true);
-        try {
-            const pid = params.pid;
-            const uid = auth?.user?._id;
-            const sentBy = product?.sellerId?._id;
-            const result = await axios.post(`${process.env.REACT_APP_API}/api/v1/chats/getchats`, { pid, uid, sentBy });
-
-            if (result.data.success) {
-                setChats(result.data.chats.chats);
-            } else {
-                toast.error("Not done");
-            }
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setChatLoad(false);
-        }
-    };
-
-
 
     useEffect(() => {
         getProductData();
-    }, []);
+    }, [])
 
-    useEffect(() => {
-        getChats();
-    }, [product]);
+    const getchats = async () => {
+        try {
+            const pid = params.pid;
+            const buyer = auth?.user?._id;
+            const seller = product?.sellerId?._id;
+            const chat = { pid, seller, buyer }
 
+            const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/chats/getchats`, chat)
+            if (res.data.success) {
+                setChats(res.data.chats)
+                console.log(res)
+
+            }
+            else {
+                console.log("failed to fetch chats")
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const postoffer = async () => {
+
+        try {
+            const pid = params.pid;
+            const sentBy = auth?.user?._id;
+
+            const obj = { pid, sentBy, quantity, price, notes, date }
+            const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/propose-offer`)
+        } catch (error) {
+
+        }
+    }
 
 
     if (loading) {
@@ -188,17 +137,23 @@ const ProductDetNego = () => {
         <>
             <Nav />
             <div className="c" style={{ minHeight: "50vh" }}>
-                <div className="d-flex justify-content-around">
-                    <div className="cls">
-                        <div className="card" style={{ width: "18rem" }}>
-                            <div>
+                <div style={{ display: 'flex', flexDirection: 'row', }}>
+                    <div className="cls" style={{ width: "35%" }}>
+                        <div className="card" style={{ width: "20rem" }}>
+                            <div style={{ position: "relative" }}>
                                 <span className="position-absolute top-0 translate-middle badge rounded-pill bg-danger text-light" style={{ left: "90%", zIndex: "1" }}>
                                     {product?.commodityId?.category}
                                 </span>
-                                <img src={`/api/v1/products/product-photo/${product._id}`} style={{ width: "15rem", height: "auto" }} alt="" />
+                                <img
+                                    src={`/api/v1/products/product-photo/${product._id}`}
+                                    alt="product image"
+                                    style={{ maxWidth: "100%", height: "auto" }}
+                                />
                             </div>
+
                             <div className="card-body">
-                                <div className="card-title d-flex justify-content-around">
+                                <div className="card-title d-flex justify-content-between">
+                                    <p>{product.organic ? "organic" : "inorganic"}</p>
                                     <p>{product.name}</p>
                                     <p>rated : {product.quality} <i className='fa-solid fa-star text-warning'></i></p>
                                 </div>
@@ -208,7 +163,7 @@ const ProductDetNego = () => {
                                     <div style={{ display: "flex", flexDirection: "column", }}>
                                         <div className="profile" style={{ display: "flex", flexDirection: "row", }}>
                                             <p><i className='fa-solid fa-user'></i></p>
-                                            <p className='mx-2'>seller name: <span style={{ fontWeight: "700" }}>{product?.sellerId?.name}</span></p>
+                                            <p className='mx-2'>seller : <span style={{ fontWeight: "700" }}>{product?.sellerId?.name}</span></p>
                                         </div>
                                         <div className="contact" style={{ display: "flex", flexDirection: "row", }}>
                                             <Link to={`/dashboard/users/${product?.sellerId?._id}`}><button className='btn btn-sm btn-primary me-1'>view profile</button></Link>
@@ -218,34 +173,25 @@ const ProductDetNego = () => {
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-                    <div style={{ width: "50%", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                        <button className='btn btn-primary btn-sm text-center m-2' onClick={() => { getChats(); }}>Refresh Negotiation history</button>
-                        <div className="card m-1" style={{ width: "90%", minHeight: "40vh", maxHeight: "50vh", overflowY: "auto" }}>
-                            {chatLoad && <Spinner />}
-                            {!chatLoad && chats.map((chat, index) => (
-                                <>
-                                    <div style={{ marginLeft: chat.sentBy === auth?.user?._id ? "auto" : "20px", marginRight: chat.sentBy === auth?.user?._id ? "20px" : "auto" }}>
-                                        <div key={index} className="card" style={{ width: "15rem", color: chat.sentBy === auth?.user?._id ? "black" : "white", backgroundColor: chat.sentBy === auth?.user?._id ? "cyan" : "red", marginLeft: chat.sentBy === auth?.user?._id ? "auto" : "20px", marginRight: chat.sentBy === auth?.user?._id ? "20px" : "auto" }}>
-                                            <p style={{ fontSize: "0.9rem" }} className="card-text">Qty: {chat.quantity}</p>
-                                            <p style={{ fontSize: "0.9rem" }} className="card-text">Price: {chat.price}</p>
-                                            <p style={{ fontSize: "0.9rem" }} className="card-text">Date: {chat.date}</p>
-                                            <p style={{ fontSize: "0.9rem" }} className="card-text">Notes: {chat.notes}</p>
-
-                                        </div>
-                                        <p style={{ margin: "none", fontSize: "0.7rem" }}>{formattedDate(chat.timestamp)}</p>
-                                    </div>
 
 
-                                </>
-                            ))}
 
-                            <div ref={messageendref} />
+                    <div style={{ display: "flex", flexDirection: 'column', width: "60%" }}>
+                        <div className='mt-4' style={{ border: "solid 1px black", minHeight: "50vh", overflowY:"auto" }}>
+                            {!chats?.length && (
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+                                    
 
+                                    <button className='btn btn-warning'>Start conversation with seller</button>
+                                    
+                                </div>
+                            )}
                         </div>
-                        <div className="card">
-                            <div className="" style={{ display: "flex", flexDirection: "row" }}>
+                        <div className="format my-1" style={{ border: "solid 1px black", display: 'flex', flexDirection: 'column' }}>
+                            <div style={{ display: "flex", flexDirection: "row" }}>
                                 <div className="p-1 m-1">
                                     <input
                                         type="number"
@@ -271,47 +217,39 @@ const ProductDetNego = () => {
                                     />{" "}
                                     per {product?.quantityUnit}
                                 </div>
-                            </div>
-                            <div className="d-flex flex-row align-items-center">
                                 <div className="p-1 m-1">
-                                    <label htmlFor="requiredDate" className="form-label">Required date:</label>
+                                    Required date:
                                     <input
                                         type="date"
                                         id="requiredDate"
-                                        value={date + "T00:00:00.000+00:00"}
-                                        placeholder="Available date"
-                                        className="form-control"
+                                        value={date} // Ensure that the value is in the correct format for date input
                                         onChange={(e) => setDate(e.target.value)}
+                                        className="p-1 my-1 mx-2"
+                                        style={{ borderRadius: "5px" }}
                                     />
                                 </div>
-                                <div className="p-1 m-1">
-                                    <label htmlFor="notes" className="form-label">Notes:</label>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                <div className="p-1 m-1" style={{ width: "80%" }}>
+                                    Notes :
                                     <input
                                         type="text"
                                         id="notes"
                                         required={true}
                                         value={notes}
                                         onChange={(e) => setNotes(e.target.value)}
-                                        style={{ borderRadius: "5px" }}
-                                        className="form-control"
+                                        style={{ borderRadius: "5px", width: "90%" }}
+                                        className="p-1 m-1"
                                         placeholder="Some notes..."
                                     />
                                 </div>
-                                <button className="btn btn-sm btn-primary m-3" onClick={() => {
-
-
-                                    if (quantity || price || notes || date) {
-                                        showModal();
-                                    }
-                                    else {
-                                        toast("please enter some value to start chat")
-                                    }
-
-                                }}>Post offer</button>
+                                <button className="btn btn-sm btn-primary m-3">send offer</button>
                             </div>
-
                         </div>
+
+
                     </div>
+
                 </div>
             </div>
 

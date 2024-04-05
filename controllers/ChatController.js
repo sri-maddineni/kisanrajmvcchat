@@ -77,17 +77,17 @@ export const postChatController = async (req, res) => {
 
 export const getChatsController = async (req, res) => {
     try {
-        const { pid, uid, sentBy } = req.body;
+        const { pid, seller, buyer } = req.body;
 
-        //const chats=await userModel.findOne({"_id":uid},{sentBy:sentBy},{sentBy:uid},{pid:pid})
+        //const chats=await userModel.findOne({"_id":seller},{sentBy:sentBy},{sentBy:seller},{pid:pid})
 
         const chats = await userModel.findOne(
             {
-                "_id": uid, // Match user by _id
+                "_id": seller, // Match user by _id
                 "chats.pid": pid, // Match chats by pid
                 $or: [
-                    { "chats.sentBy": sentBy },
-                    { "chats.sentBy": uid }
+                    { "chats.sentBy": buyer },
+                    { "chats.sentBy": seller }
                 ]
             },
             { chats: 1 } // Projection to retrieve only the chats array

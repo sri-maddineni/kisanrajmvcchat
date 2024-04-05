@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 
@@ -68,18 +68,15 @@ export default function Nav() {
 
 
                             <li className="nav-item">
-                                <Link className="nav-link active p-3" aria-current="page" to={auth?.user? "/dashboard/user/coldstorages":"/coldstorages"}>Cold Storages</Link>
-                            </li>
+                                <NavLink className="nav-link active p-3" aria-current="page" to={auth?.user? "/dashboard/user/coldstorages":"/coldstorages"}>Cold Storages</NavLink>
+                            </li> 
 
                             { /*<li className="nav-item">
                                 <Link className="nav-link active p-3" aria-current="page" to="/rooms">Cold Storages</Link>
                             </li>*/}
-
-
+ 
 
                         </ul>
-
-
 
                         {!auth?.user ? (
                             <>
@@ -127,20 +124,14 @@ export default function Nav() {
                                         <Link className="nav-link active p-3" aria-current="page" to="/Orders">Orders</Link>
                                     </li>
 
-                                    <li className="nav-item dropdown active m-2">
+                                    <li className="nav-item dropdown active my-2">
                                         <a className="nav-link me-auto text-white disabled text-danger" href='#' data-bs-toggle="dropdown"><span className='text-warning'>{auth?.user?.name}</span>   <i className="fa-solid fa-sort-down"></i></a>
                                         <ul className="dropdown-menu">
                                             <li><Link className="dropdown-item" to="/dashboard/user/profile"> Profile</Link></li>
                                             <li><a className="dropdown-item" onClick={handleLogout}> Logout </a></li>
                                         </ul>
                                     </li>
-                                    <li className="nav-item dropdown active m-2">
-                                        <a className="nav-link me-auto text-white disabled" href='#' data-bs-toggle="dropdown">Language   <i className="fa-solid fa-sort-down"></i></a>
-                                        <ul className="dropdown-menu">
-                                            <li><Link className="dropdown-item" to="/dashboard/user/profile"> Telugu</Link></li>
-                                            <li><a className="dropdown-item" onClick={handleLogout}> English </a></li>
-                                        </ul>
-                                    </li>
+                                    
 
                                 </ul>
                             </>

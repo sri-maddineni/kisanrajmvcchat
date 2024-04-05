@@ -313,8 +313,12 @@ export const postToNegHisRequirementController = async (req, res) => {
 
 }
 
+
+//propose offer controller on begining a conversation with user seller from buyer prodetneg page
 export const proposeOfferController = async (req, res) => {
+
   const {pid, sentBy, quantity, price, notes, date, buyerId, sellerId,name, quantityUnit } = req.body;
+  
   const proposalObj = {pid, sentBy, quantity, price, notes, date, buyerId, sellerId,name, quantityUnit };
 
   try {
@@ -359,6 +363,8 @@ export const proposeOfferController = async (req, res) => {
   }
 };
 
+
+//decline offer controller here
 
 export const declineOfferController = async (req, res) => {
   try {

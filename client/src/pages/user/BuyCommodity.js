@@ -6,24 +6,25 @@ import AuthContext from "../../context/AuthContext";
 
 import toast from "react-hot-toast";
 import axios from "axios";
-import { Button, Modal } from "antd";
 
-import { Link } from "react-router-dom";
+
 
 import commodities from "../../Data/Commodities";
 import Nav from "../../components/UIComponents/Nav";
+import { useNavigate } from "react-router-dom";
 
 
 
 const BuyCommodity = () => {
 
-  const [open, setOpen] = useState(false);
+  
   const [selectedProduct, setSelectedProduct] = useState(null); // To store the selected product
   const [filteredProducts, setFilteredProducts] = useState([]); // To store filtered products
 
-  const [loading,setLoading]=useState(true)
+  const [loading, setLoading] = useState(true)
 
   const [searchitem, setSearchitem] = useState("");
+  const navigate = useNavigate()
 
   const [auth] = useContext(AuthContext);
 
@@ -38,14 +39,7 @@ const BuyCommodity = () => {
   const [proposedlist, setProposedlist] = useState([]);
   const [products, setProducts] = useState([]);
 
-  const showModal = (product) => {
-    setSelectedProduct(product); // Set the selected product
-    setOpen(true);
-  };
 
-  const handleCancel = () => {
-    setOpen(false);
-  };
 
   const filterSuggestions = (input) => {
     const filtered = commodities.filter((product) =>
@@ -78,7 +72,7 @@ const BuyCommodity = () => {
   //api call to propose offer
 
   const proposeOffer = async (pid, sellerId) => {
-    
+
     const sentBy = auth?.user?._id;
     const buyerId = sentBy;
     const productId = pid;
@@ -86,7 +80,7 @@ const BuyCommodity = () => {
     try {
       const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/propose-offer`, { quantity, price, notes, date, sentBy, buyerId, productId, sellerId })
       if (res.data.success) {
-        setOpen(false)
+
         setquantity("")
         setprice("")
         setnotes("")
@@ -99,7 +93,7 @@ const BuyCommodity = () => {
     } catch (error) {
       console.log(error)
     }
-    finally{
+    finally {
       setLoading(false)
     }
   }
@@ -115,7 +109,7 @@ const BuyCommodity = () => {
     } catch (error) {
       console.error("Error fetching proposed list:", error);
     }
-    finally{
+    finally {
       setLoading(false)
     }
   };
@@ -139,7 +133,7 @@ const BuyCommodity = () => {
       console.log(error);
       toast.error("Decline failed!");
     }
-    finally{
+    finally {
       setLoading(false)
     }
   };
@@ -166,7 +160,7 @@ const BuyCommodity = () => {
       console.log(error);
       toast.error("Something went wrong in getting all products!");
     }
-    finally{
+    finally {
       setLoading(false)
     }
   };
@@ -183,14 +177,14 @@ const BuyCommodity = () => {
 
   if (loading) {
     return (<>
-        <Nav />
-        <div className="container" style={{ minHeight: "50vh" }}>
-            <Spinner />
-        </div>
-        <Footer />
+      <Nav />
+      <div className="container" style={{ minHeight: "50vh" }}>
+        <Spinner />
+      </div>
+      <Footer />
     </>
     )
-}
+  }
 
 
 
@@ -277,226 +271,113 @@ const BuyCommodity = () => {
           >
             {filteredProducts.length > 0
               ? filteredProducts.map((p) => (
-                
-                  <div
-                    className="card m-3 text-center"
-                    style={{ width: "18rem" }}
-                    key={p._id}
-                  >
-                    <Link
-                  to={`/dashboard/user/buy-commodity/${p._id}`}
-                  className="text-dark text-decoration-none"
+
+                <div
+                  className="card m-3 text-center"
+                  style={{ width: "18rem" }}
+                  key={p._id}
                 >
-                    <span
-                      className="position-absolute top-0 translate-middle badge rounded-pill bg-danger text-light"
-                      style={{ left: "90%", zIndex: "1" }}
-                    >
-                      {" "}
-                      {p?.commodityId?.category}
-                    </span>
-                    <img
-                      src={`/api/v1/products/product-photo/${p._id}`}
-                      className="card-img-top"
-                      alt={p.name}
-                      style={{ height: "30vh", objectFit: "cover" }}
-                    />
-                    <div className="card-body">
-                      <h5 className="card-title" style={{ fontSize: "1rem" }}>
-                        {p.organic ? "Organic" : "Inorganic"} {p.name}{" "}
-                        {p.quality}
-                        <i className="fa-solid fa-star text-warning"></i>
+
+                  <span
+                    className="position-absolute top-0 translate-middle badge rounded-pill bg-danger text-light"
+                    style={{ left: "90%", zIndex: "1" }}
+                  >
+                    {" "}
+                    {p?.commodityId?.category}
+                  </span>
+                  <img
+                    src={`/api/v1/products/product-photo/${p._id}`}
+                    className="card-img-top"
+                    alt={p.name}
+                    style={{ height: "30vh", objectFit: "cover" }}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title" style={{ fontSize: "1rem" }}>
+                      {p.organic ? "Organic" : "Inorganic"} {p.name}{" "}
+                      {p.quality}
+                      <i className="fa-solid fa-star text-warning"></i>
+                      <br />
+                      {p.description}
+                    </h5>
+                    <p className="card-text" style={{ fontSize: "1rem" }}>
+                      <span className="text-dark bg-warning">
+                        Rs.{p.price}/- per {p.quantity} {p.quantityUnit}s
                         <br />
-                        {p.description}
-                      </h5>
-                      <p className="card-text" style={{ fontSize: "1rem" }}>
-                        <span className="text-dark bg-warning">
-                          Rs.{p.price}/- per {p.quantity} {p.quantityUnit}s
-                          <br />
-                          (Rs. {(p.price / p.quantity).toFixed(1)} per{" "}
-                          {p.quantityUnit})
-                        </span>
-                      </p>
-                     
+                        (Rs. {(p.price / p.quantity).toFixed(1)} per{" "}
+                        {p.quantityUnit})
+                      </span>
+                    </p>
 
 
 
-                      <button
-                        className={`btn m-2 btn-${proposedlist.includes(p._id) ? "info" : "primary"} btn-sm`}
-                        onClick={() => {
-                          if (proposedlist.includes(p._id)) {
-                            handleDecline(p._id, p.sellerId._id);
-                          } else {
-                            showModal(p); // Pass the selected product to showModal
-                          }
-                        }}
-                      >
-                        {proposedlist.includes(p._id) ? (
-                          <>View details</>
-                        ) : (
-                          <>View Details</>
-                        )}
-                      </button>
-                      <i
-                        className="fa-solid fa-phone mx-2"
-                        style={{ cursor: "pointer" }}
 
-                      ></i>
-                      <i
-                        className="fa-brands fa-whatsapp mx-2"
-                        style={{ cursor: "pointer" }}
-                      ></i>
-                    </div>
-                    </Link>
+                    <button className="btn btn-sm btn-primary mx-1" onClick={() => navigate(`/dashboard/user/buy-commodity/${p._id}`)}>view details</button>
+                    <button className="btn btn-sm btn-primary mx-1">contact</button>
                   </div>
-                
+
+                </div>
+
               ))
               : products.map((p) => (
                 <div
                   className="card m-3 text-center"
                   style={{ width: "18rem" }}
                   key={p._id}
-                ><Link
-                to={`/dashboard/user/buy-commodity/${p._id}`}
-                className="text-dark text-decoration-none"
-              >
-                    <span
-                      className="position-absolute top-0 translate-middle badge rounded-pill bg-danger text-light"
-                      style={{ left: "90%", zIndex: "1" }}
-                    >
-                      {" "}
-                      {p.commodityId?.category}
-                    </span>
-                    <img
-                      src={`/api/v1/products/product-photo/${p._id}`}
-                      className="card-img-top"
-                      alt={p.name}
-                      style={{ height: "30vh", objectFit: "cover" }}
-                    />
-                    <div className="card-body">
-                      <h5 className="card-title" style={{ fontSize: "1rem" }}>
-                        {p.organic ? "Organic" : "Inorganic"} {p.name}{" "}
-                        {p.quality}
-                        <i className="fa-solid fa-star text-warning"></i>
+                >
+                  <span
+                    className="position-absolute top-0 translate-middle badge rounded-pill bg-danger text-light"
+                    style={{ left: "90%", zIndex: "1" }}
+                  >
+                    {" "}
+                    {p.commodityId?.category}
+                  </span>
+                  <img
+                    src={`/api/v1/products/product-photo/${p._id}`}
+                    className="card-img-top"
+                    alt={p.name}
+                    style={{ height: "30vh", objectFit: "cover" }}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title" style={{ fontSize: "1rem" }}>
+                      {p.organic ? "Organic" : "Inorganic"} {p.name}{" "}
+                      {p.quality}
+                      <i className="fa-solid fa-star text-warning"></i>
+                      <br />
+                      {p.description}
+                    </h5>
+                    <p className="card-text" style={{ fontSize: "1rem" }}>
+                      <span className="text-dark bg-warning">
+                        Rs.{p.price}/- per {p.quantityUnit}
                         <br />
-                        {p.description}
-                      </h5>
-                      <p className="card-text" style={{ fontSize: "1rem" }}>
-                        <span className="text-dark bg-warning">
-                          Rs.{p.price}/- per {p.quantityUnit}
-                          <br />
 
-                          ({p.quantity} {p.quantityUnit}s Available)
-                        </span>
-                      </p>
-                      <p>seller : {p.sellerId.name}</p>
+                        ({p.quantity} {p.quantityUnit}s Available)
+                      </span>
+                    </p>
+                    <p>seller : {p.sellerId.name}</p>
 
 
-                      <button
-                        className={`btn m-2 btn-${proposedlist.includes(p._id) ? "info" : "primary"
-                          } btn-sm`}
-                        onClick={() => {
-                          if (proposedlist.includes(p._id)) {
-                            handleDecline(p._id, p.sellerId._id);
-                          } else {
-                            showModal(p); // Pass the selected product to showModal
-                          }
-                        }}
-                      >
-                        {proposedlist.includes(p._id) ? (
-                          <>View details</>
-                        ) : (
-                          <>View details</>
-                        )}
-                      </button>
-                      <i
-                        className="fa-solid fa-phone mx-2"
-                        style={{ cursor: "pointer" }}
-                      ></i>
-                      <i
-                        className="fa-brands fa-whatsapp mx-2"
-                        style={{ cursor: "pointer" }}
-                      ></i>
+
+                    <div className="icons">
+                      <button className="btn btn-sm btn-primary mx-1" onClick={() => navigate(`/dashboard/user/buy-commodity/${p._id}`)}>view details</button>
+                      <a href={`https://wa.me/91${p.sellerId.phone}`} target="_blank" style={{textDecoration:"none"}}>
+                        <i className="fa-brands fa-whatsapp mx-2" style={{ cursor: "pointer" }} aria-hidden="true"></i>
+                      </a>
+                      <i className="fa-solid fa-phone mx-2" style={{ cursor: "pointer" }} ></i>
+                      
+                      <i class="fa-solid fa-share-nodes mx-2" style={{cursor:"pointer"}}></i>
                     </div>
-                    </Link>
+
                   </div>
-               
+
+                </div>
+
               ))}
           </div>
         </div>
       </div>
 
 
-      <Modal
-        title="Title"
-        open={open}
-        onCancel={handleCancel}
-        footer={[
-          <Button key="back" onClick={handleCancel}>
-            Cancel
-          </Button>,
-          <Button
-            key="submit"
-            type="primary"
-            onClick={() =>
-              proposeOffer(selectedProduct._id, selectedProduct.sellerId._id)
-            }
-          >
-            Submit
-          </Button>,
-        ]}
-      >
-        <p>Product Name: {selectedProduct?.name}</p>
-        <div className="p-1 m-1">
-          <input
-            type="number"
-            required={true}
-            value={quantity}
-            onChange={(e) => setquantity(e.target.value)}
-            style={{ borderRadius: "5px" }}
-            className="p-1 m-1"
-            placeholder="Required quantity"
-          />{" "}
-          <label htmlFor="">{selectedProduct?.quantityUnit}s</label>
-        </div>
-        <div className="p-1 m-1">
-          Rs.{" "}
-          <input
-            type="number"
-            required={true}
-            value={price}
-            onChange={(e) => setprice(e.target.value)}
-            style={{ borderRadius: "5px" }}
-            className="p-1 m-1"
-            placeholder="Offered price"
-          />{" "}
-          per  {selectedProduct?.quantityUnit}s
-        </div>
 
-        <div className="p-1 m-1">
-          Required date:{" "}
-          <input
-            type="date"
-            required={true}
-            value={date}
-            onChange={(e) => setdate(e.target.value)}
-            style={{ borderRadius: "5px" }}
-            className="p-1 m-1"
-            placeholder="Required date"
-          />
-        </div>
-
-        <div className="p-1 m-1">
-          <input
-            type="textbox"
-            required={true}
-            value={notes}
-            onChange={(e) => setnotes(e.target.value)}
-            style={{ borderRadius: "5px" }}
-            className="p-1"
-            placeholder="Some notes..."
-          />
-        </div>
-      </Modal>
 
       <Footer />
     </>

@@ -40,9 +40,9 @@ const UserProfile = () => {
     getuserdata();
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     getuserdata();
-  },[])
+  }, [])
 
   const [auth, setAuth] = useContext(AuthContext)
 
@@ -87,61 +87,69 @@ const UserProfile = () => {
 
 
 
-      <div className="overall">
+      <div className="overall" style={{ border: 'solid 1px red', display: "flex", flexDirection: "column" }}>
 
-
-        <div className="left my-1">
-          <div className="leftt my-1">
-            <div className="card">
-              <div className="roe">
-                <img style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }} src="https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg" alt="profile" />
-                <div className="name m-3">
-                  <p style={{ fontWeight: "700" }}>{user.name}  <span style={{ fontWeight: "500" }}>{user.rating} <i class="fa-solid fa-star text-warning"></i> </span> </p>
-                  <div className="loc d-flex" >
-                    <i className="fa-solid fa-location-dot m-2"></i>
-                    <p className="m-1">{user.address}</p>
+        <div className="topsec" style={{ display: "flex", flexDirection: 'row', flexWrap: 'nowrap', justifyContent: "center" }}>
+          <div className="left p-3">
+            <div className="leftt my-1">
+              <div className="card">
+                <div className="roe">
+                  <img style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }} src="https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg" alt="profile" />
+                  <div className="name m-3">
+                    <p style={{ fontWeight: "700" }}>{user.name}  <span style={{ fontWeight: "500" }}>{user.rating} <i class="fa-solid fa-star text-warning"></i> </span> </p>
+                    <div className="loc d-flex" >
+                      <i className="fa-solid fa-location-dot m-2"></i>
+                      <p className="m-1">{user.address}</p>
+                    </div>
                   </div>
                 </div>
+                <p>{user.description}</p>
               </div>
-              <p>{user.description}</p>
+
+            </div>
+          </div>
+
+          <div className="rtop">
+            <div className="network m-3">
+              <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
+                <p className="foltxt">{user?.followers?.length}</p>
+                <p>Followers</p>
+                <button className="btn btn-sm btn-primary" onClick={() => followfun()}>follow</button>
+              </div>
+              <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
+                <p className="foltxt">{user?.following?.length}</p>
+                <p>Following</p>
+                <button className="btn btn-sm btn-primary">
+                  Message
+                </button>
+              </div>
+              <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
+                <p className="foltxt">{user?.listings?.length}</p>
+                <p>Posts</p>
+                <button className="btn btn-sm btn-primary">
+                  share
+                </button>
+              </div>
+              <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
+                <p className="foltxt">{user?.transactions ? user?.transactions : "0"}</p>
+                <p>Transactions</p>
+                <button className="btn btn-sm btn-primary" onClick={copylink}>
+                  copy link
+                </button>
+              </div>
             </div>
 
           </div>
+
+
         </div>
 
-        <div className="right">
-          <div className="mx-5 my-1" style={{ display: "flex", flexDirection: "column" }}>
-            <div className="rtop">
-              <div className="network m-3">
-                <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
-                  <p className="foltxt">{user?.followers?.length}</p>
-                  <p>Followers</p>
-                  <button className="btn btn-sm btn-primary" onClick={() => followfun()}>follow</button>
-                </div>
-                <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
-                  <p className="foltxt">{user?.following?.length}</p>
-                  <p>Following</p>
-                  <button className="btn btn-sm btn-primary">
-                    Message
-                  </button>
-                </div>
-                <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
-                  <p className="foltxt">{user?.listings?.length}</p>
-                  <p>Posts</p>
-                  <button className="btn btn-sm btn-primary">
-                    share
-                  </button>
-                </div>
-                <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
-                  <p className="foltxt">{user?.transactions? user?.transactions:"0"}</p>
-                  <p>Transactions</p>
-                  <button className="btn btn-sm btn-primary" onClick={copylink}>
-                    copy link
-                  </button>
-                </div>
-              </div>
 
-            </div>
+
+
+        <div className="bottom" style={{ border: 'solid 1px red' }}>
+          <div className="mx-5 my-1">
+
             <div className="mx-3" >
               <hr />
               <div className="d-flex justify-content-evenly">

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/UIComponents/Navbar";
 import Nav from "../components/UIComponents/Nav";
 import AuthContext from "../context/AuthContext";
+import HomeSummaryCards from "../components/CardRelated/SummaryCards/HomeSummaryCards";
 
 
 export const Homepage = () => {
@@ -47,6 +48,7 @@ export const Homepage = () => {
           <button className="btn btn-md btn-info m-2" style={{ width: "4rem", padding: "0.3rem", borderRadius: "0.4rem" }} onClick={() => { navigate("/dashboard/user/hire-equipment") }}>Hire</button>
         </div>
       </div>
+      <HomeSummaryCards/>
       <Footer />
     </>
   );
