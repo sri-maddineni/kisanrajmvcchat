@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
-import Header from "../../components/layouts/Header";
+
 import Footer from "../../components/layouts/Footer";
 import { Radio } from "antd";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import UserMenu from "./UserMenu";
+
 import AuthContext from "../../context/AuthContext";
 import commodities from "../../Data/Commodities"; // Import the data from Commodities.js
 import Nav from "../../components/UIComponents/Nav";
+import Spinner from "../../components/UIComponents/Spinner";
 
 const PostRequirement = () => {
   const navigate = useNavigate();
@@ -25,10 +26,13 @@ const PostRequirement = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
 
+  const [loading, setLoading] = useState(false)
+
   const [displayPotentials, setDisplayPotentials] = useState(false);
   const [potentials, setPotentials] = useState([]);
 
   const getPotentials = async () => {
+    setLoading(true)
     try {
       const buyerId = auth?.user?._id;
 
@@ -41,6 +45,9 @@ const PostRequirement = () => {
       }
     } catch (error) {
       console.log("somethig wrong");
+    }
+    finally {
+      setLoading(false)
     }
   };
 
@@ -73,6 +80,7 @@ const PostRequirement = () => {
   };
 
   const handlePost = async () => {
+    setLoading(true)
     try {
       const buyerId = auth.user._id;
       const postData = {
@@ -87,10 +95,7 @@ const PostRequirement = () => {
         notes,
       };
       console.log(postData);
-      const data = await axios.post(
-        `${process.env.REACT_APP_API}/api/v1/requirements/post-potential`,
-        postData
-      );
+      const data = await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/post-potential`, postData);
 
       if (data?.data.success) {
         toast.success("success");
@@ -107,7 +112,12 @@ const PostRequirement = () => {
       console.log(error);
       toast.error("Failed");
     }
+    finally {
+      setLoading(false)
+    }
   };
+
+
 
   return (
     <>
@@ -233,11 +243,15 @@ const PostRequirement = () => {
                 className="btn btn-warning mb-3"
                 onClick={() => {
                   setDisplayPotentials(!displayPotentials);
-                  getPotentials();
+                  if (!displayPotentials) {
+                    getPotentials();
+                  }
                 }}
               >
-                {displayPotentials ? "Hide" : "show"} posted potentials
+                {displayPotentials ? "Hide" : "Show"} posted potentials
+
               </button>
+
               {displayPotentials && (
                 <div
                   className="container"
@@ -248,6 +262,8 @@ const PostRequirement = () => {
                     justifyContent: "space-around"
                   }}
                 >
+                  {loading && <Spinner />}
+
                   {potentials.map((p) => (
                     <div
                       key={p._id}

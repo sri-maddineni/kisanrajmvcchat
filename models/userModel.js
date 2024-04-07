@@ -69,7 +69,8 @@ const userSchema = new mongoose.Schema(
       default: []
     },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }], // Array to store user IDs of followers
-    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }], // Array to store user IDs of following
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }], 
+    potentials: [{ type: mongoose.Schema.Types.ObjectId, ref: 'potentials' }],// Array to store user IDs of following
     roles: {
       type: Array,
       default: ["seller", "buyer"]

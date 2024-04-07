@@ -140,15 +140,7 @@ export const postPotentialController = async (req, res) => {
 
     // Generate combinedId
 
-    const { productName,
-      buyerId,
-      quantity,
-      quantityUnit,
-      date,
-      price,
-      organic,
-      shipping,
-      notes } = req.body;
+    const { productName, buyerId, quantity, quantityUnit, date, price, organic, shipping, notes } = req.body;
 
     const result = await new PotentialModel({
       productName,
@@ -163,7 +155,16 @@ export const postPotentialController = async (req, res) => {
       notes,
     }).save();
 
-    if (!result) {
+    console.log(result._id)
+
+    const userupdate = await userModel.findByIdAndUpdate(
+      { _id: buyerId },
+      { $addToSet: { potentials: result._id } },
+      { new: true }
+    );
+
+
+    if (!result || !userupdate) {
       return res.status(500).send({
         success: false,
         message: "not found",
@@ -175,6 +176,7 @@ export const postPotentialController = async (req, res) => {
       message: "Potential posted successfully!",
       result,
     });
+
   } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -317,9 +319,9 @@ export const postToNegHisRequirementController = async (req, res) => {
 //propose offer controller on begining a conversation with user seller from buyer prodetneg page
 export const proposeOfferController = async (req, res) => {
 
-  const {pid, sentBy, quantity, price, notes, date, buyerId, sellerId,name, quantityUnit } = req.body;
-  
-  const proposalObj = {pid, sentBy, quantity, price, notes, date, buyerId, sellerId,name, quantityUnit };
+  const { pid, sentBy, quantity, price, notes, date, buyerId, sellerId, name, quantityUnit } = req.body;
+
+  const proposalObj = { pid, sentBy, quantity, price, notes, date, buyerId, sellerId, name, quantityUnit };
 
   try {
     // Update the buyer's document to push the proposal into proposalsSent array
@@ -430,24 +432,24 @@ export const getAllPotentialsController = async (req, res) => {
 }
 
 
-export const addidcontroller=async(req,res)=>{
+export const addidcontroller = async (req, res) => {
   try {
-    const {uid,pid}=req.body;
-    
+    const { uid, pid } = req.body;
+
     const result = await userModel.findOneAndUpdate(
       { _id: uid },
       { $addToSet: { proposalsSentids: pid } }
     );
 
-    if(result){
+    if (result) {
       console.log("done adding id")
       return res.status(200).send({
-        success:true,
-        message:"done",
+        success: true,
+        message: "done",
         result
       })
     }
-    
+
   } catch (error) {
     console.log(error)
   }

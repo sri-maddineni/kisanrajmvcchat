@@ -53,10 +53,9 @@ const PotentialLeads = () => {
         {potentials && potentials.map((potential) => (
           <div key={potential._id} className="card m-2" style={{ width: '18rem' }}>
             <div className="card-body">
-              <h5 className="card-title">{potential.productName}</h5>
-              <h6 className="card-subtitle mb-2 text-muted">ID: {potential._id}</h6>
+              <h5 className="card-title">{potential.organic?"Organic":"Inorganic"} {potential.productName}</h5>
               <p className="card-text text-muted">Quantity Required: {potential.quantity} {potential.quantityUnit}s</p>
-              <p className="card-text">Price offered: Rs.{potential.price}/- per {potential.quantityUnit}</p>
+              <p className="card-text">Price offered: <span style={{fontWeight:"700"}}> &#8377;{potential.price}/- per {potential.quantityUnit}</span></p>
               <p className="card-text">Buyer: {potential?.buyerId?.name}</p>
               <div className="d-flex justify-content-center">
                 <button className='btn btn-sm btn-primary m-1'>contact</button>
@@ -71,7 +70,7 @@ const PotentialLeads = () => {
             <>
               <div className="container d-flex justify-content-center" >
 
-                <button className='btn btn-primary m-3'>No potentials found, Post a Requirement</button>
+                <button className='btn btn-primary m-3' onClick={()=>navigate("/dashboard/user/post-potential")}>No potentials found, Post a Requirement</button>
               </div>
             </>
           )

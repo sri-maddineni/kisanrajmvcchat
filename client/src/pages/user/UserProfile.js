@@ -8,19 +8,27 @@ import Spinner from "../../components/UIComponents/Spinner";
 import AuthContext from "../../context/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
 import { format } from "date-fns";
+import { Radio } from 'antd';
+
 
 const UserProfile = () => {
 
   const [loading, setLoading] = useState(false)
-  const [high,sethigh]=useState(true)
+  const [high, sethigh] = useState(true)
 
   const [user, setUser] = useState("")
 
   const params = useParams();
-  const [posts,setposts]=useState([])
+  const [posts, setposts] = useState([])
+
+  const [value, setValue] = useState(1);
+  const onChange = (e) => {
+    console.log('radio checked', e.target.value);
+    setValue(e.target.value);
+  };
 
   const getuserdata = async () => {
-
+    setLoading(true)
     const uid = params.uid;
     try {
       const userdata = await axios.get(`${process.env.REACT_APP_API}/api/v1/users/${uid}`);
@@ -42,11 +50,11 @@ const UserProfile = () => {
     getuserdata();
   }, [])
 
- 
+
 
   const [auth, setAuth] = useContext(AuthContext)
 
-  const formatteddate=(date)=>{
+  const formatteddate = (date) => {
     return format(new Date(date), 'dd MMM yyyy');
   }
 
@@ -74,14 +82,13 @@ const UserProfile = () => {
   }
 
 
-
-
-
   if (loading) {
     return (
       <>
         <Nav />
+        <div className="m" style={{minHeight:"50vh"}}>
         <Spinner />
+        </div>
         <Footer />
       </>
     )
@@ -154,47 +161,43 @@ const UserProfile = () => {
 
 
         <div className="bottom" style={{ border: 'solid 1px red' }}>
-          <div className="mx-5 my-1"> 
+          <div className="mx-5 my-1">
 
             <div className="mx-3" >
-              
+
               <hr />{/* bottom section horisantal line */}
-              <div className="d-flex justify-content-evenly">
-                <div className="navi text-success">
-                  posts
-                </div>
-                <div className="navi">
-                  Requirements
-                </div>
-                <div className="navi">
-                  Equipment For hire
-                </div>
-                <div className="navi">
-                  Equipment For sale
-                </div>
-              </div>
+              <Radio.Group className="d-flex justify-content-evenly" onChange={onChange} value={value} style={{ display: "flex", flexDirection: 'row', flexWrap: "nowrap", justifyContent: "evenly" }}>
+
+                <Radio className="navi" value={1}>Posts</Radio>
+                <Radio className="navi" value={2}>Requirements</Radio>
+                <Radio className="navi" value={3}>Equipment For hire</Radio>
+                <Radio className="navi" value={4}>Equipment For sale</Radio>
+
+              </Radio.Group>
               <hr />
 
-              <div className="bottomcontent" style={{minHeight:'50vh'}}>
-                <div style={{display:'flex',flexDirection:'row'}}>
-                    {
-                      posts.map(post=>(
-                        <>
-                        <div className="card" style={{width:"18rem"}}>
-                          <div className="card img">
+
+
+
+
+              <div className="bottomcontent" style={{ minHeight: '50vh' }}>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                  {
+                    posts.map(post => (
+                      <>
+                        <div className="card" style={{ width: "18rem" }}>
+                          <div className="img">
                             <img src={`/api/v1/products/product-photo/${post._id}`} alt="" />
                           </div>
                           <div className="details">
-                          <p>{post.organic?"organic":"Inorganic"} {post.name}</p>
-                            <p>Rs. {post.price} /- per {post.quantityUnit}</p>
-                           
-                            <p>{post.quantity} {post.quantityUnit}s Available</p>
+                            <p>{post.organic ? "organic" : "Inorganic"} {post.name}</p>
+                            <p ><span style={{ fontWeight: "700" }}>&#8377;{post.price} per {post.quantityUnit} </span>{post.quantity} {post.quantityUnit}s Available</p>
                             <p>Available by : {formatteddate(post.availableDate)}</p>
                           </div>
                         </div>
-                        </>
-                      ))
-                    }
+                      </>
+                    ))
+                  }
                 </div>
               </div>
 

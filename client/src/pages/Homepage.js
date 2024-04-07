@@ -8,6 +8,8 @@ import Navbar from "../components/UIComponents/Navbar";
 import Nav from "../components/UIComponents/Nav";
 import AuthContext from "../context/AuthContext";
 import HomeSummaryCards from "../components/CardRelated/SummaryCards/HomeSummaryCards";
+import CategoriesCardHome from "../components/CardRelated/SummaryCards/CategoriesCardHome";
+import products from "../../src/Data/MOCK_DATA"
 
 
 export const Homepage = () => {
@@ -27,7 +29,7 @@ export const Homepage = () => {
           justifyContent: "center",
           display: "flex",
           flexDirection: "column",
-          minHeight: "60vh",
+          minHeight: "70vh",
         }}
       >
         <div
@@ -39,7 +41,7 @@ export const Homepage = () => {
           }}
         >
           <input type="text" placeholder="enter product" className="m-2" />
-          <input type="text" placeholder="enter location" className="m-2" />
+
 
         </div>
         <div>
@@ -48,7 +50,21 @@ export const Homepage = () => {
           <button className="btn btn-md btn-info m-2" style={{ width: "4rem", padding: "0.3rem", borderRadius: "0.4rem" }} onClick={() => { navigate("/dashboard/user/hire-equipment") }}>Hire</button>
         </div>
       </div>
-      <HomeSummaryCards/>
+      <CategoriesCardHome />
+
+      <div style={{ display: "flex", flexDirection: "row",flexWrap:'wrap' }}>
+        {
+          products.map(product => (
+            <>
+              <div className="card" style={{ width: "15rem" }}>
+                <p>{product.name} {product.price}</p>
+              </div>
+            </>
+          )
+          )
+        }
+      </div >
+
       <Footer />
     </>
   );

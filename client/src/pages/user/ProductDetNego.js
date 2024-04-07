@@ -186,7 +186,7 @@ const ProductDetNego = () => {
                                     
 
                                     <button className='btn btn-warning'>Start conversation with seller</button>
-                                    
+                                     
                                 </div>
                             )}
                         </div>
