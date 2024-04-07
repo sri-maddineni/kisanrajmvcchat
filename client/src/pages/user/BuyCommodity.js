@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 const BuyCommodity = () => {
 
-  
+
   const [selectedProduct, setSelectedProduct] = useState(null); // To store the selected product
   const [filteredProducts, setFilteredProducts] = useState([]); // To store filtered products
 
@@ -192,7 +192,7 @@ const BuyCommodity = () => {
     <>
       <Nav />
 
-      <div className="row m-3">
+      <div className="row m-3" style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
         <div style={{ minHeight: "50vh", width: "100%" }}>
           <div className="container" style={{ position: "relative" }}>
             <div className="d-flex align-items-center">
@@ -267,6 +267,7 @@ const BuyCommodity = () => {
               display: "flex",
               flexDirection: "row",
               flexWrap: "wrap",
+              justifyContent:"space-around"
             }}
           >
             {filteredProducts.length > 0
@@ -309,10 +310,15 @@ const BuyCommodity = () => {
                     </p>
 
 
+                    <div className="icons">
+                      <button className="btn btn-sm btn-primary mx-1" onClick={() => navigate(`/dashboard/user/buy-commodity/${p._id}`)}>view details</button>
+                      <a href={`https://wa.me/91${p.sellerId.phone}`} target="_blank" style={{ textDecoration: "none" }}>
+                        <i className="fa-brands fa-whatsapp mx-2" style={{ cursor: "pointer" }} aria-hidden="true"></i>
+                      </a>
+                      <i className="fa-solid fa-phone mx-2" style={{ cursor: "pointer" }} ></i>
 
-
-                    <button className="btn btn-sm btn-primary mx-1" onClick={() => navigate(`/dashboard/user/buy-commodity/${p._id}`)}>view details</button>
-                    <button className="btn btn-sm btn-primary mx-1">contact</button>
+                      <i class="fa-solid fa-share-nodes mx-2" style={{ cursor: "pointer" }}></i>
+                    </div>
                   </div>
 
                 </div>
@@ -359,12 +365,12 @@ const BuyCommodity = () => {
 
                     <div className="icons">
                       <button className="btn btn-sm btn-primary mx-1" onClick={() => navigate(`/dashboard/user/buy-commodity/${p._id}`)}>view details</button>
-                      <a href={`https://wa.me/91${p.sellerId.phone}`} target="_blank" style={{textDecoration:"none"}}>
+                      <a href={`https://wa.me/91${p.sellerId.phone}`} target="_blank" style={{ textDecoration: "none" }}>
                         <i className="fa-brands fa-whatsapp mx-2" style={{ cursor: "pointer" }} aria-hidden="true"></i>
                       </a>
                       <i className="fa-solid fa-phone mx-2" style={{ cursor: "pointer" }} ></i>
-                      
-                      <i class="fa-solid fa-share-nodes mx-2" style={{cursor:"pointer"}}></i>
+
+                      <i class="fa-solid fa-share-nodes mx-2" style={{ cursor: "pointer" }}></i>
                     </div>
 
                   </div>

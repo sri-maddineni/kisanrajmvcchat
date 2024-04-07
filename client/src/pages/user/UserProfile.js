@@ -7,26 +7,28 @@ import axios from "axios";
 import Spinner from "../../components/UIComponents/Spinner";
 import AuthContext from "../../context/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
+import { format } from "date-fns";
 
 const UserProfile = () => {
 
   const [loading, setLoading] = useState(false)
+  const [high,sethigh]=useState(true)
 
   const [user, setUser] = useState("")
 
   const params = useParams();
+  const [posts,setposts]=useState([])
 
   const getuserdata = async () => {
-
-
 
     const uid = params.uid;
     try {
       const userdata = await axios.get(`${process.env.REACT_APP_API}/api/v1/users/${uid}`);
 
       if (userdata.data.success) {
-        console.log("success")
+        console.log(userdata.data.user.listings)
         setUser(userdata.data.user)
+        setposts(userdata.data.user.listings)
       }
     } catch (error) {
       console.log(error)
@@ -40,11 +42,13 @@ const UserProfile = () => {
     getuserdata();
   }, [])
 
-  useEffect(() => {
-    getuserdata();
-  }, [])
+ 
 
   const [auth, setAuth] = useContext(AuthContext)
+
+  const formatteddate=(date)=>{
+    return format(new Date(date), 'dd MMM yyyy');
+  }
 
   const followfun = async () => {
 
@@ -66,8 +70,10 @@ const UserProfile = () => {
   const copylink = () => {
     const currentUrl = window.location.href;
     navigator.clipboard.writeText(currentUrl)
-    toast("copied")
+    toast("copied profile url")
   }
+
+
 
 
 
@@ -96,7 +102,7 @@ const UserProfile = () => {
                 <div className="roe">
                   <img style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }} src="https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg" alt="profile" />
                   <div className="name m-3">
-                    <p style={{ fontWeight: "700" }}>{user.name}  <span style={{ fontWeight: "500" }}>{user.rating} <i class="fa-solid fa-star text-warning"></i> </span> </p>
+                    <p style={{ fontWeight: "700" }}>{user.name}  <span style={{ fontWeight: "500" }}>{user.rating} <i className="fa-solid fa-star text-warning"></i> </span> </p>
                     <div className="loc d-flex" >
                       <i className="fa-solid fa-location-dot m-2"></i>
                       <p className="m-1">{user.address}</p>
@@ -148,13 +154,14 @@ const UserProfile = () => {
 
 
         <div className="bottom" style={{ border: 'solid 1px red' }}>
-          <div className="mx-5 my-1">
+          <div className="mx-5 my-1"> 
 
             <div className="mx-3" >
-              <hr />
+              
+              <hr />{/* bottom section horisantal line */}
               <div className="d-flex justify-content-evenly">
-                <div className="navi">
-                  Posts
+                <div className="navi text-success">
+                  posts
                 </div>
                 <div className="navi">
                   Requirements
@@ -167,6 +174,30 @@ const UserProfile = () => {
                 </div>
               </div>
               <hr />
+
+              <div className="bottomcontent" style={{minHeight:'50vh'}}>
+                <div style={{display:'flex',flexDirection:'row'}}>
+                    {
+                      posts.map(post=>(
+                        <>
+                        <div className="card" style={{width:"18rem"}}>
+                          <div className="card img">
+                            <img src={`/api/v1/products/product-photo/${post._id}`} alt="" />
+                          </div>
+                          <div className="details">
+                          <p>{post.organic?"organic":"Inorganic"} {post.name}</p>
+                            <p>Rs. {post.price} /- per {post.quantityUnit}</p>
+                           
+                            <p>{post.quantity} {post.quantityUnit}s Available</p>
+                            <p>Available by : {formatteddate(post.availableDate)}</p>
+                          </div>
+                        </div>
+                        </>
+                      ))
+                    }
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

@@ -206,7 +206,15 @@ export const getUserData = async (req, res) => {
       return res.status(400).send({ message: "id is required" });
     }
 
-    const user = await userModel.findById(uid).select("-password");
+    const user = await userModel
+      .findById(uid)
+      .select("-password")
+      .populate({
+        path: "listings", // Field to populate
+        model: "products" // Model to use for population
+        // Other options if needed
+      });
+
 
     if (!user) {
       return res.status(404).send({
@@ -285,17 +293,17 @@ export const followController = async (req, res) => {
     );
 
 
-    if(result1 && result2){
+    if (result1 && result2) {
       res.status(200).send({
-        message:"success",
-        success:true,
+        message: "success",
+        success: true,
 
       })
     }
-    else{
+    else {
       res.status(256).send({
-        success:false,
-        message:"failed to follow"
+        success: false,
+        message: "failed to follow"
       })
     }
 
@@ -304,8 +312,8 @@ export const followController = async (req, res) => {
   } catch (error) {
     console.log(error)
     res.status(256).send({
-      success:false,
-      message:error
+      success: false,
+      message: error
     })
   }
 }

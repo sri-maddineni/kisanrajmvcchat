@@ -68,7 +68,7 @@ const Responses = () => {
         getPotentials(product.name);
     }, [])
 
-    const formattedDate = product.createdAt ? format(new Date(product.createdAt), 'dd MMM yyyy') : '';
+    const formattedDate = product?.createdAt ? format(new Date(product?.createdAt), 'dd MMM yyyy') : '';
 
     const pid = params.pid;
 
