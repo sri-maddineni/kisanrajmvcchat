@@ -24,12 +24,12 @@ export default function Nav() {
     };
     return (
         <>
-            <header className="bg-dark text-white text-center py-3">
+            {/* <header className="bg-dark text-white text-center py-3">
                 <h1 className="mt-3">KisanRaj</h1>
-            </header>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark navbar-sm" style={{ '--bs-bg-opacity': '0.8', 'height': '60px' }} >
+            </header> */}
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark navbar-sm" style={{ opacity:"1", 'height': '60px' }} >
                 <div className="container-fluid" style={{ height: "50px" }}>
-                    <Link className="navbar-brand text-warning" to="/">Home</Link>
+                    <Link className="navbar-brand text-warning" to="/">KisanRaj</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navi" aria-controls="navi" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -40,7 +40,7 @@ export default function Nav() {
                                     Buy
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><Link className="dropdown-item" to={auth?.user ? "/dashboard/user/buy-commodity" : "/buy-commodity"} >Buy Commodity</Link></li>
+                                    <li><Link className="dropdown-item" to={auth?.user ? "/dashboard/user/buy-commodity/all" : "/buy-commodity/all"} >Buy Commodity</Link></li>
                                     <li><Link className="dropdown-item" to="/cp" >Buy Equipment</Link></li>
 
                                 </ul>
@@ -60,9 +60,9 @@ export default function Nav() {
                                     Equipment
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><Link className="dropdown-item" to="/user/hire-equipment" >Hire Equipment</Link></li>
-                                    <li><Link className="dropdown-item" to="/user/Post-equipment" >Post Equipment</Link></li>
-                                    <li><Link className="dropdown-item" to="/user/Sell-equipment" >Sell Equipment</Link></li>
+                                    <li><Link className="dropdown-item" to="/dashboard/user/hire-equipment" >Hire Equipment</Link></li>
+                                    <li><Link className="dropdown-item" to="/dashboard/user/post-equipment" >Post Equipment</Link></li>
+                                    <li><Link className="dropdown-item" to="/dashboard/user/sell-equipment" >Sell Equipment</Link></li>
                                 </ul>
                             </li>
 
@@ -110,16 +110,7 @@ export default function Nav() {
 
                                         </ul>
                                     </li>
-                                    <li className="nav-item dropdown">
-                                        <a className="nav-link text-white p-3 disabled" href='#' id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false" >
-                                            History
-                                        </a>
-                                        <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <li><Link className="dropdown-item" to="/mess" >Transactional History</Link></li>
-                                            <li><Link className="dropdown-item" to="/cp" >Negotiations History</Link></li>
-
-                                        </ul>
-                                    </li>
+                                    
                                     <li className="nav-item">
                                         <Link className="nav-link active p-3" aria-current="page" to="/Orders">Orders</Link>
                                     </li>

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import Spinner from "../../components/UIComponents/Spinner";
 import Footer from "../../components/layouts/Footer";
-
+import Filtersbar from "../../components/Filters/Filtersbar"
 import AuthContext from "../../context/AuthContext";
 
 import toast from "react-hot-toast";
@@ -11,8 +11,8 @@ import axios from "axios";
 
 import commodities from "../../Data/Commodities";
 import Nav from "../../components/UIComponents/Nav";
-import { useNavigate } from "react-router-dom";
-import ProductCard from "../../components/CardRelated/buycommodity/ProductCard";
+import { NavLink, useNavigate } from "react-router-dom";
+import ProductCard, { Prod } from "../../components/CardRelated/buycommodity/ProductCard";
 
 
 
@@ -42,6 +42,35 @@ const BuyCommodity = () => {
 
 
 
+  const handleCategoryFilter = (selectedCategory) => {
+    // Filter products based on selected category
+    console.log(selectedCategory);
+
+    // Check if selectedCategory is not null or undefined
+    if (selectedCategory) {
+      // Filter products based on the selected category
+      const filtered = products.filter((p) => {
+        // Access category from commodityId if available
+        const category = p?.commodityId?.category;
+        return category && category.toLowerCase() === selectedCategory.toLowerCase();
+      });
+
+      if (filtered.length > 0) {
+        //toast.success("Products filtered successfully"); // Display a success message
+      } else {
+        //toast.error("No products found for the selected category"); 
+        setFilteredProducts([])// Display an error message if no products are found
+      }
+
+      // Update state with filtered products
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts(products)// Display an error message if selectedCategory is null or undefined
+    }
+  };
+
+
+
   const filterSuggestions = (input) => {
     const filtered = commodities.filter((product) =>
       product.name.toLowerCase().includes(input.toLowerCase())
@@ -51,23 +80,24 @@ const BuyCommodity = () => {
 
   useEffect(() => {
     if (searchitem && isFocused) {
-      filterSuggestions(searchitem);  // Only filter suggestions when name is not empty and input is focused
+
+      filterSuggestions(searchitem);
     } else {
-      setSuggestions([]); // Clear suggestions when name is empty or input is not focused
+      setSuggestions([]);
     }
   }, [searchitem, isFocused]);
 
-  const handleSelect = (suggest) => {
-    setSearchitem(suggest);
-    setSuggestions([]);
-    handleProductFilter(suggest);
-  };
+  // const handleSelect = (suggest) => {
+  //   setSearchitem(suggest);
+  //   setSuggestions([]);
+  //   handleProductFilter(suggest);
+  // };
 
-  const handleBlur = () => {
-    setTimeout(() => {
-      setIsFocused(false); // Set input focus state to false after a delay
-    }, 100);
-  };
+  // const handleBlur = () => {
+  //   setTimeout(() => {
+  //     setIsFocused(false); // Set input focus state to false after a delay
+  //   }, 100);
+  // };
 
 
   //api call to propose offer
@@ -187,99 +217,93 @@ const BuyCommodity = () => {
     )
   }
 
+  const Breadcrumb = () => {
+    return (
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
+
+          <li class="breadcrumb-item active" aria-current="page">buy-commodity - all categories</li>
+        </ol>
+      </nav>
+    );
+  };
+
+  const FilterSearch = () => {
+    return (
+      <>
+        <div className="d-flex align-items-center" style={{ display: 'flex', flexDirection: "row" }}>
+          <input
+            className="form-control mr-sm-2 m-3"
+            type="search"
+            placeholder={`search among ${products.length} products available`}
+            value={searchitem}
+            onChange={(e) => {
+              setSearchitem(e.target.value);
+            }}
+            aria-label="Search"
+            onFocus={() => setIsFocused(true)}
+          // onBlur={handleBlur}
+          />
+          {searchitem && ( // Render the cross button only when search item is not empty
+            <button
+              className="fa-solid fa-multiply btn-sm btn"
+              onClick={() => {
+                setSearchitem("")
+                setFilteredProducts([])
+
+              }} // Clear the search input when the cross button is clicked
+            ></button>
+          )}
+          <button
+            className="btn btn-outline-info btn-sm m-3"
+            onClick={() => {
+              handleProductFilter(
+                searchitem.charAt(0).toUpperCase() + searchitem.slice(1)
+              );
+            }}
+          >
+            Search
+          </button>
+        </div>
+      </>
+    )
+  }
+
 
 
   return (
     <>
       <Nav />
 
-      <div className="row m-3" style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
+      <Breadcrumb />
+
+
+      <div className="row m-3" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
         <div style={{ minHeight: "50vh", width: "100%" }}>
           <div className="container" style={{ position: "relative" }}>
-            <div className="d-flex align-items-center">
-              <input
-                className="form-control mr-sm-2 m-3"
-                type="search"
-                placeholder="Search for products"
-                value={searchitem}
-                onChange={(e) => {
-                  setSearchitem(e.target.value);
-                }}
-                aria-label="Search"
-                onFocus={() => setIsFocused(true)}
-                onBlur={handleBlur}
-              />
-              {searchitem && ( // Render the cross button only when search item is not empty
-                <button
-                  className="fa-solid fa-multiply btn-sm btn"
-                  onClick={() => {
-                    setSearchitem("")
-                    setFilteredProducts([])
-
-                  }} // Clear the search input when the cross button is clicked
-                ></button>
-              )}
-              <button
-                className="btn btn-outline-info btn-sm m-3"
-                onClick={() => {
-                  handleProductFilter(
-                    searchitem.charAt(0).toUpperCase() + searchitem.slice(1)
-                  );
-                }}
-              >
-                Search
-              </button>
-            </div>
-
-            {isFocused && suggestions.length > 0 && searchitem && (
-              <ul
-                style={{
-                  listStyle: "none",
-                  position: "absolute",
-                  top: "100%",
-                  left: 0,
-                  width: "100%",
-                  zIndex: 999, // Ensure it's above other elements
-                  backgroundColor: "#fff", // Set background color to match input field
-                  padding: 0,
-                  margin: 0,
-                  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)", // Add shadow for depth
-                  borderRadius: "0.25rem", // Add rounded corners
-                }}
-              >
-                {suggestions.slice(0, 6).map((suggest, index) => (
-                  <li
-                    key={index}
-                    className="bg-info p-1 m-1"
-                    onClick={() => handleSelect(suggest)}
-                    style={{ cursor: "pointer" }} // Ensure cursor changes to pointer on hover
-                  >
-                    {suggest}
-                  </li>
-                ))}
-              </ul>
-            )}
+              <FilterSearch/>
           </div>
 
-
           {/* <Filtersbar onProductSelect={handlecategoryFilter} />*/}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent:"space-around"
-            }}
-          >
-            {filteredProducts.length > 0
-              ? filteredProducts.map((p) => (
+          <div className="container" style={{ display: 'flex', flexDirection: "row" }}>
+            <div className="col-3" style={{ border: 'solid 1px' }}>
+              <Filtersbar onProductSelect={handleCategoryFilter} />
+            </div>
+            <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }} >
 
-                <ProductCard product={p}/>
-              ))
-              : products.map((p) => (
-                <ProductCard product={p}/>
 
-              ))}
+              {filteredProducts.length > 0
+                ? filteredProducts.map((p) => (
+                  auth?.user ? <ProductCard key={p.id} product={p} /> : <Prod key={p.id} product={p} />
+                ))
+                : products
+                  .filter((p) => p.name.toLowerCase().includes(searchitem.toLowerCase()))
+                  .map((p) => auth?.user ? <ProductCard key={p.id} product={p} /> : <Prod key={p.id} product={p} />)
+              }
+
+
+            </div>
           </div>
         </div>
       </div>

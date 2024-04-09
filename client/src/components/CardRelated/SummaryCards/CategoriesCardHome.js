@@ -1,6 +1,9 @@
 import React from 'react'
+import {useNavigate} from "react-router-dom"
+import slugify from "slugify"
 
 function CategoriesCardHome() {
+  const navigate=useNavigate();
 
   const cropcategories = [
     {
@@ -55,16 +58,15 @@ function CategoriesCardHome() {
     <>
       <div className="container">
         <hr />
-        <h2 className='text-center'>Crop categories</h2>
+        <h2 className='text-center'>Product categories</h2>
         <hr />
         <div className="row" style={{ display: 'flex', flexDirection: 'row', flexWrap: "nowrap",justifyContent:'space-around' }}>
           {
             cropcategories.map(category => (
               <>
-                <div className='p-1 m-1 d-flex flex-column justify-content-center align-items-center' style={{ width: "12rem", cursor:'pointer' }}>
+                <div onClick={()=>navigate(`/dashboard/user/buy-commodity/${slugify(category.name.toLowerCase())}`)} className='p-1 m-1 d-flex flex-column justify-content-center align-items-center' style={{ width: "12rem", cursor:'pointer' }}>
                   <img src={category.image} alt="catimage" style={{ objectFit: "cover", width: "125px", height: "125px", borderRadius: "50%" }} />
                   <p className='my-3' style={{ fontWeight: "400",fontSize:"0.9rem" }}>{category.name}</p>
-                  
                 </div>
               </>
             ))
@@ -79,10 +81,9 @@ function CategoriesCardHome() {
           {
             equipcategories.map(category => (
               <>
-                <div className='p-1 m-1 d-flex flex-column justify-content-center align-items-center' style={{ width: "18rem", cursor:'pointer' }}>
+                <div onClick={()=>navigate(`/dashboard/user/buy-commodity/${slugify(category.name.toLowerCase())}`)} className='p-1 m-1 d-flex flex-column justify-content-center align-items-center' style={{ width: "18rem", cursor:'pointer' }}>
                   <img src={category.image} alt="catimage" style={{ objectFit: "cover", width: "175px", height: "175px", borderRadius: "75%" }} />
                   <p className='my-3' style={{ fontWeight: "400",fontSize:"0.9rem" }}>{category.name}</p>
-                  
                 </div>
               </>
             ))

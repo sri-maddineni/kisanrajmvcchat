@@ -1,18 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom';
+import AuthContext from '../context/AuthContext';
 
 const Spinner = ({ path = "login" }) => {
-    const [count, setCount] = useState(3);
+    const [count, setCount] = useState(5);
     const navigate = useNavigate();
     const location = useLocation();
+    const [auth]=useContext(AuthContext)
 
     useEffect(() => {
         const interval = setInterval(() => {
             setCount((preValue) => --preValue)
         }, 1000);
-        count === 0 && navigate(`/${path}`, {
+        count === 0 && !auth?.user && navigate(`/${path}`, {
             state: location.pathname
         });
 

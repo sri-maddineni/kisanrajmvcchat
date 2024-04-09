@@ -212,7 +212,6 @@ export const getUserData = async (req, res) => {
       .populate({
         path: "listings", // Field to populate
         model: "products" // Model to use for population
-        // Other options if needed
       });
 
 
@@ -307,13 +306,23 @@ export const followController = async (req, res) => {
       })
     }
 
-
-
   } catch (error) {
     console.log(error)
     res.status(256).send({
       success: false,
       message: error
     })
+  }
+}
+
+
+export const getalluserscontroller = async (req, res) => {
+  try {
+    const userid = req?.user?._id;
+    const users = await userModel.find({_id: { $ne: userid }}).select("-password");// Find all users except the one with the specified userid
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 }

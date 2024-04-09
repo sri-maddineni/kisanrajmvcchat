@@ -4,7 +4,7 @@ import Footer from "../../components/layouts/Footer";
 import axios from "axios"
 
 import { useContext } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, NavLink } from "react-router-dom";
 import toast from "react-hot-toast";
 import AuthContext from "../../context/AuthContext";
 import Navbar from "../../components/UIComponents/Navbar";
@@ -84,7 +84,7 @@ export const Login = () => {
                   value={password}
                   onChange={(e) => { setpassword(e.target.value) }}
                   placeholder="Enter password"
-                  required
+                  required 
                 />
 
               </div>
@@ -92,11 +92,15 @@ export const Login = () => {
               <button type="submit" className="btn btn-primary">
                 Login
               </button>
+              <p className="text-center mt-3"><NavLink to="/register"> Forgot passsword?</NavLink></p>
               <div className="m-3">
                 {/*eslint-disable-next-line}*/}
-                <a className="m-2" href="#" onClick={() => { navigate("/register") }}>Not a user yet? Register</a>
-                <br />
-                <a className="m-2" href="#" onClick={() => { navigate("/forgot-password") }}>Forgot password</a>
+                <p className="divider-text">
+              <span className="bg-light">OR</span>
+            </p>
+                <p className="text-center">Dont Have an account?<NavLink to="/register"> Create Account</NavLink></p>
+               
+               
 
 
 

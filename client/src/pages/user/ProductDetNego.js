@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, NavLink, useParams } from 'react-router-dom';
 import Nav from '../../components/UIComponents/Nav';
 import Footer from '../../components/layouts/Footer';
 import axios from 'axios';
@@ -45,6 +45,21 @@ const ProductDetNego = () => {
 
         setIsModalOpen(false);
 
+    };
+
+
+    const Breadcrumb = () => {
+        return (
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
+                    <li class="breadcrumb-item"><NavLink to="/dashboard/user/buy-commodity/all">buy-commodity</NavLink></li>
+                    <li className="breadcrumb-item"><NavLink to={`/dashboard/user/buy-commodity/${product?.commodityId?.catslug}`}>{product?.commodityId?.category}</NavLink></li>
+
+                    <li class="breadcrumb-item active" aria-current="page">product details - {product.name}</li>
+                </ol>
+            </nav>
+        );
     };
 
     const formattedDate = (timestamp) => {
@@ -136,6 +151,7 @@ const ProductDetNego = () => {
     return (
         <>
             <Nav />
+            <Breadcrumb />
             <div className="c" style={{ minHeight: "50vh" }}>
                 <div style={{ display: 'flex', flexDirection: 'row', }}>
                     <div className="cls" style={{ width: "35%" }}>
@@ -166,7 +182,7 @@ const ProductDetNego = () => {
                                             <p className='mx-2'>seller : <span style={{ fontWeight: "700" }}>{product?.sellerId?.name}</span></p>
                                         </div>
                                         <div className="contact" style={{ display: "flex", flexDirection: "row", }}>
-                                            <Link to={`/dashboard/users/${product?.sellerId?._id}`}><button className='btn btn-sm btn-primary me-1'>view profile</button></Link>
+                                            <Link to={`/dashboard/user/profile/${product?.sellerId?._id}`}><button className='btn btn-sm btn-primary me-1'>view profile</button></Link>
                                             <p className='fa-brands fa-whatsapp m-2'></p>
                                             <p className='fa-solid fa-phone m-2 fa-1x'></p>
                                         </div>
@@ -180,13 +196,13 @@ const ProductDetNego = () => {
 
 
                     <div style={{ display: "flex", flexDirection: 'column', width: "60%" }}>
-                        <div className='mt-4' style={{ border: "solid 1px black", minHeight: "50vh", overflowY:"auto" }}>
+                        <div className='mt-4' style={{ border: "solid 1px black", minHeight: "50vh", overflowY: "auto" }}>
                             {!chats?.length && (
                                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
-                                    
+
 
                                     <button className='btn btn-warning'>Start conversation with seller</button>
-                                     
+
                                 </div>
                             )}
                         </div>

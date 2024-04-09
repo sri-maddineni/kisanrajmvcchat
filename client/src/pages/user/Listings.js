@@ -12,7 +12,7 @@ import Spinner from "../../components/UIComponents/Spinner";
 
 const Listings = () => {
   const [products, setProducts] = useState([]);
-  const [loading,setloading]=useState(true)
+  const [loading, setloading] = useState(true)
 
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const Listings = () => {
       console.log(error);
       toast.error("something went wrong in getting products!");
     }
-    finally{
+    finally {
       setloading(false)
     }
   };
@@ -38,12 +38,14 @@ const Listings = () => {
     getAllProducts();
   }, []);
 
-  if(loading){
-    return(
+  if (loading) {
+    return (
       <>
-        <Nav/>
-        <Spinner/>
-        <Footer/>
+        <Nav />
+        <div className="container" style={{ minHeight: "50vh" }}>
+          <Spinner />
+        </div>
+        <Footer />
       </>
     )
   }

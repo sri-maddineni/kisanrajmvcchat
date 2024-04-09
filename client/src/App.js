@@ -39,6 +39,8 @@ import ProductDetNego from './pages/user/ProductDetNego';
 import UserProfile from './pages/user/UserProfile';
 import CreateColdstorage from './pages/admin/CreateColdstorage';
 import ColdStorages from './pages/user/ColdStorages';
+import Allusers from './pages/user/Allusers';
+import CategoryProducts from './pages/user/CategoryProducts';
 
 
 
@@ -67,12 +69,12 @@ function App() {
             <Route path='user/profile' element={<Profile />} />
             <Route path='user/product/:pid' element={<UpdateProduct />} />
             <Route path='user/sell-commodity' element={<SellCommodity />} />
-            <Route path='user/buy-commodity' element={<BuyCommodity />} />
-            <Route path='user/buy-commodity/:pid' element={<ProductDetNego />} />
-            <Route path='users/:uid' element={<UserProfile />} />
+            <Route path='user/buy-commodity/all' element={<BuyCommodity />} />
+            <Route path='user/buy-commodity/:cat/:pid' element={<ProductDetNego />} />
+            <Route path='user/profile/:uid' element={<UserProfile />} />
+            <Route path='user/buy-commodity/:category' element={<CategoryProducts />} />
 
             <Route path='user/history/negotiations' element={<NegHistoy />} />
-
             <Route path='user/responses/:pid' element={<Responses />} />
             <Route path='user/post-potential' element={<PostRequirement />} />
 
@@ -81,6 +83,11 @@ function App() {
             <Route path='user/post-equipment' element={<Equipment />} />
             <Route path='user/hire-equipment' element={<HireEquipment />} />
             <Route path='user/my-equipment-listing' element={<EquipmentListing />} />
+
+            <Route path='user/allusers' element={<Allusers />} />
+            
+
+
 
           </Route>
 
@@ -112,7 +119,7 @@ function App() {
           <Route path='/register' element={<Register />} />
           <Route path='/*' element={<Pagenotfound />} />
 
-          <Route path='/buy-commodity' element={<BuyCommodity />} />
+          <Route path='/buy-commodity/all' element={<BuyCommodity />} />
         </Routes>
 
       </AuthState>

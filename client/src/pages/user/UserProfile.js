@@ -2,19 +2,25 @@ import React, { useContext, useEffect, useState } from "react";
 import Nav from "../../components/UIComponents/Nav";
 import Footer from "../../components/layouts/Footer";
 import "./usercss/UserProfile.css"
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../../components/UIComponents/Spinner";
 import AuthContext from "../../context/AuthContext";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { format } from "date-fns";
 import { Radio } from 'antd';
+
+
+export const bread = () => {
+  return <>
+    hello</>
+}
 
 
 const UserProfile = () => {
 
   const [loading, setLoading] = useState(false)
-  const [high, sethigh] = useState(true)
+  // const [high, sethigh] = useState(true)
 
   const [user, setUser] = useState("")
 
@@ -27,11 +33,24 @@ const UserProfile = () => {
     setValue(e.target.value);
   };
 
+  const Breadcrumb = () => {
+    return (
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
+          <li class="breadcrumb-item"><NavLink to="/dashboard/user/allusers">All users</NavLink></li>
+          <li class="breadcrumb-item active" aria-current="page">UserProfile - {user.name}</li>
+        </ol>
+      </nav>
+    );
+  };
+
+  
   const getuserdata = async () => {
-    setLoading(true)
+    // setLoading(true)
     const uid = params.uid;
     try {
-      const userdata = await axios.get(`${process.env.REACT_APP_API}/api/v1/users/${uid}`);
+      const userdata = await axios.get(`${process.env.REACT_APP_API}/api/v1/users/profile/${uid}`);
 
       if (userdata.data.success) {
         console.log(userdata.data.user.listings)
@@ -48,11 +67,11 @@ const UserProfile = () => {
 
   useEffect(() => {
     getuserdata();
-  }, [])
+  }, []); // Include getuserdata in the
 
 
 
-  const [auth, setAuth] = useContext(AuthContext)
+  const [auth] = useContext(AuthContext)
 
   const formatteddate = (date) => {
     return format(new Date(date), 'dd MMM yyyy');
@@ -86,33 +105,106 @@ const UserProfile = () => {
     return (
       <>
         <Nav />
-        <div className="m" style={{minHeight:"50vh"}}>
-        <Spinner />
+        <div className="m" style={{ minHeight: "50vh" }}>
+          <Spinner />
         </div>
         <Footer />
       </>
     )
   }
 
+  const PostData = () => {
+    return (
+      <>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          {posts.length ? (
+            posts.map(post => (
+              <div key={post._id} className="card" style={{ width: "16rem" }}>
+                <div className="img">
+                  <img src={`/api/v1/products/product-photo/${post._id}`} alt="productpic" style={{ height: "25vh", objectFit: "cover" }} />
+                </div>
+                <div className="details">
+                  <p>{post.organic ? "organic" : "Inorganic"} {post.name}</p>
+                  <p><span style={{ fontWeight: "700" }}>&#8377;{post.price} per {post.quantityUnit} </span><span>{post.quantity} {post.quantityUnit}s Available</span></p>
+                  <p>Available by : {formatteddate(post.availableDate)}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="container border border-secondary" style={{ display: "flex", flexDirection: 'row', alignContent: 'center', alignItems: "center", justifyContent: "center" }}>
+              <p className="h1 m-5">No posts yet</p>
+            </div>
+          )}
+
+        </div>
+      </>
+    )
+  }
+
+  const RequirementsData = () => {
+    return (
+      <>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          {posts.length ? (
+            posts.map(post => (
+              <div key={post._id} className="card" style={{ width: "16rem" }}>
+                <div className="img">
+                  <img src={`/api/v1/products/product-photo/${post._id}`} alt="productpic" style={{ height: "25vh", objectFit: "cover" }} />
+                </div>
+                <div className="details">
+                  <p>{post.organic ? "organic" : "Inorganic"} {post.name}</p>
+                  <p><span style={{ fontWeight: "700" }}>&#8377;{post.price} per {post.quantityUnit} </span><span>{post.quantity} {post.quantityUnit}s Available</span></p>
+                  <p>Available by : {formatteddate(post.availableDate)}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="container border border-secondary" style={{ display: "flex", flexDirection: 'row', alignContent: 'center', alignItems: "center", justifyContent: "center" }}>
+              <p className="h1 m-5">No posts yet</p>
+            </div>
+          )}
+
+        </div>
+      </>
+    )
+  }
+
+
+
+
+  
+
+
   return (
     <>
       <Nav />
+      <Breadcrumb />
 
 
 
-      <div className="overall" style={{ border: 'solid 1px red', display: "flex", flexDirection: "column" }}>
+      <div className="overall" style={{ display: "flex", flexDirection: "column" }}>
 
         <div className="topsec" style={{ display: "flex", flexDirection: 'row', flexWrap: 'nowrap', justifyContent: "center" }}>
           <div className="left p-3">
             <div className="leftt my-1">
               <div className="card">
                 <div className="roe">
-                  <img style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }} src="https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg" alt="profile" />
+                  <img style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%", border: 'solid 1px red' }} src="https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg" alt="profile" />
                   <div className="name m-3">
-                    <p style={{ fontWeight: "700" }}>{user.name}  <span style={{ fontWeight: "500" }}>{user.rating} <i className="fa-solid fa-star text-warning"></i> </span> </p>
-                    <div className="loc d-flex" >
-                      <i className="fa-solid fa-location-dot m-2"></i>
-                      <p className="m-1">{user.address}</p>
+                    <p style={{ fontWeight: "700" }}>
+                      {user.name}  {/* Added a space after name */}
+                      <span style={{ fontWeight: "500" }}>
+                        <>
+                          {Array.from({ length: user.rating }, (_, index) => (
+                            <i key={index} className="fa-solid fa-star text-warning"></i>
+                          ))}
+                        </>
+
+                      </span>
+                    </p>
+                    <div className="d-flex" >
+                      <i className="fa-solid fa-location-dot m-2"></i><p>{user?.address}</p>
+
                     </div>
                   </div>
                 </div>
@@ -160,13 +252,13 @@ const UserProfile = () => {
 
 
 
-        <div className="bottom" style={{ border: 'solid 1px red' }}>
+        <div className="bottom container" style={{}}>
           <div className="mx-5 my-1">
 
             <div className="mx-3" >
 
               <hr />{/* bottom section horisantal line */}
-              <Radio.Group className="d-flex justify-content-evenly" onChange={onChange} value={value} style={{ display: "flex", flexDirection: 'row', flexWrap: "nowrap", justifyContent: "evenly" }}>
+              <Radio.Group className="d-flex justify-content-evenly" onChange={(e)=>{ setValue(e.target.value)}} value={value} style={{ display: "flex", flexDirection: 'row', flexWrap: "nowrap", justifyContent: "evenly" }}>
 
                 <Radio className="navi" value={1}>Posts</Radio>
                 <Radio className="navi" value={2}>Requirements</Radio>
@@ -181,24 +273,7 @@ const UserProfile = () => {
 
 
               <div className="bottomcontent" style={{ minHeight: '50vh' }}>
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                  {
-                    posts.map(post => (
-                      <>
-                        <div className="card" style={{ width: "18rem" }}>
-                          <div className="img">
-                            <img src={`/api/v1/products/product-photo/${post._id}`} alt="" />
-                          </div>
-                          <div className="details">
-                            <p>{post.organic ? "organic" : "Inorganic"} {post.name}</p>
-                            <p ><span style={{ fontWeight: "700" }}>&#8377;{post.price} per {post.quantityUnit} </span>{post.quantity} {post.quantityUnit}s Available</p>
-                            <p>Available by : {formatteddate(post.availableDate)}</p>
-                          </div>
-                        </div>
-                      </>
-                    ))
-                  }
-                </div>
+                <PostData/>
               </div>
 
             </div>
@@ -211,6 +286,10 @@ const UserProfile = () => {
       <Footer />
     </>
   );
+
+
+
 };
 
 export default UserProfile;
+

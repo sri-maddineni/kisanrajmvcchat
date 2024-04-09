@@ -3,7 +3,7 @@ import Footer from '../../components/layouts/Footer';
 import { Radio } from 'antd';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import commodities from "../../Data/Commodities"; // Import the data from Commodities.js
 import Nav from '../../components/UIComponents/Nav';
@@ -106,10 +106,25 @@ const SellCommodity = () => {
     }
   }
 
+
+
+  const Breadcrumb = () => {
+    return (
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
+          
+          <li class="breadcrumb-item active" aria-current="page">sell-commodity</li>
+        </ol>
+      </nav>
+    );
+  };
+
   return (
     <>
 
       <Nav />
+      <Breadcrumb/>
       <div className="container-fluid m-3 p-3 d-flex justify-content-center">
 
 
@@ -127,7 +142,8 @@ const SellCommodity = () => {
             </div>
             {photo && (
               <div className="mb-3 text-center">
-                <img src={URL.createObjectURL(photo)} alt="Product " height={"200px"} className="img img-responsive" />
+                
+                <img src={URL.createObjectURL(photo)} alt="Product " style={{height:"200px",width:"300px", objectFit:"cover"}} className="img img-responsive" />
               </div>
             )}
             {/* Form Inputs */}
