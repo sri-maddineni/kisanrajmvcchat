@@ -27,7 +27,7 @@ export default function Nav() {
             {/* <header className="bg-dark text-white text-center py-3">
                 <h1 className="mt-3">KisanRaj</h1>
             </header> */}
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark navbar-sm" style={{ opacity:"1", 'height': '60px' }} >
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark navbar-sm sticky" style={{ opacity:"1", 'height': '60px' }} >
                 <div className="container-fluid" style={{ height: "50px" }}>
                     <Link className="navbar-brand text-warning" to="/">KisanRaj</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navi" aria-controls="navi" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,7 @@ export default function Nav() {
                                     Buy
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><Link className="dropdown-item" to={auth?.user ? "/dashboard/user/buy-commodity/all" : "/buy-commodity/all"} >Buy Commodity</Link></li>
+                                    <li><Link className="dropdown-item" to={auth?.user ? "/dashboard/user/buy-commodity/all" : "/buy-commodity"} >Buy Commodity</Link></li>
                                     <li><Link className="dropdown-item" to="/cp" >Buy Equipment</Link></li>
 
                                 </ul>

@@ -37,6 +37,8 @@ const UpdateProduct = () => {
 
         setId(params.pid)
         try {
+
+
             const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/products/get-product/${params.pid}`)
             setName(data?.product.name)
             setPrice(data?.product.price)
@@ -112,7 +114,6 @@ const UpdateProduct = () => {
 
 
             if (data?.success) {
-
                 toast.success("Product updated successfully");
                 navigate("/dashboard/user/listings-posted");
             } else {
@@ -166,12 +167,12 @@ const UpdateProduct = () => {
                         
                         {photo ? (
                             <div className="mb-3 text-center">
-                                <img src={URL.createObjectURL(photo)} alt="Product " height={"200px"} className="img img-responsive" />
+                                <img src={URL.createObjectURL(photo)} alt="Product " style={{height:"200px",width:"300px"}} className="img img-responsive" />
                             </div>
                         ) : (
                             <>
                                 <div className="mb-3 text-center">
-                                    <img src={`/api/v1/products/product-photo/${id}`} alt="Product " height={"200px"} className="img img-responsive" />
+                                    <img src={`/api/v1/products/product-photo/${id}`} alt="Product " style={{height:"200px",width:"300px"}} className="img img-responsive" />
                                 </div>
                             </>
                         )}

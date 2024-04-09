@@ -119,7 +119,7 @@ function App() {
           <Route path='/register' element={<Register />} />
           <Route path='/*' element={<Pagenotfound />} />
 
-          <Route path='/buy-commodity/all' element={<BuyCommodity />} />
+          <Route path='/buy-commodity' element={<BuyCommodity />} />
         </Routes>
 
       </AuthState>

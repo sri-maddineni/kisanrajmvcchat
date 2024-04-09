@@ -19,13 +19,11 @@ import ProductCard, { Prod } from "../../components/CardRelated/buycommodity/Pro
 const BuyCommodity = () => {
 
 
-  const [selectedProduct, setSelectedProduct] = useState(null); // To store the selected product
   const [filteredProducts, setFilteredProducts] = useState([]); // To store filtered products
 
   const [loading, setLoading] = useState(true)
 
   const [searchitem, setSearchitem] = useState("");
-  const navigate = useNavigate()
 
   const [auth] = useContext(AuthContext);
 
@@ -35,7 +33,7 @@ const BuyCommodity = () => {
   const [notes, setnotes] = useState("");
 
   const [isFocused, setIsFocused] = useState(false);
-  const [suggestions, setSuggestions] = useState([]);
+
 
   const [proposedlist, setProposedlist] = useState([]);
   const [products, setProducts] = useState([]);
@@ -75,7 +73,7 @@ const BuyCommodity = () => {
     const filtered = commodities.filter((product) =>
       product.name.toLowerCase().includes(input.toLowerCase())
     );
-    setSuggestions(filtered.map((product) => product.name));
+    // setSuggestions(filtered.map((product) => product.name));
   };
 
   useEffect(() => {
@@ -83,7 +81,7 @@ const BuyCommodity = () => {
 
       filterSuggestions(searchitem);
     } else {
-      setSuggestions([]);
+      // setSuggestions([]);
     }
   }, [searchitem, isFocused]);
 
@@ -317,3 +315,49 @@ const BuyCommodity = () => {
 };
 
 export default BuyCommodity;
+
+
+
+
+export const FilterSearch = ({ products, handleProductFilter }) => {
+  const [searchitem, setSearchitem] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
+
+  const clearSearch = () => {
+    setSearchitem('');
+    handleProductFilter('');
+  };
+
+  return (
+    <div className="d-flex align-items-center" style={{ display: 'flex', flexDirection: "row" }}>
+      <input
+        className="form-control mr-sm-2 m-3"
+        type="search"
+        placeholder={`search among ${products.length} products available`}
+        value={searchitem}
+        onChange={(e) => setSearchitem(e.target.value)}
+        aria-label="Search"
+        onFocus={() => setIsFocused(true)}
+        // onBlur={handleBlur}
+      />
+      {searchitem && ( // Render the cross button only when search item is not empty
+        <button
+          className="fa-solid fa-multiply btn-sm btn"
+          onClick={clearSearch} // Clear the search input when the cross button is clicked
+        ></button>
+      )}
+      <button
+        className="btn btn-outline-info btn-sm m-3"
+        onClick={() => {
+          handleProductFilter(
+            searchitem.charAt(0).toUpperCase() + searchitem.slice(1)
+          );
+        }}
+      >
+        Search
+      </button>
+    </div>
+  );
+};
+
+

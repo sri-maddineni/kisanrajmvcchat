@@ -5,6 +5,9 @@ import axios from "axios";
 import AuthContext from '../../context/AuthContext';
 import toast from "react-hot-toast";
 import { NavLink, useParams } from "react-router-dom";
+import ProductCard from '../../components/CardRelated/buycommodity/ProductCard';
+import { FilterSearch } from './BuyCommodity';
+import Filtersbar from '../../components/Filters/Filtersbar';
 
 const CategoryProducts = () => {
   const [products, setProducts] = useState([]);
@@ -53,18 +56,13 @@ const CategoryProducts = () => {
     <>
       <Nav />
       <Breadcrumb/>
-      <div className="container" style={{ minHeight: "50vh" }}>
+      
+      <div className="container" style={{ minHeight: "50vh", display:'flex', flexDirection:"row" }}>
         {loading ? (
           <p>Loading...</p>
         ) : (
-          products.map(product => (
-            <div key={product._id} className="card">
-              <div className="card-body">
-                <h5 className="card-title">{product.name}</h5>
-                <p className="card-text">{product.description}</p>
-                {/* Add other product details */}
-              </div>
-            </div>
+          products.map(p => (
+            <ProductCard key={p.id} product={p}  />
           ))
         )}
       </div>

@@ -47,7 +47,7 @@ export const Prod=(props)=>{
                         </i>
 
                         <br />
-                        <i className='text-warning'>{<FaStar />}.repeat({p.quality})<FaStar /><FaStar /><FaStar /></i>
+                        <i className='text-warning'><FaStar /><FaStar /><FaStar /><FaStar /></i>
                         {/* {p.quality}
                         <i className="fa-solid fa-star text-warning"></i> */}
                         <br />
@@ -154,7 +154,7 @@ const ProductCard = (props) => {
 
                     <div className="btns">
                         <button className="btn btn-sm btn-primary mx-1" onClick={() => navigate(`/dashboard/user/buy-commodity/${p.commodityId.catslug}/${p._id}`)}>view details</button>
-                        <button className="btn btn-sm btn-primary mx-1" onClick={() => navigate(`/dashboard/user/buy-commodity/${p._id}`)}>order it</button>
+                        <button className="btn btn-sm btn-primary mx-1" onClick={() => navigate(`/dashboard/user/buy-commodity/${p.commodityId.catslug}/${p._id}`)}>order it</button>
                     </div>
 
                 </div>

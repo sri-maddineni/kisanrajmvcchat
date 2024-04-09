@@ -59,7 +59,7 @@ const PotentialLeads = () => {
               <p className="card-text">Buyer: {potential?.buyerId?.name}</p>
               <div className="d-flex justify-content-center">
                 <button className='btn btn-sm btn-primary m-1'>contact</button>
-                <button className='btn btn-sm btn-primary m-1' onClick={() => { navigate(`/dashboard/users/${potential.buyerId._id}`) }}>profile</button>
+                <button className='btn btn-sm btn-primary m-1' onClick={() => { navigate(`/dashboard/user/profile/${potential.buyerId._id}`) }}>profile</button>
               </div>
               {/* Add more fields as needed */}
             </div>

@@ -45,8 +45,8 @@ function CategoriesCardHome() {
       image:"https://assets-global.website-files.com/5e270c1f7082827312b019e1/5e4ed105c71462dd83eb59ef_F1060A-1%201000%20Field%20Sprayer-60%27%20Boom-p-500.jpeg"
     },
     {
-      name:"PLOUGH",
-      image:"https://thumbs.dreamstime.com/b/plough-machine-farmer-2375760.jpg?w=768"
+      name:"SEEDERS/HARVESTORS",
+      image:"https://www.deere.com.au/assets/images/region-4/products/harvesting/harvesting-hero-r4f086239-rrd.jpg"
     },
     {
       name:"OTHERS",
@@ -81,7 +81,7 @@ function CategoriesCardHome() {
           {
             equipcategories.map(category => (
               <>
-                <div onClick={()=>navigate(`/dashboard/user/buy-commodity/${slugify(category.name.toLowerCase())}`)} className='p-1 m-1 d-flex flex-column justify-content-center align-items-center' style={{ width: "18rem", cursor:'pointer' }}>
+                <div onClick={()=>navigate(`/dashboard/user/equipment/${slugify(category.name.toLowerCase())}`)} className='p-1 m-1 d-flex flex-column justify-content-center align-items-center' style={{ width: "18rem", cursor:'pointer' }}>
                   <img src={category.image} alt="catimage" style={{ objectFit: "cover", width: "175px", height: "175px", borderRadius: "75%" }} />
                   <p className='my-3' style={{ fontWeight: "400",fontSize:"0.9rem" }}>{category.name}</p>
                 </div>
@@ -90,6 +90,9 @@ function CategoriesCardHome() {
           }
         </div>
       </div>
+
+
+      
     </>
   )
 }

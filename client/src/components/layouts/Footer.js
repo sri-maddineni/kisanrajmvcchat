@@ -30,7 +30,7 @@ const Footer = () => {
         </div>
         <div className="div3 text-center">
           <h2>All links</h2>
-          <Link to="/dashboard/user/buy-commodity">Buy</Link>
+          <Link to="/dashboard/user/buy-commodity/all">Buy</Link>
           <Link to="/dashboard/user/sell-commodity">Sell</Link>
           <Link to="/dashboard/user/hire-equipment">Hire</Link>
           <Link to="/">Companies</Link>
