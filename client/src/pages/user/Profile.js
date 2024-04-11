@@ -5,7 +5,7 @@ import UserMenu from "./UserMenu";
 import AuthContext from "../../context/AuthContext";
 import AdminMenu from "../../components/layouts/AdminMenu";
 import Nav from "../../components/UIComponents/Nav";
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Profile = () => {
@@ -72,10 +72,29 @@ const Profile = () => {
         }
     };
 
+
+    const Breadcrumb = () => {
+        return (
+          <nav aria-label="breadcrumb">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
+              
+    
+    
+              <li className="breadcrumb-item active" aria-current="page">Profile</li>
+            </ol>
+          </nav>
+        );
+      };
+
+
+
+
     return (
         <>
 
             <Nav />
+            <Breadcrumb/>
             <div className="container mt-5">
 
                 <div className="card shadow">

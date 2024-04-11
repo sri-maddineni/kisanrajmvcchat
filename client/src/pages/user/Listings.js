@@ -139,8 +139,12 @@ const Listings = () => {
                             </p>
                             <p><span>{p.quantity} {p.quantityUnit}s available</span></p>
                             <p style={{ fontSize: "0.8rem" }}>
+                              Available by :{" "}
+                              {format(new Date(p.availableDate), `dd MMM yyyy`)}
+                            </p>
+                            <p style={{ fontSize: "0.8rem" }}>
                               Posted on :{" "}
-                              {format(new Date(p.createdAt), `dd MMM yyyy hh:MM a`)}
+                              {format(new Date(p.createdAt), `dd MMM yyyy`)}
                             </p>
                             <p style={{ fontSize: "0.7rem" }}>{p._id}</p>
                           </div>
