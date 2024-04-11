@@ -11,8 +11,9 @@ import HomeSummaryCards from "../components/CardRelated/SummaryCards/HomeSummary
 import CategoriesCardHome from "../components/CardRelated/SummaryCards/CategoriesCardHome";
 import products from "../../src/Data/MOCK_DATA"
 import commodities from "../Data/Commodities";
-import "./Hero.css"
-
+import  "./Hero.css"
+import random from "random-int"
+import slugify from "slugify"
 
 export const Homepage = () => {
 
@@ -20,6 +21,8 @@ export const Homepage = () => {
 
   const [auth, setAuth] = useContext(AuthContext);
   const [value, setvalue] = useState("")
+  const [cat, setcat] = useState("")
+  const [id, setid] = useState("")
 
 
   return (
@@ -38,17 +41,19 @@ export const Homepage = () => {
           <input
             type="search"
             value={value}
-            placeholder={`Try Searching for Tomatoes`}
+            placeholder={`Try Searching for "${commodities[random(1, 190)].name}"`}
             className="loc"
             onChange={(e) => setvalue(e.target.value)}
-            list={value.length >= 3 ? "commodities" : null} // Render datalist if value length is at least 3
+            list={value.length >= 2 ? "commodities" : null} // Render datalist if value length is at least 3
           />
 
           {value.length >= 2 && (
             <datalist id="commodities">
-              {commodities.map((product) => (
-                <option key={product._id} value={product.name} />
-              ))}
+              {commodities
+                .filter((product) => product.name.toLowerCase().startsWith(value.toLowerCase())) // Filter options based on starting characters
+                .map((product) => (
+                  <option key={product._id} value={product.name} />
+                ))}
             </datalist>
           )}
 
@@ -92,31 +97,45 @@ export const Homepage = () => {
             <button
               className="btn buy btn-outline-info mx-2 my-2"
               onClick={() => {
-             { auth?.user ? (value ?navigate(`/dashboard/user/buy-commodity/all/${value}`):navigate("/dashboard/user/buy-commodity/all")):navigate("/buy-commodity")}
+                if (auth?.user) {
+                  if (value) {
+                    const selectedProduct = commodities.find(product => product.name.toLowerCase() === value.toLowerCase());
+                    if (selectedProduct) {
+                      const { category, slug } = selectedProduct;
+                      navigate(`/dashboard/user/buy-commodity/${slugify(category.toLowerCase())}/${slugify(value.toLowerCase())}`);
+                    } else {
+                      navigate("/dashboard/user/buy-commodity/all");
+                    }
+                  } else {
+                    navigate("/dashboard/user/buy-commodity/all");
+                  }
+                } else {
+                  navigate("/buy-commodity");
+                }
               }}
-            >
-              Buy
-            </button>
-            <button
-              className="btn buy btn-outline-info mx-2 my-2"
-              onClick={() => {
-               auth?.user && navigate("/dashboard/user/sell-commodity")
-              }}
-            >
-              Sell
-            </button>
-            <button className="btn buy btn-outline-info mx-2 my-2" onClick={() => navigate("/dashboard/user/hire-equipment")}>Hire</button>
-          </div>
+            >      
+            Buy
+          </button>
+          <button
+            className="btn buy btn-outline-info mx-2 my-2"
+            onClick={() => {
+              auth?.user && navigate("/dashboard/user/sell-commodity")
+            }}
+          >
+            Sell
+          </button>
+          <button className="btn buy btn-outline-info mx-2 my-2" onClick={() => navigate("/dashboard/user/hire-equipment")}>Hire</button>
         </div>
-
       </div>
+
+    </div >
 
 
       <CategoriesCardHome />
 
       <Footer />
 
-      {/* <div className="container"style={{alignItems: "center",justifyContent: "center",display: "flex",flexDirection: "column",minHeight: "70vh", }} >
+  {/* <div className="container"style={{alignItems: "center",justifyContent: "center",display: "flex",flexDirection: "column",minHeight: "70vh", }} >
          <div className="searcher m-2 text-center" style={{ display: "flex", flexDirection: "row", alignItems: "center", }}>
           <input type="text" placeholder="enter product" className="m-2" />
         </div>
@@ -129,7 +148,7 @@ export const Homepage = () => {
 
 
 
-      {/* <div className="container" style={{ display: "flex", flexDirection: "row",flexWrap:'wrap',justifyContent:"center" }}>
+  {/* <div className="container" style={{ display: "flex", flexDirection: "row",flexWrap:'wrap',justifyContent:"center" }}>
       <hr />
         {
           products.map(product => (

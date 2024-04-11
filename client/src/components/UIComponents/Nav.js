@@ -2,6 +2,9 @@ import React, { useContext, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import toast from 'react-hot-toast';
+import { FaCartShopping } from "react-icons/fa6";
+import { FaHeart } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 
 export default function Nav() {
 
@@ -27,7 +30,7 @@ export default function Nav() {
             {/* <header className="bg-dark text-white text-center py-3">
                 <h1 className="mt-3">KisanRaj</h1>
             </header> */}
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark navbar-sm sticky" style={{ opacity:"1", 'height': '60px' }} >
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark navbar-sm sticky" style={{ opacity: "1", 'height': '60px' }} >
                 <div className="container-fluid" style={{ height: "50px" }}>
                     <Link className="navbar-brand text-warning" to="/">KisanRaj</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navi" aria-controls="navi" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +44,7 @@ export default function Nav() {
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><Link className="dropdown-item" to={auth?.user ? "/dashboard/user/buy-commodity/all" : "/buy-commodity"} >Buy Commodity</Link></li>
-                                    <li><Link className="dropdown-item" to="/cp" >Buy Equipment</Link></li>
+                                    <li><Link className="dropdown-item" to="/dashboard/user/buy-equipment" >Buy Equipment</Link></li>
 
                                 </ul>
                             </li>
@@ -57,24 +60,23 @@ export default function Nav() {
                             </li>
                             <li className="nav-item dropdown">
                                 <a className="nav-link text-white p-3 disabled" href='#' id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false" >
-                                    Equipment
+                                    Hire
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><Link className="dropdown-item" to="/dashboard/user/hire-equipment" >Hire Equipment</Link></li>
                                     <li><Link className="dropdown-item" to="/dashboard/user/post-equipment" >Post Equipment</Link></li>
-                                    <li><Link className="dropdown-item" to="/dashboard/user/sell-equipment" >Sell Equipment</Link></li>
                                 </ul>
                             </li>
 
 
                             <li className="nav-item">
-                                <NavLink className="nav-link active p-3" aria-current="page" to={auth?.user? "/dashboard/user/coldstorages":"/coldstorages"}>Cold Storages</NavLink>
-                            </li> 
+                                <NavLink className="nav-link active p-3" aria-current="page" to={auth?.user ? "/dashboard/user/coldstorages" : "/coldstorages"}>Storages</NavLink>
+                            </li>
 
                             { /*<li className="nav-item">
                                 <Link className="nav-link active p-3" aria-current="page" to="/rooms">Cold Storages</Link>
                             </li>*/}
- 
+
 
                         </ul>
 
@@ -106,23 +108,49 @@ export default function Nav() {
                                         </a>
                                         <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                             <li><Link className="dropdown-item" to="/dashboard/user/proposals-recieved" >Proposals Recieved</Link></li>
+
+                                        </ul>
+                                    </li>
+
+                                    <li className="nav-item dropdown">
+                                        <a className="nav-link text-white p-3 disabled" href='#' id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false" >
+                                            History
+                                        </a>
+                                        <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <li><Link className="dropdown-item" to="/dashboard/user/proposals-recieved" >Transactions</Link></li>
                                             <li><Link className="dropdown-item" to="/dashboard/user/history/negotiations" >Negotiations History</Link></li>
 
                                         </ul>
                                     </li>
-                                    
                                     <li className="nav-item">
-                                        <Link className="nav-link active p-3" aria-current="page" to="/Orders">Orders</Link>
+                                        <Link className="nav-link active p-3" aria-current="page" to="/dashboard/user/my-wishlist"><FaHeart /></Link>
                                     </li>
 
+                                    <li className="nav-item">
+                                        <Link className="nav-link active p-3" aria-current="page" to="/dashboard/user/Orders"><FaCartShopping /></Link>
+                                    </li>
+
+                                    {/* <li className="nav-item">
+                                        <Link className="nav-link active p-3"> <FaUserCircle /></Link>
+                                    </li> */}
+
                                     <li className="nav-item dropdown active my-2">
+
                                         <a className="nav-link me-auto text-white disabled text-danger" href='#' data-bs-toggle="dropdown"><span className='text-warning'>{auth?.user?.name}</span>   <i className="fa-solid fa-sort-down"></i></a>
                                         <ul className="dropdown-menu">
                                             <li><Link className="dropdown-item" to="/dashboard/user/profile"> Profile</Link></li>
                                             <li><a className="dropdown-item" onClick={handleLogout}> Logout </a></li>
                                         </ul>
                                     </li>
-                                    
+
+                                    {/* <li className="nav-item">
+                                        <div className="d-flex align-items-center">
+                                            <Link className="nav-link active p-3" aria-current="page" to="/dashboard/user/Orders"><FaUserCircle /></Link>
+                                            <span className="nav-link active p-3">{auth?.user?.name}</span>
+                                        </div>
+                                    </li> */}
+
+
 
                                 </ul>
                             </>

@@ -45,7 +45,7 @@ function CategoriesCardHome() {
       image:"https://assets-global.website-files.com/5e270c1f7082827312b019e1/5e4ed105c71462dd83eb59ef_F1060A-1%201000%20Field%20Sprayer-60%27%20Boom-p-500.jpeg"
     },
     {
-      name:"SEEDERS/HARVESTORS",
+      name:"SEEDERS / HARVESTORS",
       image:"https://www.deere.com.au/assets/images/region-4/products/harvesting/harvesting-hero-r4f086239-rrd.jpg"
     },
     {

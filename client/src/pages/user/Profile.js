@@ -74,141 +74,136 @@ const Profile = () => {
 
     return (
         <>
-            
+
             <Nav />
             <div className="container mt-5">
-                <div className="row">
-                    <div className="col-md-3">
-                        {auth.user.role === "0" ? <AdminMenu /> : <UserMenu />}
-                    </div>
-                    <div className="col-md-9">
-                        <div className="card shadow">
-                            <div className="card-body">
-                                <h3 className="card-title mb-4 text-primary">Profile</h3>
-                                <form onSubmit={handleSubmit}>
-                                    <div className="row mb-4">
-                                        <div className="col-md-3">
-                                            <label className="text-muted">Name:</label>
-                                        </div>
-                                        <div className="col-md-9">
-                                            {!editMode ? (
-                                                <p style={vibrantFieldStyle}>{formData.name}</p>
-                                            ) : (
-                                                <input
-                                                    type="text"
-                                                    name="name"
-                                                    value={formData.name}
-                                                    onChange={handleChange}
-                                                    className="form-control"
-                                                />
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="row mb-4">
-                                        <div className="col-md-3">
-                                            <label className="text-muted">Email:</label>
-                                        </div>
-                                        <div className="col-md-9">
-                                            {!editMode ? (
-                                                <p style={vibrantFieldStyle}>{formData.email}</p>
-                                            ) : (
-                                                <input
-                                                    type="text"
-                                                    name="email"
-                                                    value={formData.email}
-                                                    onChange={handleChange}
-                                                    className="form-control"
-                                                />
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="row mb-4">
-                                        <div className="col-md-3">
-                                            <label className="text-muted">Phone:</label>
-                                        </div>
-                                        <div className="col-md-9">
-                                            {!editMode ? (
-                                                <p style={vibrantFieldStyle}>{formData.phone}</p>
-                                            ) : (
-                                                <input
-                                                    type="text"
-                                                    name="phone"
-                                                    value={formData.phone}
-                                                    onChange={handleChange}
-                                                    className="form-control"
-                                                />
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="row mb-4">
-                                        <div className="col-md-3">
-                                            <label className="text-muted">Address:</label>
-                                        </div>
-                                        <div className="col-md-9">
-                                            {!editMode ? (
-                                                <p style={vibrantFieldStyle}>{formData.address}</p>
-                                            ) : (
-                                                <input
-                                                    type="text"
-                                                    name="address"
-                                                    value={formData.address}
-                                                    onChange={handleChange}
-                                                    className="form-control"
-                                                />
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="row mb-4">
-                                        <div className="col-md-3">
-                                            <label className="text-muted">Pincode:</label>
-                                        </div>
-                                        <div className="col-md-9">
-                                            {!editMode ? (
-                                                <p style={vibrantFieldStyle}>{formData.pincode}</p>
-                                            ) : (
-                                                <input
-                                                    type="text"
-                                                    name="pincode"
-                                                    value={formData.pincode}
-                                                    onChange={handleChange}
-                                                    className="form-control"
-                                                />
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="text-center mt-5">
-                                        {!editMode ? (
-                                            <button
-                                                type="button"
-                                                className="btn btn-primary"
-                                                onClick={handleEdit}
-                                            >
-                                                Edit
-                                            </button>
-                                        ) : (
-                                            <>
-                                                <button type="submit" className="btn btn-success mr-2">Submit</button>
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-secondary"
-                                                    onClick={() => setEditMode(false)}
-                                                >
-                                                    Cancel
-                                                </button>
-                                            </>
-                                        )}
-                                        <button
-                                            className="btn btn-link"
-                                            onClick={() => { navigate("/forgot-password") }}
-                                        >
-                                            Forgot Password
-                                        </button>
-                                    </div>
-                                </form>
+
+                <div className="card shadow">
+                    <div className="card-body">
+                        <h3 className="card-title mb-4 text-primary">Profile</h3>
+                        <form onSubmit={handleSubmit}>
+                            <div className="row mb-4">
+                                <div className="col-md-3">
+                                    <label className="text-muted">Name:</label>
+                                </div>
+                                <div className="col-md-9">
+                                    {!editMode ? (
+                                        <p style={vibrantFieldStyle}>{formData.name}</p>
+                                    ) : (
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            className="form-control"
+                                        />
+                                    )}
+                                </div>
                             </div>
-                        </div>
+                            <div className="row mb-4">
+                                <div className="col-md-3">
+                                    <label className="text-muted">Email:</label>
+                                </div>
+                                <div className="col-md-9">
+                                    {!editMode ? (
+                                        <p style={vibrantFieldStyle}>{formData.email}</p>
+                                    ) : (
+                                        <input
+                                            type="text"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            className="form-control"
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                            <div className="row mb-4">
+                                <div className="col-md-3">
+                                    <label className="text-muted">Phone:</label>
+                                </div>
+                                <div className="col-md-9">
+                                    {!editMode ? (
+                                        <p style={vibrantFieldStyle}>{formData.phone}</p>
+                                    ) : (
+                                        <input
+                                            type="text"
+                                            name="phone"
+                                            value={formData.phone}
+                                            onChange={handleChange}
+                                            className="form-control"
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                            <div className="row mb-4">
+                                <div className="col-md-3">
+                                    <label className="text-muted">Address:</label>
+                                </div>
+                                <div className="col-md-9">
+                                    {!editMode ? (
+                                        <p style={vibrantFieldStyle}>{formData.address}</p>
+                                    ) : (
+                                        <input
+                                            type="text"
+                                            name="address"
+                                            value={formData.address}
+                                            onChange={handleChange}
+                                            className="form-control"
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                            <div className="row mb-4">
+                                <div className="col-md-3">
+                                    <label className="text-muted">Pincode:</label>
+                                </div>
+                                <div className="col-md-9">
+                                    {!editMode ? (
+                                        <p style={vibrantFieldStyle}>{formData.pincode}</p>
+                                    ) : (
+                                        <input
+                                            type="text"
+                                            name="pincode"
+                                            value={formData.pincode}
+                                            onChange={handleChange}
+                                            className="form-control"
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                            <div className="text-center mt-5">
+                                {!editMode ? (
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary"
+                                        onClick={handleEdit}
+                                    >
+                                        Edit
+                                    </button>
+                                ) : (
+                                    <>
+                                        <button type="submit" className="btn btn-success mr-2">Submit</button>
+                                        <button
+                                            type="button"
+                                            className="btn btn-secondary"
+                                            onClick={() => setEditMode(false)}
+                                        >
+                                            Cancel
+                                        </button>
+                                    </>
+                                )}
+                                <button
+                                    className="btn btn-link"
+                                    onClick={() => { navigate("/forgot-password") }}
+                                >
+                                    Forgot Password
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
+
             </div>
 
             <div className="userdata">

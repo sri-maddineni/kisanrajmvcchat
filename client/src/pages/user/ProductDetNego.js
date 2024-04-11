@@ -28,6 +28,8 @@ const ProductDetNego = () => {
 
     const [start, setStart] = useState(false)
 
+    const [isClicked, setIsclicked] = useState(false)
+
 
 
     const messageendref = useRef(null)
@@ -168,12 +170,12 @@ const ProductDetNego = () => {
                             </div>
 
                             <div className="card-body">
-                                <div className="card-title d-flex justify-content-between">
+                                <div className="card-title d-flex justify-content-between" style={{ margin: "0", padding: "0" }}>
                                     <p>{product.organic ? "organic" : "inorganic"}</p>
                                     <p>{product.name}</p>
                                     <p>rated : {product.quality} <i className='fa-solid fa-star text-warning'></i></p>
                                 </div>
-                                <p>Quantity Available : {product.quantity} {product.quantityUnit}s</p>
+                                <p className='text-muted fw-bolder' >Quantity Available : {product.quantity} {product.quantityUnit}s</p>
                                 <p style={{ fontWeight: "700" }}>Unit Price : Rs. {product.price} /- per {product.quantityUnit}</p>
                                 <div className="card">
                                     <div style={{ display: "flex", flexDirection: "column", }}>
@@ -197,15 +199,14 @@ const ProductDetNego = () => {
 
                     <div style={{ display: "flex", flexDirection: 'column', width: "60%" }}>
                         <div className='mt-4' style={{ border: "solid 1px black", minHeight: "50vh", overflowY: "auto" }}>
-                            {!chats?.length && (
+                            {isClicked && (
                                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
-
-
-                                    <button className='btn btn-warning'>Start conversation with seller</button>
-
+                                    <button className='btn btn-primary m-1'>Accept and place order</button>
+                                    <button className='btn btn-warning m-1'>Negotiate requirements</button>
                                 </div>
                             )}
                         </div>
+
                         <div className="format my-1" style={{ border: "solid 1px black", display: 'flex', flexDirection: 'column' }}>
                             <div style={{ display: "flex", flexDirection: "row" }}>
                                 <div className="p-1 m-1">

@@ -22,7 +22,7 @@ const Filtersbar = ({ onProductSelect }) => {
 
       <div className="categories m-1 p-1">
         <div className="icon">
-          <i class="fa-solid fa-filter m-1 p-1"></i>
+          <i className="fa-solid fa-filter m-1 p-1"></i>
           Filters
           
         </div>

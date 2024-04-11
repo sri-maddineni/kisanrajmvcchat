@@ -3,12 +3,8 @@ import Spinner from "../../components/UIComponents/Spinner";
 import Footer from "../../components/layouts/Footer";
 import Filtersbar from "../../components/Filters/Filtersbar"
 import AuthContext from "../../context/AuthContext";
-
 import toast from "react-hot-toast";
 import axios from "axios";
-
-
-
 import commodities from "../../Data/Commodities";
 import Nav from "../../components/UIComponents/Nav";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -18,52 +14,36 @@ import ProductCard, { Prod } from "../../components/CardRelated/buycommodity/Pro
 
 const BuyCommodity = () => {
 
-
   const [filteredProducts, setFilteredProducts] = useState([]); // To store filtered products
-
   const [loading, setLoading] = useState(true)
-
   const [searchitem, setSearchitem] = useState("");
-
   const [auth] = useContext(AuthContext);
-
   const [quantity, setquantity] = useState("");
   const [price, setprice] = useState("");
   const [date, setdate] = useState("");
   const [notes, setnotes] = useState("");
-
   const [isFocused, setIsFocused] = useState(false);
-
-
   const [proposedlist, setProposedlist] = useState([]);
   const [products, setProducts] = useState([]);
-
-
-
   const handleCategoryFilter = (selectedCategory) => {
-    // Filter products based on selected category
-    console.log(selectedCategory);
 
-    // Check if selectedCategory is not null or undefined
+
+
+
     if (selectedCategory) {
-      // Filter products based on the selected category
+
       const filtered = products.filter((p) => {
-        // Access category from commodityId if available
         const category = p?.commodityId?.category;
         return category && category.toLowerCase() === selectedCategory.toLowerCase();
       });
 
       if (filtered.length > 0) {
-        //toast.success("Products filtered successfully"); // Display a success message
       } else {
-        //toast.error("No products found for the selected category"); 
-        setFilteredProducts([])// Display an error message if no products are found
+        setFilteredProducts([])
       }
-
-      // Update state with filtered products
       setFilteredProducts(filtered);
     } else {
-      setFilteredProducts(products)// Display an error message if selectedCategory is null or undefined
+      setFilteredProducts(products)
     }
   };
 
@@ -126,6 +106,28 @@ const BuyCommodity = () => {
       setLoading(false)
     }
   }
+
+  const getuserdata = async () => {
+    // setLoading(true)
+    const uid = auth?.user?._id;
+    try {
+      const userdata = await axios.get(`${process.env.REACT_APP_API}/api/v1/users/profile/${uid}`);
+
+      if (userdata.data.success) {
+        console.log(userdata.data.user.wishlisted.length)
+        
+      }
+    } catch (error) {
+      console.log(error)
+    }
+    finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(()=>{
+    getuserdata()
+  },[])
 
 
   const getProposedList = async () => {
@@ -218,10 +220,10 @@ const BuyCommodity = () => {
   const Breadcrumb = () => {
     return (
       <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
 
-          <li class="breadcrumb-item active" aria-current="page">buy-commodity - all categories</li>
+          <li className="breadcrumb-item active" aria-current="page">buy-commodity - all categories</li>
         </ol>
       </nav>
     );
@@ -280,7 +282,7 @@ const BuyCommodity = () => {
       <div className="row m-3" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
         <div style={{ minHeight: "50vh", width: "100%" }}>
           <div className="container" style={{ position: "relative" }}>
-              <FilterSearch/>
+            <FilterSearch />
           </div>
 
           {/* <Filtersbar onProductSelect={handlecategoryFilter} />*/}
@@ -293,11 +295,11 @@ const BuyCommodity = () => {
 
               {filteredProducts.length > 0
                 ? filteredProducts.map((p) => (
-                  auth?.user ? <ProductCard key={p.id} product={p} /> : <Prod key={p.id} product={p} />
+                  auth?.user ? <ProductCard key={p._id} product={p} /> : <Prod key={p._id} product={p} />
                 ))
                 : products
                   .filter((p) => p.name.toLowerCase().includes(searchitem.toLowerCase()))
-                  .map((p) => auth?.user ? <ProductCard key={p.id} product={p} /> : <Prod key={p.id} product={p} />)
+                  .map((p) => auth?.user ? <ProductCard key={p._id} product={p} /> : <Prod key={p._id} product={p} />)
               }
 
 
@@ -338,7 +340,7 @@ export const FilterSearch = ({ products, handleProductFilter }) => {
         onChange={(e) => setSearchitem(e.target.value)}
         aria-label="Search"
         onFocus={() => setIsFocused(true)}
-        // onBlur={handleBlur}
+      // onBlur={handleBlur}
       />
       {searchitem && ( // Render the cross button only when search item is not empty
         <button

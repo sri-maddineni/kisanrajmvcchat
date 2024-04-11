@@ -4,11 +4,12 @@ import { useState, useEffect } from "react";
 import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { format } from "date-fns";
 import Nav from "../../components/UIComponents/Nav";
 import Spinner from "../../components/UIComponents/Spinner";
+import TopFilterBar from "../../components/CardRelated/buycommodity/TopFilterBar";
 
 const Listings = () => {
   const [products, setProducts] = useState([]);
@@ -50,14 +51,31 @@ const Listings = () => {
     )
   }
 
+  const Breadcrumb = () => {
+    return (
+      <nav aria-label="breadcrumb">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
+          <li className="breadcrumb-item"><NavLink to="/dashboard/user/profile">Profile</NavLink></li>
+
+
+          <li className="breadcrumb-item active" aria-current="page">Listings</li>
+        </ol>
+      </nav>
+    );
+  };
+
+
   return (
     <>
       <Nav />
+      <Breadcrumb />
       <div>
+        <TopFilterBar/>
         <div className="row">
 
-          <div style={{ minHeight: "50vh" }}>
-            <h1 className="text-center">Listings</h1>
+          <div className="container" style={{ minHeight: "50vh" }}>
+
             <div
               style={{
                 display: "flex",
@@ -74,7 +92,7 @@ const Listings = () => {
                         to={`/dashboard/user/product/${p._id}`}
                         className="text-dark text-decoration-none"
                       >
-                        <div className="card" style={{ width: "16rem" }}>
+                        <div className="card" style={{ width: "14rem" }}>
                           <span className="position-absolute top-0 translate-middle badge rounded-pill bg-danger text-light" style={{ left: "90%", zIndex: "1" }}>{" "}
                             {p?.commodityId?.category}
                           </span>
@@ -82,7 +100,7 @@ const Listings = () => {
                             src={`/api/v1/products/product-photo/${p._id}`}
                             className="card-img-top"
                             alt={p.name}
-                            style={{ height: "25vh", objectFit: "cover" }}
+                            style={{ height: "20vh", objectFit: "cover" }}
                           />
                           <div className="card-body">
                             <h5
@@ -113,15 +131,18 @@ const Listings = () => {
                               </span>{" "}
                               per{" "}
                               <span>
-                                {p.quantity}{" "}
+
                                 {p.quantityUnit ? p.quantityUnit : ""}
                               </span>
+                              <br />
+
                             </p>
+                            <p><span>{p.quantity} {p.quantityUnit}s available</span></p>
                             <p style={{ fontSize: "0.8rem" }}>
                               Posted on :{" "}
                               {format(new Date(p.createdAt), `dd MMM yyyy hh:MM a`)}
                             </p>
-                            <p style={{ fontSize: "0.8rem" }}>{p._id}</p>
+                            <p style={{ fontSize: "0.7rem" }}>{p._id}</p>
                           </div>
                         </div>
                       </Link>

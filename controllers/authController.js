@@ -114,20 +114,7 @@ export const loginController = async (req, res) => {
     res.status(200).send({
       success: true,
       message: "Login success",
-      user: {
-        name: user.name,
-        _id: user._id,
-        email: user.email,
-        phone: user.phone,
-        address: user.address,
-        latitude: user?.latitude,
-        longitude: user?.longitude,
-        pincode: user?.pincode,
-        role: user.role,
-        proposalsRecieved: user?.proposalsReceived,
-        proposalsSent: user.proposalsSent,
-
-      },
+      user,
       token
     });
   } catch (error) {
@@ -212,7 +199,8 @@ export const getUserData = async (req, res) => {
       .populate({
         path: "listings", // Field to populate
         model: "products" // Model to use for population
-      });
+      })
+      .populate("wishlist");
 
 
     if (!user) {

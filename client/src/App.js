@@ -41,6 +41,8 @@ import CreateColdstorage from './pages/admin/CreateColdstorage';
 import ColdStorages from './pages/user/ColdStorages';
 import Allusers from './pages/user/Allusers';
 import CategoryProducts from './pages/user/CategoryProducts';
+import Wishlisted from './pages/user/Wishlisted';
+import BuyEquipment from './pages/user/BuyEquipment';
 
 
 
@@ -70,9 +72,15 @@ function App() {
             <Route path='user/product/:pid' element={<UpdateProduct />} />
             <Route path='user/sell-commodity' element={<SellCommodity />} />
             <Route path='user/buy-commodity/all' element={<BuyCommodity />} />
-            <Route path='user/buy-commodity/:cat/:pid' element={<ProductDetNego />} />
+            <Route path='user/buy-commodity/' element={<BuyCommodity />} />
+            <Route path='user/buy-commodity/:cat/:pnameslug/:pid/' element={<ProductDetNego />} />
+            <Route path='user/buy-commodity/:cat/:pslug' element={<BuyCommodity />} />
             <Route path='user/profile/:uid' element={<UserProfile />} />
             <Route path='user/buy-commodity/:category' element={<CategoryProducts />} />
+
+            {/* tranactions and orders */}
+            <Route path='user/my-wishlist' element={<Wishlisted/>} />
+
 
             <Route path='user/history/negotiations' element={<NegHistoy />} />
             <Route path='user/responses/:pid' element={<Responses />} />
@@ -83,6 +91,7 @@ function App() {
             <Route path='user/post-equipment' element={<Equipment />} />
             <Route path='user/hire-equipment' element={<HireEquipment />} />
             <Route path='user/my-equipment-listing' element={<EquipmentListing />} />
+            <Route path='user/buy-equipment' element={<BuyEquipment />} />
 
             <Route path='user/allusers' element={<Allusers />} />
             

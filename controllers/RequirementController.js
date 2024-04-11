@@ -454,3 +454,20 @@ export const addidcontroller = async (req, res) => {
     console.log(error)
   }
 }
+
+
+
+
+export const addtowishlistcontroller = async (req, res) => {
+  try {
+    const { uid, pid } = req.body;
+
+    // Update the user document to add the pid to the wishlist array if it doesn't already exist
+    await userModel.findByIdAndUpdate(uid, { $addToSet: { wishlist: pid } });
+
+    res.status(200).json({ success: true, message: 'Product added to wishlist successfully' });
+  } catch (error) {
+    console.error('Error adding product to wishlist:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};

@@ -23,11 +23,11 @@ const Footer = () => {
             </button>
           </div>
         </div>
-        <div className="div2">
+        {/* <div className="div2">
           <h2>Sponsors</h2>
-          <a href="/">ITC</a>
-          <a href="/">TATA</a>
-        </div>
+          <a href="/">Raveendranath</a>
+          
+        </div> */}
         <div className="div3 text-center">
           <h2>All links</h2>
           <Link to="/dashboard/user/buy-commodity/all">Buy</Link>
@@ -35,9 +35,8 @@ const Footer = () => {
           <Link to="/dashboard/user/hire-equipment">Hire</Link>
           <Link to="/">Companies</Link>
           <Link to="/dashboard/user/buy-commodity">All Commodities</Link>
-          <Link to="/">Cold storages</Link>
-          <Link to="/">Equipment for Hire</Link>
-          <Link to="/">Equipment for sale</Link>
+          <Link to="/dashboard/user/coldstorages">Cold storages</Link>
+          <Link to="/dashboard/user/buy-equipment">Equipment for sale</Link>
         </div>
 
         <div className="div4 text-center">

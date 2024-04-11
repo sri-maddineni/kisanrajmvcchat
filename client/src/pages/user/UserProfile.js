@@ -218,12 +218,12 @@ const UserProfile = () => {
             <div className="network m-3">
               <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
                 <p className="foltxt">{user?.followers?.length}</p>
-                <p>Followers</p>
+                <p style={{cursor:"pointer"}}>Followers</p>
                 <button className="btn btn-sm btn-primary" onClick={() => followfun()}>follow</button>
               </div>
               <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
                 <p className="foltxt">{user?.following?.length}</p>
-                <p>Following</p>
+                <p style={{cursor:"pointer"}}>Following</p>
                 <button className="btn btn-sm btn-primary">
                   Message
                 </button>
@@ -264,6 +264,7 @@ const UserProfile = () => {
                 <Radio className="navi" value={2}>Requirements</Radio>
                 <Radio className="navi" value={3}>Equipment For hire</Radio>
                 <Radio className="navi" value={4}>Equipment For sale</Radio>
+                {/* <Radio className="navi" value={5}>Transactions</Radio> */}
 
               </Radio.Group>
               <hr />

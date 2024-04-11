@@ -10,7 +10,8 @@ import {
     declineOfferController,
     negotiateController,
     getAllPotentialsController,
-    addidcontroller
+    addidcontroller,
+    addtowishlistcontroller
  } from "../controllers/RequirementController.js";
 
 import { isAdmin, isUser, requireSignIn } from "../middlewares/authMiddleware.js";
@@ -53,6 +54,9 @@ router.get("/get-all-potentials",requireSignIn,isUser, getAllPotentialsControlle
 
 //post an id to auths proposalssentids 
 router.post("/addid",requireSignIn,isUser,addidcontroller)
+
+//wishlist an item
+router.post("/addtowishlist",requireSignIn,isUser,addtowishlistcontroller)
 
 
 

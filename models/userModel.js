@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema(
       default: []
     },
     proposalsSentids: {
-      type: Array, 
+      type: Array,
       default: []
     },
     proposalsReceived: {
@@ -69,7 +69,7 @@ const userSchema = new mongoose.Schema(
       default: []
     },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }], // Array to store user IDs of followers
-    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }], 
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
     potentials: [{ type: mongoose.Schema.Types.ObjectId, ref: 'potentials' }],// Array to store user IDs of following
     roles: {
       type: Array,
@@ -90,7 +90,11 @@ const userSchema = new mongoose.Schema(
     listings: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'products'
-    }]
+    }],
+    wishlist: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'products'
+    }],
 
   },
   { timestamps: true }
