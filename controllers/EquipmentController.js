@@ -180,6 +180,24 @@ export const getEquipmentListing = async (req, res) => {
 };
 
 
+//get all equipment for hire
+
+export const gethireequipmentcontroller = async (req, res) => {
+    try {
+        const equip = await EquipmentModel.find({ purp: "hire" }).populate("owner");
+        res.status(200).json({
+            success: true,
+            message: "Hire equipment fetched successfully",
+            equip: equip
+        });
+    } catch (error) {
+        console.error("Error fetching hire equipment:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch hire equipment"
+        });
+    }
+};
 
 
 

@@ -1,6 +1,6 @@
 import express from "express";
 import { requireSignIn, isAdmin, isUser } from "../middlewares/authMiddleware.js";
-import { createEquipmentCategoryController,getEquipmentCategoryController,getEquipmentController,getEquipmentListing,postEquipmentController } from "../controllers/EquipmentController.js";
+import { createEquipmentCategoryController,getEquipmentCategoryController,getEquipmentController,getEquipmentListing,postEquipmentController, gethireequipmentcontroller } from "../controllers/EquipmentController.js";
 const router = express.Router();
 
 //routes
@@ -13,4 +13,5 @@ router.get('/my-equipment-listing/:userId',requireSignIn,isUser,getEquipmentList
 
 
 router.post('/postequipment',requireSignIn,isUser,postEquipmentController)
+router.get('/gethireequipment',gethireequipmentcontroller)
 export default router;

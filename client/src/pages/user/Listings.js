@@ -120,7 +120,7 @@ const Listings = () => {
                               <i className="fa fa-star fa-sm text-warning"> </i>
                             </h5>
                             <p
-                              style={{ fontSize: "0.8rem", fontWeight: "600" }}
+                              style={{ fontSize: "0.8rem", fontWeight: "600", margin:"0",padding:"0" }}
                             >
                               {p.description}
                             </p>
@@ -137,16 +137,16 @@ const Listings = () => {
                               <br />
 
                             </p>
-                            <p><span>{p.quantity} {p.quantityUnit}s available</span></p>
-                            <p style={{ fontSize: "0.8rem" }}>
+                            <p className="fw-bold text-success"><span>{p.quantity} {p.quantityUnit}s available</span></p>
+                            <p style={{ fontSize: "0.8rem",margin:"0",padding:"0"  }}>
                               Available by :{" "}
                               {format(new Date(p.availableDate), `dd MMM yyyy`)}
                             </p>
-                            <p style={{ fontSize: "0.8rem" }}>
+                            <p style={{ fontSize: "0.8rem", margin:"0",padding:"0" }}>
                               Posted on :{" "}
                               {format(new Date(p.createdAt), `dd MMM yyyy`)}
                             </p>
-                            <p style={{ fontSize: "0.7rem" }}>{p._id}</p>
+                            
                           </div>
                         </div>
                       </Link>

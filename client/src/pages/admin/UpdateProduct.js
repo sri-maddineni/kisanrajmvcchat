@@ -157,16 +157,14 @@ const UpdateProduct = () => {
     return (
         <>
             <Nav/>
-            <div className="row m-3">
-                <div className="col-md-3">
-                    {auth.user.role === "0" ? <AdminMenu /> : <UserMenu />}
-                </div>
-                <div className="col-md-9 text-center">
+            <div className="container">
+                
+                <div className="text-center">
                     <h3>Update Product</h3>
-                    <div className="m-1">
+                    <div className="container">
                         
                         {photo ? (
-                            <div className="mb-3 text-center">
+                            <div className="container mb-3 text-center">
                                 <img src={URL.createObjectURL(photo)} alt="Product " style={{height:"200px",width:"300px"}} className="img img-responsive" />
                             </div>
                         ) : (
