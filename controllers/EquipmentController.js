@@ -40,20 +40,22 @@ export const createEquipmentCategoryController = async (req, res) => {
 export const postEquipmentController = async (req, res) => {
     try {
         // Extracting data from the request body
-        const { equipment_category_id, equipment_desc, equipment_model, license, owner_id } = req.body;
+        const { item, cost, phone , address , owner,des,purp} = req.body;
 
         // Validation
-        if (!equipment_category_id || !equipment_desc || !equipment_model || !license || !owner_id) {
+        if (!item || !cost || !phone || !address || !owner) {
             return res.status(400).send({ success: false, message: 'All fields are required.' });
         }
 
         // Create new equipment object
         const equipment = new EquipmentModel({
-            equipment_category_id,
-            equipment_desc,
-            equipment_model,
-            license,
-            owner_id
+            item,
+            cost,
+            phone,
+            address,
+            owner,
+            des,
+            purp
         });
 
         // Save equipment to the database
@@ -70,6 +72,7 @@ export const postEquipmentController = async (req, res) => {
         })    
     }
 }
+
 
 export const getEquipmentCategoryController = async(req,res) => {
     try{
@@ -175,3 +178,62 @@ export const getEquipmentListing = async (req, res) => {
         });
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export const postEquipmentController = async (req, res) => {
+//     try {
+//         // Extracting data from the request body
+//         const { equipment_category_id, equipment_desc, equipment_model, license, owner_id } = req.body;
+
+//         // Validation
+//         if (!equipment_category_id || !equipment_desc || !equipment_model || !license || !owner_id) {
+//             return res.status(400).send({ success: false, message: 'All fields are required.' });
+//         }
+
+//         // Create new equipment object
+//         const equipment = new EquipmentModel({
+//             equipment_category_id,
+//             equipment_desc,
+//             equipment_model,
+//             license,
+//             owner_id
+//         });
+
+//         // Save equipment to the database
+//         await equipment.save();
+
+//         // Respond with success message
+//         res.status(201).send({ success: true, message: 'Equipment created successfully.', equipment });
+//     } catch (error) {
+//         console.log(error)
+//         res.status(500).send({
+//             success: false,
+//             message: "Error in creating Euipment Category",
+//             error
+//         })    
+//     }
+// }

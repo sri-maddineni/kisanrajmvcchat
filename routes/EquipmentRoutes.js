@@ -10,4 +10,7 @@ router.post('/post-equipment', requireSignIn,isUser, postEquipmentController );
 router.get('/equipment-categories',requireSignIn,isUser,getEquipmentCategoryController);
 router.get('/hire-equipment/',requireSignIn,isUser,getEquipmentController);
 router.get('/my-equipment-listing/:userId',requireSignIn,isUser,getEquipmentListing);
+
+
+router.post('/postequipment',requireSignIn,isUser,postEquipmentController)
 export default router;

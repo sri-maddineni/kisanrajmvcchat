@@ -3,17 +3,47 @@ import Nav from '../../components/UIComponents/Nav'
 import Footer from '../../components/layouts/Footer'
 import "../user/usercss/PostEquipment.css"
 import AuthContext from '../../context/AuthContext';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { add } from 'date-fns';
 
 
 const Equipment = () => {
 
   const [auth, setAuth] = useContext(AuthContext)
 
-  const [id, setId] = useState("")
-  const [des, setdes] = useState("")
-  const [name, setname] = useState("")
-  const [license, setLicense] = useState("")
+  
   const owner = auth?.user?._id;
+
+  const [item,setitem]=useState("")
+  const [cost,setcost]=useState("")
+  const [phone,setphone]=useState("")
+  const [address,setaddress]=useState('')
+  const [des,setdes]=useState("")
+  const [purp,setpurp]=useState("hire")
+
+  const handlesubmit=async(e)=>{
+    e.preventDefault()
+    const owner=auth?.user?._id;
+    const formdata={item, cost, phone, address, owner,des,purp}
+    try {
+      const res=await axios.post(`${process.env.REACT_APP_API}/api/v1/equipment/postequipment`,formdata)
+      console.log(res)
+      if(res.data.success){
+        console.log("success")
+        toast.success("equipment posted successfully!")
+        setcost("")
+        setitem("")
+        setphone("")
+        setaddress("")
+        setdes("")
+        
+      }
+    } catch (error) {
+      toast.error("Failed to post equipment")
+      console.log(error)
+    }
+  }
 
 
 
@@ -25,10 +55,10 @@ const Equipment = () => {
         <div className="register-photo">
           <div className="form-container">
             <div className="image-holder"></div>
-            <form method="post">
+            <form method='post'>
               <h2 className="text-center"><strong>Post Equipment for hire</strong></h2>
               <div className="form-group">
-                <input list="equip" className="form-control" name="browser" id="browser" placeholder='select equipment' />
+                <input list="equip"  value={item} className="form-control" name="browser" id="browser" placeholder='select equipment' onChange={(e)=>{setitem(e.target.value)}} />
 
                 <datalist id="equip">
                   <option value="Tractors" />
@@ -39,11 +69,11 @@ const Equipment = () => {
                  
                 </datalist>
               </div>
-              <div className="form-group"><input className="form-control" type="number" name="email" placeholder="Rs. Cost per hour" /></div>
-              <div className="form-group"><input className="form-control" type="text" name="password" placeholder="phone number" /></div>
-              <div className="form-group"><input className="form-control" type="text" name="password-repeat" placeholder="address" /></div>
-              
-              <div className="form-group"><button className="btn btn-primaryy btn-block text-white" type="submit">Post Equipment</button></div>
+              <div className="form-group"><input value={cost} className="form-control" type="number" name="item" placeholder="Rs. Cost per hour" onChange={(e)=>{setcost(e.target.value)}} /></div>
+              <div className="form-group"><input value={phone} className="form-control" type="number" name="phone" placeholder="Phone number" onChange={(e)=>{setphone(e.target.value)}}/></div>
+              <div className="form-group"><input value={address} className="form-control" type="text" name="address" placeholder="Address" onChange={(e)=>{setaddress(e.target.value)}} /></div>
+              <div className="form-group"><input value={des} className="form-control" type="text" name="description" placeholder="Description of vehicle, license..." onChange={(e)=>{setdes(e.target.value)}} /></div>
+              <div className="form-group"><button className="btn btn-primaryy btn-block text-white" type="submit" onClick={handlesubmit}>Post Equipment</button></div>
             </form>
           </div>
         </div>
