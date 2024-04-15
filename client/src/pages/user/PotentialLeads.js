@@ -51,11 +51,11 @@ const PotentialLeads = () => {
       <Nav />
       <div style={{ minHeight: '50vh', display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
         {potentials && potentials.map((potential) => (
-          <div key={potential._id} className="card m-2" style={{ width: '18rem' }}>
+          <div key={potential._id} className="card m-2" style={{ width: '18rem', height:"16rem" }}>
             <div className="card-body">
               <h5 className="card-title">{potential.organic?"Organic":"Inorganic"} {potential.productName}</h5>
               <p className="card-text text-muted">Quantity Required: {potential.quantity} {potential.quantityUnit}s</p>
-              <p className="card-text">Price offered: <span style={{fontWeight:"700"}}> &#8377;{potential.price}/- per {potential.quantityUnit}</span></p>
+              <p className="card-text">Price offered: <span style={{fontWeight:"700"}}> &#8377;{potential.price} per {potential.quantityUnit}</span></p>
               <p className="card-text">Buyer: {potential?.buyerId?.name}</p>
               <div className="d-flex justify-content-center">
                 

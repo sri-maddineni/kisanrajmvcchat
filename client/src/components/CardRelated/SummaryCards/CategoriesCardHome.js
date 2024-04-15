@@ -81,7 +81,7 @@ function CategoriesCardHome() {
           {
             equipcategories.map(category => (
               <>
-                <div onClick={()=>navigate(`/dashboard/user/equipment/${slugify(category.name.toLowerCase())}`)} className='p-1 m-1 d-flex flex-column justify-content-center align-items-center' style={{ width: "18rem", cursor:'pointer' }}>
+                <div onClick={()=>navigate(`/dashboard/user/hire-equipment/${slugify(category.name.toLowerCase())}`)} className='p-1 m-1 d-flex flex-column justify-content-center align-items-center' style={{ width: "18rem", cursor:'pointer' }}>
                   <img src={category.image} alt="catimage" style={{ objectFit: "cover", width: "175px", height: "175px", borderRadius: "75%" }} />
                   <p className='my-3' style={{ fontWeight: "400",fontSize:"0.9rem" }}>{category.name}</p>
                 </div>

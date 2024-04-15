@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import axios from "axios"
 import toast from 'react-hot-toast';
 
-const BuyEquipment = () => {
+const HireEquipment = () => {
 
     const [equip, setequip] = useState([])
 
@@ -39,6 +39,14 @@ const BuyEquipment = () => {
         getEquientHire();
     }, [])
 
+    const conditionalHire=async()=>{
+        try {
+            const res=await axios.get()
+        } catch (error) {
+            
+        }
+    }
+
     const Breadcrumb = () => {
         return (
             <nav aria-label="breadcrumb">
@@ -70,7 +78,7 @@ const BuyEquipment = () => {
                                 <p style={{margin:"0",padding:"0"}}>{item.contact}</p>
                                 <p className="d-flex justify-content-between" style={{margin:"0",padding:"0"}}>{item.owner.name} : {item.phone}</p>
                                 <p style={{margin:"0",padding:"0"}}>{item.address}</p>
-                                <abbr title="For unit time cost description click here" onClick={()=>{}}><p className='text-muted fw-bolder' style={{margin:"0",padding:"0"}}>Unit time cost : &#8377;{item.cost}</p></abbr>
+                                <abbr title="For unit time cost description click here" onClick={()=>{alert("for each equipment, it has its own unit time: \n tractors: per day \n sparayers: per day \n JCB : per hour etc..,")}}><p className='text-muted fw-bolder' style={{margin:"0",padding:"0"}}>Unit time cost : &#8377;{item.cost}</p></abbr>
                             </div>
                         </div>
 
@@ -83,4 +91,4 @@ const BuyEquipment = () => {
     )
 }
 
-export default BuyEquipment
+export default HireEquipment

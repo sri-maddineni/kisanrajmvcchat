@@ -5,20 +5,20 @@ import EquipmentModel from "../models/EquipmentModel.js";
 
 export const createEquipmentCategoryController = async (req, res) => {
     try {
-        const {equipment_category} = req.body;
-       
+        const { equipment_category } = req.body;
+
         //validation
-        if(!equipment_category){
+        if (!equipment_category) {
             console.log("equipment_category should not be empty found");
         }
-        if(req.body.keywords){
-            const {equipment_category,keywords} = req.body;
-            const data = {equipment_category,keywords}
-            const product = await new EquipmentCategoryModel({equipment_category,keywords}).save()
+        if (req.body.keywords) {
+            const { equipment_category, keywords } = req.body;
+            const data = { equipment_category, keywords }
+            const product = await new EquipmentCategoryModel({ equipment_category, keywords }).save()
         }
-        else{
-            const {equipment_category} = req.body;
-            const product = await new EquipmentCategoryModel({equipment_category}).save()
+        else {
+            const { equipment_category } = req.body;
+            const product = await new EquipmentCategoryModel({ equipment_category }).save()
         }
         res.status(201).send({
             success: true,
@@ -30,7 +30,7 @@ export const createEquipmentCategoryController = async (req, res) => {
             success: false,
             message: "Error in creating Euipment Category",
             error
-        })    
+        })
     }
 }
 
@@ -40,7 +40,7 @@ export const createEquipmentCategoryController = async (req, res) => {
 export const postEquipmentController = async (req, res) => {
     try {
         // Extracting data from the request body
-        const { item, cost, phone , address , owner,des,purp} = req.body;
+        const { item, cost, phone, address, owner, des, purp } = req.body;
 
         // Validation
         if (!item || !cost || !phone || !address || !owner) {
@@ -69,13 +69,13 @@ export const postEquipmentController = async (req, res) => {
             success: false,
             message: "Error in creating Euipment Category",
             error
-        })    
+        })
     }
 }
 
 
-export const getEquipmentCategoryController = async(req,res) => {
-    try{
+export const getEquipmentCategoryController = async (req, res) => {
+    try {
         console.log("before fetch command");
         // Fetch all equipment categories from the database
         const categories = await EquipmentCategoryModel.find();
@@ -89,13 +89,13 @@ export const getEquipmentCategoryController = async(req,res) => {
             message: "All categories",
             categories
         })
-    }catch (error) {
+    } catch (error) {
         console.log(error)
         res.status(500).send({
             success: false,
             message: "Error in listing Euipment Category",
             error
-        })    
+        })
     }
 }
 // This listing is without the equipment owner data
@@ -136,7 +136,7 @@ export const getEquipmentController = async (req, res) => {
 //                 model: userModel, // Use the imported User model
 //                 select: 'name email phone address' // Include fields you want to select from User model
 //             });
-        
+
 //         const categories = await EquipmentCategoryModel.find();
 
 //         res.status(200).send({
@@ -184,7 +184,11 @@ export const getEquipmentListing = async (req, res) => {
 
 export const gethireequipmentcontroller = async (req, res) => {
     try {
-        const equip = await EquipmentModel.find({ purp: "hire" }).populate("owner");
+
+        const uid=req?.user?._id;
+        
+        const equip = await EquipmentModel.find({ purp: "hire" , owner: { $ne: uid }}).populate("owner");
+        
         res.status(200).json({
             success: true,
             message: "Hire equipment fetched successfully",
@@ -195,6 +199,32 @@ export const gethireequipmentcontroller = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "Failed to fetch hire equipment"
+        });
+    }
+};
+
+
+
+export const getbuyequipmentcontroller = async (req, res) => {
+    try {
+        const uid = req?.user?._id;
+        const equip = await EquipmentModel.find({ purp: "sale", owner: { $ne: uid } }).populate("owner");
+
+        if(equip){
+            res.status(200).json({
+                success: true,
+                message: "Buy equipment fetched successfully",
+                equip: equip
+            });
+        }
+        else{
+            console.log("something went wrong")
+        }
+    } catch (error) {
+        console.error("Error fetching buy equipment:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch buy equipment"
         });
     }
 };
@@ -252,6 +282,6 @@ export const gethireequipmentcontroller = async (req, res) => {
 //             success: false,
 //             message: "Error in creating Euipment Category",
 //             error
-//         })    
+//         })
 //     }
 // }

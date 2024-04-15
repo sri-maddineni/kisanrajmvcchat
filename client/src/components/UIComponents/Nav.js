@@ -54,7 +54,7 @@ export default function Nav() {
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><Link className="dropdown-item" to="/dashboard/user/sell-commodity" >Sell Commodity</Link></li>
-                                    <li><Link className="dropdown-item" to="/cp" >Sell Equipment</Link></li>
+                                    <li><Link className="dropdown-item" to="/dashboard/user/sell-equipment" >Sell Equipment</Link></li>
 
                                 </ul>
                             </li>

@@ -51,10 +51,10 @@ const Allusers = () => {
             <div className="container border border-info" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
                 {users.length > 0 ? (
                     users.map(user => (
-                        <div className='card bg-secondary text-warning' onClick={() => navigate(`/dashboard/user/profile/${user._id}`)} style={{ width: "15rem" }} key={user._id}>
-                            <p>name: {user.name}</p>
-                            <p>email:{user.email}</p>
-                            <p>phone: {user.phone}</p>
+                        <div className='card' onClick={() => navigate(`/dashboard/user/profile/${user._id}`)} style={{ width: "18rem" }} key={user._id}>
+                            <p><i className="fa-solid fa-user mx-2"></i> : {user.name}</p>
+                            <p><i className="fa-solid fa-envelope mx-2"></i> : {user.email}</p>
+                            <p><i className="fa-solid fa-phone mx-2"></i> : {user.phone}</p>
                         </div>
                     ))
                 ) : (

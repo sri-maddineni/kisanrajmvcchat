@@ -5,10 +5,14 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import Spinner from '../../components/UIComponents/Spinner';
 import "./usercss/cold.css"
+import randint from "random-int"
+
 
 const ColdStorages = () => {
   const [coldstorages, setColdStorages] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const images=["https://dce0qyjkutl4h.cloudfront.net/wp-content/webp-express/webp-images/uploads/2020/01/cold-storage-1.jpg.webp", "https://stellarfoodforthought.net/wp-content/uploads/2018/08/IMG_2007-e1600808052986.jpg", "https://media.licdn.com/dms/image/C4E12AQGfpTZRLTLLkA/article-cover_image-shrink_720_1280/0/1634835177119?e=2147483647&v=beta&t=qRyRzxImCCThsXwpMsovUN4IoweNAH0mFl89ztGgEug"]
 
   const getCold = async () => {
     setLoading(true);
@@ -45,16 +49,16 @@ const ColdStorages = () => {
   return (
     <>
       <Nav />
-      <div className="container" style={{ marginTop: '20px' }}>
+      <div className="container" style={{ marginTop: '20px' , minHeight:"50vh"}}>
         <div className="r">
           {coldstorages.map((coldStorage) => (
             <div key={coldStorage._id}>
 
-              <div className="card" style={{ width: "18rem", minHeight:"18rem"}}>
+              <div className="card" style={{ width: "18rem", minHeight:"24rem"}}>
 
-              <div style={{ width: "18rem" }}>
-                <div className="card-img">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZyvAhKAugumJj0TveFUEfRIpZ8qTeKf939w&usqp=CAU" style={{ width: "100px", objectFit: "cover" }} alt="cold" />
+              
+                <div>
+                  <img src={images[randint(0,2)]}  style={{height:"150px"}} alt="cold" />
                 </div>
                 <div className="card-body">
                   <h5 className="card-title">{coldStorage.name}</h5>
@@ -64,7 +68,7 @@ const ColdStorages = () => {
                 </div> 
                 </div>
 
-              </div>
+              
             </div>
           ))}
         </div>

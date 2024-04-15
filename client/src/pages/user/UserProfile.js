@@ -266,7 +266,7 @@ const UserProfile = () => {
                 <Radio className="navi" value={2}>Requirements</Radio>
                 <Radio className="navi" value={3}>Equipment For hire</Radio>
                 <Radio className="navi" value={4}>Equipment For sale</Radio>
-                {/* <Radio className="navi" value={5}>Transactions</Radio> */}
+             
 
               </Radio.Group>
               <hr />

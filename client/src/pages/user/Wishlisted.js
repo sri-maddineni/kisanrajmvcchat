@@ -76,8 +76,10 @@ const Wishlisted = () => {
 
     try {
       const buyer=auth?.user?._id;
-      let seller=JSON.stringify(itemid.sellerId.toString());
-       seller = seller.substring(1, seller.length - 1);
+      // let seller=JSON.stringify(itemid.sellerId.toString());
+      //  seller = seller.substring(1, seller.length - 1);
+
+      const seller=JSON.stringify(itemid.sellerId)
       
       const details={itemid,buyer,seller}
       const res=await axios.post(`${process.env.REACT_APP_API}/api/v1/products/addtoorders`,details)
@@ -213,7 +215,7 @@ const Wishlisted = () => {
               <div style={{ display: "flex", flexDirection: "row",  }}>
                 <button style={{width:"100px", height:"30px"}} className='btn btn-sm btn-outline-info m-1'>view details</button>
                 <button style={{width:"100px", height:"30px"}} className='btn btn-sm btn-primary m-1' onClick={() => { navigate(`/dashboard/user/profile/${item.sellerId}`) }}>Contact seller</button>
-                <button style={{width:"100px", height:"30px"}} className='btn btn-sm btn-warning m-1' onClick={()=>{console.log(item); addtoorders(item.commodityId)}}>Place order</button>
+                <button style={{width:"100px", height:"30px"}} className='btn btn-sm btn-warning m-1' onClick={()=>{addtoorders(item.commodityId)}}>Place order</button>
                 <i className="fa-solid fa-trash-can m-3 text-danger" style={{ cursor: "pointer" }}></i>
               </div>
 

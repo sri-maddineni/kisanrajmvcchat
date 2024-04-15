@@ -43,6 +43,7 @@ import Allusers from './pages/user/Allusers';
 import CategoryProducts from './pages/user/CategoryProducts';
 import Wishlisted from './pages/user/Wishlisted';
 import BuyEquipment from './pages/user/BuyEquipment';
+import SellEquipment from './pages/user/SellEquipment';
 
 
 
@@ -91,7 +92,10 @@ function App() {
             <Route path='user/post-equipment' element={<Equipment />} />
             <Route path='user/hire-equipment' element={<HireEquipment />} />
             <Route path='user/my-equipment-listing' element={<EquipmentListing />} />
+            <Route path='user/sell-equipment' element={<SellEquipment />} />
             <Route path='user/buy-equipment' element={<BuyEquipment />} />
+
+            <Route path='user/hire-equipment/:slug' element={<HireEquipment />} />
 
             <Route path='user/allusers' element={<Allusers />} />
             
