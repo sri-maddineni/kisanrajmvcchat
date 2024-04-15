@@ -10,7 +10,7 @@ import {
     getSingleProductController,
     getAllProductController,
     proposedListController,
-    
+    addtoorderscontroller,
     proposalsRecievedList,
     getProductsController
 }
@@ -53,6 +53,11 @@ router.post("/proposedlist", requireSignIn, isUser, proposedListController)
 
 // proposals recieved list
 router.post("/proposals-recieved", requireSignIn, isUser, proposalsRecievedList)
+
+
+//add to orders
+router.post("/addtoorders",requireSignIn,isUser,addtoorderscontroller)
+
 
 
 export default router;

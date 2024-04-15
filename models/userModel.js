@@ -95,6 +95,10 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'products'
     }],
+    ordersplaced:[{
+      type: Array,
+      default:[]
+    }]
 
   },
   { timestamps: true }

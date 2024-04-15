@@ -127,7 +127,7 @@ export default function Nav() {
                                     </li>
 
                                     <li className="nav-item">
-                                        <Link className="nav-link active p-3" aria-current="page" to="/dashboard/user/Orders"><FaCartShopping /></Link>
+                                        <Link className="nav-link active p-3" aria-current="page" to="/dashboard/user/orders"><FaCartShopping /></Link>
                                     </li>
 
                                     {/* <li className="nav-item">

@@ -260,7 +260,9 @@ const ProductDetNego = () => {
                                         placeholder="Some notes..."
                                     />
                                 </div>
+                                
                                 <button className="btn btn-sm btn-primary m-3">send offer</button>
+                               <button className="btn btn-sm btn-primary m-3">Accept offer</button> {/*  on clicking on accept offer the response should be sent to sellers transactos page */}
                             </div>
                         </div>
 

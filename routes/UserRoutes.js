@@ -2,7 +2,8 @@ import express from "express";
 import {
     getUserData,updateUserData,
     followController,
-    getalluserscontroller
+    getalluserscontroller,
+    getorderscontroller
 } from "../controllers/authController.js";
 
 
@@ -13,6 +14,14 @@ const router = express.Router();
 ////register user method post
 
 router.get("/profile/:uid", getUserData);
+
+
+
+//to get orders of user
+router.get("/profile/orders/:uid", getorderscontroller);
+
+
+
 
 //change or edit profile
 

@@ -268,7 +268,7 @@ export const updateProductController = async (req, res) => {
         }
 
         const product = await ProductModel.findByIdAndUpdate(req?.params.pid, {
-            ...req.fields, slug: slugify(name)
+            ...req.fields, slug: slugify(name.toLowerCase())
         }, { new: false })
         /*
 
@@ -464,3 +464,17 @@ export const proposeOffer = async (req, res) => {
 
 
 
+
+
+export const addtoorderscontroller = async (req, res) => {
+    try {
+        const { itemid, seller, buyer } = req.body;
+        const ordersplaced = { itemid, sellerid: seller, buyer }; 
+        const user = await userModel.findByIdAndUpdate(buyer, { $addToSet: { ordersplaced: ordersplaced } }, { new: true });
+
+        return res.status(200).json({ success: true, message: 'Order added successfully',user });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};

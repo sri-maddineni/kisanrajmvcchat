@@ -3,6 +3,7 @@ import userModel from "../models/userModel.js";
 import { comparePassword, hashPassword } from "../helpers/authHelper.js";
 import Jwt from "jsonwebtoken";
 import mongoose from 'mongoose';
+import ProductModel from "../models/ProductModel.js";
 
 export const registerController = async (req, res) => {
   try {
@@ -307,10 +308,48 @@ export const followController = async (req, res) => {
 export const getalluserscontroller = async (req, res) => {
   try {
     const userid = req?.user?._id;
-    const users = await userModel.find({_id: { $ne: userid }}).select("-password");// Find all users except the one with the specified userid
+    const users = await userModel.find({ _id: { $ne: userid } }).select("-password");// Find all users except the one with the specified userid
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
+
+
+
+// To get orders of a particular user
+export const getorderscontroller = async (req, res) => {
+  try {
+    const { uid } = req.params;
+
+    const user = await userModel.findById(uid).populate({
+      path: 'ordersplaced',
+      populate: [
+        { path: 'buyer', model: "users" }, // Populate the buyer field with users collection
+        { path: 'sellerid', model: "users" }, // Populate the seller field with users collection
+        { path: 'itemid', model: "products" } // Populate the product field with products collection
+      ]
+    });
+
+    const orders = user.ordersplaced;
+
+    console.log(orders);
+
+    if (orders) {
+      return res.status(200).send({
+        success: true,
+        message: "Data fetched successfully!",
+        orders
+      });
+    } else {
+      console.log("Error occurred", error);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Did not get results!"
+    });
+  }
+};

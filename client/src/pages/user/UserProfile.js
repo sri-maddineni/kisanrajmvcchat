@@ -12,8 +12,10 @@ import { Radio } from 'antd';
 
 
 export const bread = () => {
-  return <>
-    hello</>
+  return
+  <>
+    hello
+  </>
 }
 
 
@@ -45,7 +47,7 @@ const UserProfile = () => {
     );
   };
 
-  
+
   const getuserdata = async () => {
     // setLoading(true)
     const uid = params.uid;
@@ -172,7 +174,7 @@ const UserProfile = () => {
 
 
 
-  
+
 
 
   return (
@@ -189,7 +191,7 @@ const UserProfile = () => {
             <div className="leftt my-1">
               <div className="card">
                 <div className="roe">
-                  <img style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%", border: 'solid 1px red' }} src="https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg" alt="profile" />
+                  <img style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%", border: 'solid 1px red' }} src="https://w7.pngwing.com/pngs/3/855/png-transparent-man-wearing-brown-hat-illustration-farmer-avatar-straw-farmers-avatar-heroes-hat-logo.png" alt="profile" />
                   <div className="name m-3">
                     <p style={{ fontWeight: "700" }}>
                       {user.name}  {/* Added a space after name */}
@@ -218,12 +220,12 @@ const UserProfile = () => {
             <div className="network m-3">
               <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
                 <p className="foltxt">{user?.followers?.length}</p>
-                <p style={{cursor:"pointer"}}>Followers</p>
+                <p style={{ cursor: "pointer" }}>Followers</p>
                 <button className="btn btn-sm btn-primary" onClick={() => followfun()}>follow</button>
               </div>
               <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
                 <p className="foltxt">{user?.following?.length}</p>
-                <p style={{cursor:"pointer"}}>Following</p>
+                <p style={{ cursor: "pointer" }}>Following</p>
                 <button className="btn btn-sm btn-primary">
                   Message
                 </button>
@@ -258,7 +260,7 @@ const UserProfile = () => {
             <div className="mx-3" >
 
               <hr />{/* bottom section horisantal line */}
-              <Radio.Group className="d-flex justify-content-evenly" onChange={(e)=>{ setValue(e.target.value)}} value={value} style={{ display: "flex", flexDirection: 'row', flexWrap: "nowrap", justifyContent: "evenly" }}>
+              <Radio.Group className="d-flex justify-content-evenly" onChange={(e) => { setValue(e.target.value) }} value={value} style={{ display: "flex", flexDirection: 'row', flexWrap: "nowrap", justifyContent: "evenly" }}>
 
                 <Radio className="navi" value={1}>Posts</Radio>
                 <Radio className="navi" value={2}>Requirements</Radio>
@@ -274,7 +276,7 @@ const UserProfile = () => {
 
 
               <div className="bottomcontent" style={{ minHeight: '50vh' }}>
-                <PostData/>
+                <PostData />
               </div>
 
             </div>

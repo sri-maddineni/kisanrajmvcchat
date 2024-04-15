@@ -125,7 +125,7 @@ const Listings = () => {
                               {p.description}
                             </p>
                             <p className="card-text">
-                              <span className="text-dark bg-warning">
+                              <span className="text-dark text-muted fw-bolder">
                                 {" "}
                                 Rs.{p.price}/-
                               </span>{" "}

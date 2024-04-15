@@ -26,21 +26,23 @@ const Equipment = () => {
           <div className="form-container">
             <div className="image-holder"></div>
             <form method="post">
-              <h2 className="text-center"><strong>Post Equipment</strong></h2>
-              <div className="form-group"><input className="form-control" type="email" name="email" placeholder="Email" /></div>
-              <div className="form-group"><input className="form-control" type="password" name="password" placeholder="Password" /></div>
-              <div className="form-group"><input className="form-control" type="password" name="password-repeat" placeholder="Password (repeat)" /></div>
+              <h2 className="text-center"><strong>Post Equipment for hire</strong></h2>
               <div className="form-group">
                 <input list="equip" className="form-control" name="browser" id="browser" placeholder='select equipment' />
 
                 <datalist id="equip">
                   <option value="Tractors" />
                   <option value="Sprayers" />
-                  <option value="Chrome" />
-                  <option value="Opera" />
-                  <option value="Safari" />
+                  <option value="Seeders / Harvestors" />
+                  <option value="JCB" />
+                  <option value="Others" />
+                 
                 </datalist>
               </div>
+              <div className="form-group"><input className="form-control" type="number" name="email" placeholder="Rs. Cost per hour" /></div>
+              <div className="form-group"><input className="form-control" type="text" name="password" placeholder="phone number" /></div>
+              <div className="form-group"><input className="form-control" type="text" name="password-repeat" placeholder="address" /></div>
+              
               <div className="form-group"><button className="btn btn-primaryy btn-block text-white" type="submit">Post Equipment</button></div>
             </form>
           </div>
