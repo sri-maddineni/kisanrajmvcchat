@@ -12,7 +12,8 @@ import {
     proposedListController,
     addtoorderscontroller,
     proposalsRecievedList,
-    getProductsController
+    getProductsController,
+    removefromwishlistcontroller
 }
     from "../controllers/ProductController.js";
 import formidable from "express-formidable";
@@ -56,7 +57,13 @@ router.post("/proposals-recieved", requireSignIn, isUser, proposalsRecievedList)
 
 
 //add to orders
-router.post("/addtoorders",requireSignIn,isUser,addtoorderscontroller)
+router.post("/addtoorders", requireSignIn, isUser, addtoorderscontroller)
+
+//add to orders
+router.post("/removefromwishlist", requireSignIn, isUser, removefromwishlistcontroller)
+
+
+
 
 
 

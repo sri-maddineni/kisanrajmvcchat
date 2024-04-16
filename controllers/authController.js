@@ -195,14 +195,19 @@ export const getUserData = async (req, res) => {
     }
 
     const user = await userModel
-      .findById(uid)
-      .select("-password")
-      .populate({
-        path: "listings", // Field to populate
-        model: "products" // Model to use for population
-      })
-      .populate("wishlist");
-
+    .findById(uid)
+    .select("-password")
+    .populate({
+        path: "listings",
+        model: "products"
+    })
+    .populate({
+        path: "wishlist",
+        populate: {
+            path: "commodityId", // Field to populate within each product in the wishlist
+            model: "commodities" // Model to use for population
+        }
+    });
 
     if (!user) {
       return res.status(404).send({

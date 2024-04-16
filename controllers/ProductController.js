@@ -478,3 +478,35 @@ export const addtoorderscontroller = async (req, res) => {
         return res.status(500).json({ success: false, message: 'Internal server error' });
     }
 };
+
+
+
+// to remove the product from wishlist when moved to orders or deleted from wishlist clicked
+
+export const removefromwishlistcontroller = async (req, res) => {
+    try {
+        const { itemid, buyer } = req.body;
+
+        if (!itemid || !buyer) {
+            return res.status(400).json({ success: false, message: 'Item ID and buyer are required' });
+        }
+
+        // Update the user document to remove the itemid from the wishlist array
+        const user = await userModel.findByIdAndUpdate(
+            buyer,
+            { $pull: { wishlist: itemid } },
+            { new: true }
+        );
+
+        if (user) {
+            console.log('User after update:', user);
+            return res.status(200).json({ success: true, message: 'Item removed from wishlist successfully', user });
+        } else {
+            console.error('Failed to find user or update did not modify wishlist');
+            return res.status(404).json({ success: false, message: 'User not found or item not in wishlist' });
+        }
+    } catch (error) {
+        console.error('Error removing item from wishlist:', error);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};

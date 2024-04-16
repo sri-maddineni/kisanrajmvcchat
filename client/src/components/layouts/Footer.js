@@ -33,7 +33,6 @@ const Footer = () => {
           <Link to="/dashboard/user/buy-commodity/all">Buy</Link>
           <Link to="/dashboard/user/sell-commodity">Sell</Link>
           <Link to="/dashboard/user/hire-equipment">Hire</Link>
-          <Link to="/">Companies</Link>
           <Link to="/dashboard/user/buy-commodity">All Commodities</Link>
           <Link to="/dashboard/user/coldstorages">Cold storages</Link>
           <Link to="/dashboard/user/buy-equipment">Equipment for sale</Link>

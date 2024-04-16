@@ -30,7 +30,6 @@ const ProductSchema = new mongoose.Schema({
         type: mongoose.ObjectId,
         ref: "commodities",
         required: true,
-        
     },
     quantity: {
         type: Number,

@@ -3,26 +3,17 @@ import Header from '../../components/layouts/Header'
 import Footer from '../../components/layouts/Footer'
 import UserMenu from './UserMenu'
 import Navbar from '../../components/UIComponents/Navbar'
+import Nav from '../../components/UIComponents/Nav'
 
 
 const Dashboard = () => {
 
     return (
         <>
-            <Header />
+            <Nav />
             <div className="container-fluid">
-                <div className="row">
-                    <div className="col-md-3 m-3">
-                        <UserMenu />
-                    </div>
-                    <div className="col-md-8">
-                        <div className='text-center'>
-                            <h1 className='text-center'>user Dash board</h1>
-
-
-
-                        </div>
-                    </div>
+                <div className="container" style={{minHeight:"50vh"}}>
+                    <h1 className='text-center m-5'>User dashboard</h1>
                 </div>
 
 
