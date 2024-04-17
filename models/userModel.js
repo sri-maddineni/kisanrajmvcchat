@@ -52,10 +52,7 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.Mixed,
       default: []
     },
-    proposalsSentids: {
-      type: Array,
-      default: []
-    },
+    proposalsSentIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'products' }],
     proposalsReceived: {
       type: Map,
       default: new Map()
@@ -95,11 +92,10 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'products'
     }],
-    ordersplaced:[{
-      type: Array,
-      default:[]
+    ordersplaced: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'products'
     }]
-
   },
   { timestamps: true }
 );

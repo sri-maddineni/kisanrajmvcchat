@@ -4,6 +4,7 @@ import Footer from '../../components/layouts/Footer'
 import { NavLink } from 'react-router-dom';
 import axios from "axios"
 import toast from 'react-hot-toast';
+import TopFilterBar from "../../components/CardRelated/buycommodity/TopFilterBar";
 
 const BuyEquipment = () => {
 
@@ -16,6 +17,8 @@ const BuyEquipment = () => {
         "": ""
     }
 
+
+    
 
 
     const getEquientHire = async () => {
@@ -57,6 +60,8 @@ const BuyEquipment = () => {
         <>
             <Nav />
             <Breadcrumb />
+            <TopFilterBar/>
+            
             <div className="container" style={{ minHeight: "50vh" }}>
                 <div className="" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-evenly" }}>
                     {equip.map(item => (

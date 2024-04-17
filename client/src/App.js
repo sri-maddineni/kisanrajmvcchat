@@ -44,6 +44,7 @@ import CategoryProducts from './pages/user/CategoryProducts';
 import Wishlisted from './pages/user/Wishlisted';
 import BuyEquipment from './pages/user/BuyEquipment';
 import SellEquipment from './pages/user/SellEquipment';
+import BuyCommodityCategory from './pages/user/BuyCommodityCategory';
 
 
 
@@ -75,7 +76,7 @@ function App() {
             <Route path='user/buy-commodity/all' element={<BuyCommodity />} />
             <Route path='user/buy-commodity/' element={<BuyCommodity />} />
             <Route path='user/buy-commodity/:cat/:pnameslug/:pid/' element={<ProductDetNego />} />
-            <Route path='user/buy-commodity/:cat/:pslug' element={<BuyCommodity />} />
+            <Route path='user/buy-commodity/:cat/:pslug' element={<BuyCommodityCategory />} />
             <Route path='user/profile/:uid' element={<UserProfile />} />
             <Route path='user/buy-commodity/:category' element={<CategoryProducts />} />
 

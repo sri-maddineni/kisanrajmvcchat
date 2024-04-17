@@ -13,7 +13,8 @@ import {
     addtoorderscontroller,
     proposalsRecievedList,
     getProductsController,
-    removefromwishlistcontroller
+    removefromwishlistcontroller,
+    getcatproductscontroller
 }
     from "../controllers/ProductController.js";
 import formidable from "express-formidable";
@@ -61,6 +62,10 @@ router.post("/addtoorders", requireSignIn, isUser, addtoorderscontroller)
 
 //add to orders
 router.post("/removefromwishlist", requireSignIn, isUser, removefromwishlistcontroller)
+
+
+//get products based on category slug in params
+router.get("/getcatproducts/:product",getcatproductscontroller)
 
 
 

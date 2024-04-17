@@ -14,11 +14,16 @@ const ProductDetNego = () => {
 
     const params = useParams();
     const [product, setProduct] = useState(null);
+
+
     const [date, setDate] = useState('');
-    const [price, setPrice] = useState('');
+    const [price, setPrice] = useState("");
     const [notes, setNotes] = useState('');
     const [quantity, setQuantity] = useState('');
+
+
     const [chats, setChats] = useState([]);
+
     const [loading, setLoading] = useState(true);
     const [chatLoad, setChatLoad] = useState(true);
 
@@ -58,7 +63,7 @@ const ProductDetNego = () => {
                     <li class="breadcrumb-item"><NavLink to="/dashboard/user/buy-commodity/all">buy-commodity</NavLink></li>
                     <li className="breadcrumb-item"><NavLink to={`/dashboard/user/buy-commodity/${product?.commodityId?.catslug}`}>{product?.commodityId?.category}</NavLink></li>
 
-                    <li class="breadcrumb-item active" aria-current="page">product details - {product.name}</li>
+                    <li class="breadcrumb-item active" aria-current="page">product details - {product?.name}</li>
                 </ol>
             </nav>
         );
@@ -124,16 +129,22 @@ const ProductDetNego = () => {
         }
     }
 
-    const postoffer = async () => {
+    const sendoffer = async () => {
 
         try {
             const pid = params.pid;
             const sentBy = auth?.user?._id;
+            const recievedby = product.sellerId._id
 
-            const obj = { pid, sentBy, quantity, price, notes, date }
-            const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/propose-offer`)
+            const obj = { pid, sentBy, recievedby, quantity, price, notes, date }
+            const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/propose-offer`, { obj })
+            if (res.data.success) {
+                console.log("done")
+                toast.success("done")
+            }
         } catch (error) {
-
+            toast.error("not done")
+            console.log(error)
         }
     }
 
@@ -142,6 +153,7 @@ const ProductDetNego = () => {
         return (
             <>
                 <Nav />
+                <Breadcrumb />
                 <div className="container" style={{ minHeight: "50vh" }}>
                     <Spinner />
                 </div>
@@ -260,9 +272,9 @@ const ProductDetNego = () => {
                                         placeholder="Some notes..."
                                     />
                                 </div>
-                                
-                                <button className="btn btn-sm btn-primary m-3">send offer</button>
-                               <button className="btn btn-sm btn-primary m-3">Accept offer</button> {/*  on clicking on accept offer the response should be sent to sellers transactos page */}
+
+                                <button className="btn btn-sm btn-primary m-3" onClick={() => sendoffer()}>send offer</button>
+                                <button className="btn btn-sm btn-primary m-3">Accept offer</button> {/*  on clicking on accept offer the response should be sent to sellers transactos page */}
                             </div>
                         </div>
 

@@ -10,18 +10,47 @@ import axios from 'axios';
 import LoginModel from '../../Models/LoginModel';
 
 
+
 export const Prod = (props) => {
-    const [auth,setAuth] = useContext(AuthContext)
+    const [auth, setAuth] = useContext(AuthContext)
     const p = props.product
     const navigate = useNavigate();
 
     const [clicked, setClicked] = useState(false);
 
-    
+    const addtoorders = async (itemid) => {
 
-    const removeWishlist = async () => {
+        try {
+            const buyer = auth?.user?._id;
+            // let seller=JSON.stringify(itemid.sellerId.toString());
+            //  seller = seller.substring(1, seller.length - 1);
+
+            const seller = JSON.stringify(itemid.sellerId)
+
+            const details = { itemid, buyer, seller }
+            const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/products/addtoorders`, details)
+
+            removefromwishlist(itemid)
+
+            if (res.data.success) {
+                toast.success("add to cart successfully!")
+            }
+
+        } catch (error) {
+            toast.error("something went wrong")
+            console.log(error)
+        }
+    }
+
+
+
+    const removefromwishlist = async () => {
 
     }
+
+
+
+
 
 
 
@@ -103,24 +132,20 @@ export const Prod = (props) => {
 }
 
 
-
-
-
-
-
-
-
 const ProductCard = (props) => {
     const p = props.product
+
     const navigate = useNavigate();
     const [auth] = useContext(AuthContext)
-        
-    const [clicked, setClicked] = useState(false);
+    
+
+    const [clicked, setClicked] = useState(props.wish);
+
     const handleClick = (pid) => {
         if (auth?.user) {
             setClicked(!clicked);
             if (clicked) {
-                removeWishlist(pid);
+                removefromwishlist(pid);
             }
             else {
                 addtoWishlist(pid);
@@ -153,7 +178,36 @@ const ProductCard = (props) => {
         }
     }
 
-    const removeWishlist = async () => {
+
+
+
+    const addtoorders = async (itemid) => {
+
+        try {
+            //   const buyer = auth?.user?._id;
+            // let seller=JSON.stringify(itemid.sellerId.toString());
+            //  seller = seller.substring(1, seller.length - 1);
+
+            //   const seller = JSON.stringify(itemid.sellerId)
+
+            //   const details = { itemid, buyer, seller }
+            const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/products/addtoorders`, { itemid })
+
+            removefromwishlist(itemid)
+
+            if (res.data.success) {
+                toast.success("add to cart successfully!")
+            }
+
+        } catch (error) {
+            toast.error("something went wrong")
+            console.log(error)
+        }
+    }
+
+
+
+    const removefromwishlist = async () => {
 
     }
 
@@ -213,7 +267,7 @@ const ProductCard = (props) => {
 
                     <div className="btns">
                         <button className="btn btn-sm btn-primary mx-1" onClick={() => navigate(`/dashboard/user/buy-commodity/${p.commodityId.catslug}/${p.commodityId.slug}/${p._id}`)}>view details</button>
-                        <button className="btn btn-sm btn-primary mx-1" onClick={() => navigate(`/dashboard/user/buy-commodity/${p.commodityId.catslug}/${p.commodityId.slug}/${p._id}`)}>order it</button>
+                        <button className="btn btn-sm btn-primary mx-1" onClick={() => { addtoorders(p._id) }}>order it</button>
                     </div>
 
                 </div>

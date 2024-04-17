@@ -9,6 +9,8 @@ import commodities from "../../Data/Commodities";
 import Nav from "../../components/UIComponents/Nav";
 import { NavLink, useNavigate } from "react-router-dom";
 import ProductCard, { Prod } from "../../components/CardRelated/buycommodity/ProductCard";
+import TopFilterBar from "../../components/CardRelated/buycommodity/TopFilterBar";
+import { IoArrowBackCircle } from "react-icons/io5";
 
 
 
@@ -25,10 +27,17 @@ const BuyCommodity = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [proposedlist, setProposedlist] = useState([]);
   const [products, setProducts] = useState([]);
+
+  const [wishlist, setwishlist] = useState([])
+  const navigate=useNavigate()
+
+  useEffect(() => {
+    getuserdata()
+  }, [])
+
+
+
   const handleCategoryFilter = (selectedCategory) => {
-
-
-
 
     if (selectedCategory) {
 
@@ -114,8 +123,14 @@ const BuyCommodity = () => {
       const userdata = await axios.get(`${process.env.REACT_APP_API}/api/v1/users/profile/${uid}`);
 
       if (userdata.data.success) {
-        console.log(userdata.data.user.wishlisted.length)
         
+        const wishlistIds = userdata.data.user.wishlist.map(item => item._id);
+        
+        setwishlist(wishlistIds);
+
+      }
+      else {
+        console.log(userdata)
       }
     } catch (error) {
       console.log(error)
@@ -125,9 +140,9 @@ const BuyCommodity = () => {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getuserdata()
-  },[])
+  }, [])
 
 
   const getProposedList = async () => {
@@ -221,6 +236,11 @@ const BuyCommodity = () => {
     return (
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
+        <li className="mr-2" style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+            <abbr title="Go back">
+              <IoArrowBackCircle style={{ fontSize: '1.8rem' }} />
+            </abbr>
+          </li>
           <li className="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
 
           <li className="breadcrumb-item active" aria-current="page">buy-commodity - all categories</li>
@@ -278,29 +298,38 @@ const BuyCommodity = () => {
 
       <Breadcrumb />
 
+      <TopFilterBar/>
+
 
       <div className="row m-3" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
         <div style={{ minHeight: "50vh", width: "100%" }}>
-          <div className="container" style={{ position: "relative" }}>
-            <FilterSearch />
-          </div>
+          
 
           {/* <Filtersbar onProductSelect={handlecategoryFilter} />*/}
           <div className="container" style={{ display: 'flex', flexDirection: "row" }}>
-            <div className="col-3" style={{ border: 'solid 1px' }}>
-              <Filtersbar onProductSelect={handleCategoryFilter} />
-            </div>
+            
             <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }} >
 
 
-              {filteredProducts.length > 0
-                ? filteredProducts.map((p) => (
-                  auth?.user ? <ProductCard key={p._id} product={p} /> : <Prod key={p._id} product={p} />
-                ))
-                : products
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((p) => {
+
+                  return (
+                    auth?.user ? <ProductCard key={p._id} wish={wishlist.includes(p._id)} product={p}  /> : <Prod key={p._id} product={p} />
+                  );
+                })
+              ) : (
+                products
                   .filter((p) => p.name.toLowerCase().includes(searchitem.toLowerCase()))
-                  .map((p) => auth?.user ? <ProductCard key={p._id} product={p} /> : <Prod key={p._id} product={p} />)
-              }
+                  .map((p) => {
+                    
+
+                    return (
+                      auth?.user ? <ProductCard key={p._id} wish={wishlist.includes(p._id)} product={p} /> : <Prod key={p._id} product={p} />
+                    );
+                  })
+              )}
+
 
 
             </div>

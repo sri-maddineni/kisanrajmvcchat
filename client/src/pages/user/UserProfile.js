@@ -10,21 +10,14 @@ import toast from "react-hot-toast";
 import { format } from "date-fns";
 import { Radio } from 'antd';
 
-
-export const bread = () => {
-  return
-  <>
-    hello
-  </>
-}
-
-
 const UserProfile = () => {
 
   const [loading, setLoading] = useState(false)
   // const [high, sethigh] = useState(true)
 
   const [user, setUser] = useState("")
+  const [followers, setFollowers] = useState([])
+  const [following, setFollowing] = useState(false)
 
   const params = useParams();
   const [posts, setposts] = useState([])
@@ -56,6 +49,11 @@ const UserProfile = () => {
 
       if (userdata.data.success) {
         console.log(userdata.data.user.listings)
+        console.log(userdata.data)
+        setFollowers(userdata.data.user.followers)
+        if (followers.includes(auth?.user?._id)) {
+          setFollowing(true)
+        }
         setUser(userdata.data.user)
         setposts(userdata.data.user.listings)
       }
@@ -90,6 +88,7 @@ const UserProfile = () => {
 
       if (res) {
         console.log("follow success")
+        getuserdata()
       }
     } catch (error) {
       console.log(error)
@@ -127,7 +126,7 @@ const UserProfile = () => {
                 </div>
                 <div className="details">
                   <p>{post.organic ? "organic" : "Inorganic"} {post.name}</p>
-                  <p><span style={{ fontWeight: "700" }}>&#8377;{post.price} per {post.quantityUnit} </span><span>{post.quantity} {post.quantityUnit}s Available</span></p>
+                  <p><span style={{ fontWeight: "700" }}>&#8377;{post.price} per {post.quantityUnit} </span><span> <br /> {post.quantity} {post.quantityUnit}s Available</span></p>
                   <p>Available by : {formatteddate(post.availableDate)}</p>
                 </div>
               </div>
@@ -204,13 +203,14 @@ const UserProfile = () => {
 
                       </span>
                     </p>
-                    <div className="d-flex" >
-                      <i className="fa-solid fa-location-dot m-2"></i><p>{user?.address}</p>
-
+                    <div className="d-flex" style={{ flexDirection: 'column' }}>
+                      <p><i className="fa-solid fa-location-dot m-2"></i>{user?.address}</p>
+                      <p style={{ margin: "0", padding: "0" }} className="fw-bolder"><i class="fa-solid fa-phone mx-2"></i>{user.phone}</p>
                     </div>
                   </div>
                 </div>
-                <p>{user.description}</p>
+                <p style={{ margin: "0", padding: "0" }}>{user.description}</p>
+
               </div>
 
             </div>
@@ -221,18 +221,23 @@ const UserProfile = () => {
               <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
                 <p className="foltxt">{user?.followers?.length}</p>
                 <p style={{ cursor: "pointer" }}>Followers</p>
-                <button className="btn btn-sm btn-primary" onClick={() => followfun()}>follow</button>
+                <button
+                  className={`btn btn-sm btn-primary ${auth?.user?._id === params.uid ? "disabled" : ""} ${followers.includes(auth?.user?._id) ? "btn-outline-secondary" : "btn-primary"}`}
+                  onClick={followfun}
+                >
+                  {followers.includes(auth?.user?._id) ? "Unfollow" : "Follow"}
+                </button>
               </div>
               <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
                 <p className="foltxt">{user?.following?.length}</p>
                 <p style={{ cursor: "pointer" }}>Following</p>
-                <button className="btn btn-sm btn-primary">
+                <button className={`btn btn-sm btn-primary ${auth?.user?._id === params.uid ? "disabled" : ""}`}>
                   Message
                 </button>
               </div>
               <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
                 <p className="foltxt">{user?.listings?.length}</p>
-                <p>Posts</p>
+                <p>{auth?.user?._id === params.uid ? "My posts" : "Posts"}</p>
                 <button className="btn btn-sm btn-primary">
                   share
                 </button>
@@ -259,14 +264,14 @@ const UserProfile = () => {
 
             <div className="mx-3" >
 
-              <hr />{/* bottom section horisantal line */}
+              <h1 className="fw-bolder">  <hr /></h1>
               <Radio.Group className="d-flex justify-content-evenly" onChange={(e) => { setValue(e.target.value) }} value={value} style={{ display: "flex", flexDirection: 'row', flexWrap: "nowrap", justifyContent: "evenly" }}>
 
-                <Radio className="navi" value={1}>Posts</Radio>
-                <Radio className="navi" value={2}>Requirements</Radio>
-                <Radio className="navi" value={3}>Equipment For hire</Radio>
-                <Radio className="navi" value={4}>Equipment For sale</Radio>
-             
+                <h1> <Radio className="navi" value={1}>{auth?.user?._id === params.uid ? "My posts" : "Posts"}</Radio></h1>
+                {/* <h1><Radio className="navi" value={2}>Requirements</Radio></h1>
+                <h1><Radio className="navi" value={3}>Equipment For hire</Radio></h1>
+                <h1><Radio className="navi" value={4}>Equipment For sale</Radio></h1> */}
+
 
               </Radio.Group>
               <hr />

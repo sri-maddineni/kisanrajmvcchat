@@ -58,7 +58,7 @@ const SellEquipment = () => {
                     <div className="form-container">
                         <div className="image-holder"></div>
                         <form method='post'>
-                            <h2 className="text-center"><strong>Post Equipment for hire</strong></h2>
+                            <h2 className="text-center"><strong>Post Equipment for sale</strong></h2>
                             <div className="form-group">
                                 <input list="equip" value={item} className="form-control" name="browser" id="browser" placeholder='select equipment' onChange={(e) => { setitem(e.target.value) }} />
 
@@ -74,8 +74,8 @@ const SellEquipment = () => {
                             <div className="form-group"><input value={cost} className="form-control" type="number" name="item" placeholder="Rs. Total cost" onChange={(e) => { setcost(e.target.value) }} /></div>
                             <div className="form-group"><input value={phone} className="form-control" type="number" name="phone" placeholder="Phone number" onChange={(e) => { setphone(e.target.value) }} /></div>
                             <div className="form-group"><input value={address} className="form-control" type="text" name="address" placeholder="Address" onChange={(e) => { setaddress(e.target.value) }} /></div>
-                            <div className="form-group"><input value={des} className="form-control" type="text" name="description" placeholder="Description of vehicle, license..." onChange={(e) => { setdes(e.target.value) }} /></div>
-                            <div className="form-group"><input value={license} className="form-control" type="text" name="description" placeholder="Description of license..." onChange={(e) => { setlicense(e.target.value) }} /></div>
+                            <div className="form-group"><input value={des} className="form-control" type="text" name="description" placeholder="Description of Equipment..." onChange={(e) => { setdes(e.target.value) }} /></div>
+                            <div className="form-group"><input value={license} className="form-control" type="text" name="description" placeholder="Description of license(if vehicle)..." onChange={(e) => { setlicense(e.target.value) }} /></div>
                             <div className="form-group"><button className="btn btn-primaryy btn-block text-white" type="submit" onClick={handlesubmit}>Post Equipment</button></div>
 
                         </form>

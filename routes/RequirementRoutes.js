@@ -20,7 +20,7 @@ import { isAdmin, isUser, requireSignIn } from "../middlewares/authMiddleware.js
 const router = express.Router();
 
 //propose offer
-router.post("/propose-offer",proposeOfferController)
+router.post("/propose-offer",requireSignIn,isUser,proposeOfferController)
 
 //propose offer
 router.post("/decline",declineOfferController)

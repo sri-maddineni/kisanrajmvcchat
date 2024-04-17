@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import Nav from "../../components/UIComponents/Nav";
 import Spinner from "../../components/UIComponents/Spinner";
 import TopFilterBar from "../../components/CardRelated/buycommodity/TopFilterBar";
+import { IoArrowBackCircle } from "react-icons/io5";
 
 const Listings = () => {
   const [products, setProducts] = useState([]);
@@ -55,6 +56,11 @@ const Listings = () => {
     return (
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
+        <li className="mr-2" style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+            <abbr title="Go back">
+              <IoArrowBackCircle style={{ fontSize: '1.8rem' }} />
+            </abbr>
+          </li>
           <li className="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
           <li className="breadcrumb-item"><NavLink to="/dashboard/user/profile">Profile</NavLink></li>
 
@@ -85,7 +91,7 @@ const Listings = () => {
               }}
             >
               <>
-                {products.length ? (
+                { products.length>0 && (
                   products.map((p) => (
                     <div key={p._id}>
                       <Link
@@ -152,15 +158,21 @@ const Listings = () => {
                       </Link>
                     </div>
                   ))
-                ) : (
-                  <>
+                ) }
+
+
+                {
+                  !products.length && (
+                    <>
                     <div className="container d-flex justify-content-center" >
                       <p></p>
                       <button className="btn btn-primary" onClick={() => navigate("/dashboard/user/sell-commodity")}>No listings yet, start posting commodities</button>
                       <p></p>
                     </div>
                   </>
-                )}
+                  )
+                }
+                
               </>
             </div>
           </div>

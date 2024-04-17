@@ -46,8 +46,6 @@ const Equipment = () => {
   }
 
 
-
-
   return (
     <>
       <Nav />

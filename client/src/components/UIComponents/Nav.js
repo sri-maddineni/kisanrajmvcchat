@@ -102,17 +102,13 @@ export default function Nav() {
                                         </ul>
                                     </li>
 
-                                    <li className="nav-item dropdown">
-                                        <a className="nav-link text-white p-3 disabled" href='#' id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false" >
-                                            Responses
-                                        </a>
-                                        <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <li><Link className="dropdown-item" to="/dashboard/user/proposals-recieved" >Proposals Recieved</Link></li>
-
-                                        </ul>
+                                    
+                                    <li className="nav-item">
+                                        <Link className="nav-link active p-3" aria-current="page" to="/dashboard/user/proposals-recieved">Responses</Link>
                                     </li>
 
-                                    <li className="nav-item dropdown">
+
+                                    {/* <li className="nav-item dropdown">
                                         <a className="nav-link text-white p-3 disabled" href='#' id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false" >
                                             History
                                         </a>
@@ -121,7 +117,7 @@ export default function Nav() {
                                             <li><Link className="dropdown-item" to="/dashboard/user/history/negotiations" >Negotiations History</Link></li>
 
                                         </ul>
-                                    </li>
+                                    </li> */}
                                     <li className="nav-item">
                                         <Link className="nav-link active p-3" aria-current="page" to="/dashboard/user/my-wishlist"><FaHeart /></Link>
                                     </li>
@@ -138,7 +134,7 @@ export default function Nav() {
 
                                         <a className="nav-link me-auto text-white disabled text-danger" href='#' data-bs-toggle="dropdown"><span className='text-warning'>{auth?.user?.name}</span>   <i className="fa-solid fa-sort-down"></i></a>
                                         <ul className="dropdown-menu">
-                                            <li><Link className="dropdown-item" to="/dashboard/user/profile"> Profile</Link></li>
+                                            <li><Link className="dropdown-item" to={`/dashboard/user/profile/${auth?.user?._id}`}> Profile</Link></li>
                                             <li><a className="dropdown-item" onClick={handleLogout}> Logout </a></li>
                                         </ul>
                                     </li>

@@ -118,9 +118,14 @@ export const loginController = async (req, res) => {
       user,
       token
     });
+
+
   } catch (error) {
+
     console.log(error);
+
     console.log("Internal server error");
+
     res.status(500).send({
       success: false,
       message: "Error in login",
@@ -195,19 +200,29 @@ export const getUserData = async (req, res) => {
     }
 
     const user = await userModel
-    .findById(uid)
-    .select("-password")
-    .populate({
+      .findById(uid)
+      .select("-password")
+      .populate({
         path: "listings",
         model: "products"
-    })
-    .populate({
+      })
+      .populate({
         path: "wishlist",
         populate: {
-            path: "commodityId", // Field to populate within each product in the wishlist
-            model: "commodities" // Model to use for population
+          path: "commodityId",
+          model: "commodities"
         }
-    });
+      })
+      .populate({
+        path: "ordersplaced",
+        populate: {
+          path: "commodityId",
+          model: "commodities"
+        }
+      })
+
+
+
 
     if (!user) {
       return res.status(404).send({

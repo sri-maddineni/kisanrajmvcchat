@@ -7,10 +7,10 @@ import CommodityModel from "../models/CommodityModel.js";
 
 export const createProductController = async (req, res) => {
     try {
-        
 
-        const { name, description, price, quantity, shipping,sellerId, availabledate, organic,quantityUnit } = req.fields;
-        
+
+        const { name, description, price, quantity, shipping, sellerId, availabledate, organic, quantityUnit } = req.fields;
+
         const { photo } = req.files;
 
         console.log(req.fields)
@@ -38,7 +38,7 @@ export const createProductController = async (req, res) => {
                 break;
         }
 
-        const product = new ProductModel({ ...req.fields, slug: slugify(name) })
+        const product = new ProductModel({ ...req.fields, slug: slugify(name.toLowerCase()) })
         if (photo) {
             product.photo.data = fs.readFileSync(photo.path)
             product.photo.contentType = photo.type
@@ -57,7 +57,7 @@ export const createProductController = async (req, res) => {
             { _id: sellerId },
             { $addToSet: { listings: product._id } },
             { new: true }
-          );
+        );
 
 
     } catch (error) {
@@ -136,7 +136,7 @@ export const getProductsController = async (req, res) => {
 
         let products;
 
-        const userId=req.user._id;
+        const userId = req.user._id;
 
         products = await ProductModel.find({ sellerId: { $ne: userId } })
             .populate("sellerId")
@@ -445,7 +445,7 @@ export const proposeOffer = async (req, res) => {
         // Both updates were successful
         console.log("Propose offer successful");
 
-        res.status(200).send({
+        res.status(200).send({ //response
             success: true,
             message: "Offer proposed successfully",
             buyerUpdate,
@@ -468,11 +468,13 @@ export const proposeOffer = async (req, res) => {
 
 export const addtoorderscontroller = async (req, res) => {
     try {
-        const { itemid, seller, buyer } = req.body;
-        const ordersplaced = { itemid, sellerid: seller, buyer }; 
-        const user = await userModel.findByIdAndUpdate(buyer, { $addToSet: { ordersplaced: ordersplaced } }, { new: true });
+        const { itemid } = req.body;
+        const buyer=req.user?._id;
+        
+        const user = await userModel.findByIdAndUpdate(buyer, { $addToSet: { ordersplaced: itemid } }, { new: true });
+       
 
-        return res.status(200).json({ success: true, message: 'Order added successfully',user });
+        return res.status(200).json({ success: true, message: 'Order added successfully', user });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ success: false, message: 'Internal server error' });
@@ -488,6 +490,8 @@ export const removefromwishlistcontroller = async (req, res) => {
         const { itemid, buyer } = req.body;
 
         if (!itemid || !buyer) {
+            console.log("something is fishy")
+            console.log(itemid,buyer)
             return res.status(400).json({ success: false, message: 'Item ID and buyer are required' });
         }
 
@@ -510,3 +514,24 @@ export const removefromwishlistcontroller = async (req, res) => {
         return res.status(500).json({ success: false, message: 'Internal server error' });
     }
 };
+
+
+//i want to get products based on product name here
+export const getcatproductscontroller = async (req, res) => {
+    try {
+        const product = req.params.product 
+        console.log(product)
+        // const p=product.tocamelcase()
+        const response = await ProductModel.find({slug:product}).populate("commodityId")
+     
+        res.status(200).send({
+            success:true,
+            message:"done properly",
+            response
+        })
+
+       
+    } catch (error) {
+        console.log(error)
+    }
+}

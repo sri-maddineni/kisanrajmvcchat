@@ -319,29 +319,29 @@ export const postToNegHisRequirementController = async (req, res) => {
 //propose offer controller on begining a conversation with user seller from buyer prodetneg page
 export const proposeOfferController = async (req, res) => {
 
-  const { pid, sentBy, quantity, price, notes, date, buyerId, sellerId, name, quantityUnit } = req.body;
+  const { pid, sentBy, recievedby, quantity, price, notes, date } = req.body;
 
-  const proposalObj = { pid, sentBy, quantity, price, notes, date, buyerId, sellerId, name, quantityUnit };
+  const proposalObj = { pid, sentBy, recievedby, quantity, price, notes, date };
 
   try {
     // Update the buyer's document to push the proposal into proposalsSent array
-    const buyerResult = await userModel.findOneAndUpdate(
+    const sentresult = await userModel.findOneAndUpdate(
       { _id: sentBy },
       { $push: { proposalsSent: proposalObj } },
       { new: true }
     );
 
     // Update the seller's document to push the proposal into proposalsReceived array
-    const sellerResult = await userModel.findOneAndUpdate(
-      { _id: sellerId, [`proposalsReceived.${pid}.sentBy`]: { $ne: proposalObj.sentBy } },
+    const recievedresult = await userModel.findOneAndUpdate(
+      { _id: recievedby, [`proposalsReceived.${pid}.sentBy`]: { $ne: proposalObj.sentBy } },
       { $addToSet: { [`proposalsReceived.${pid}`]: proposalObj } },
       { new: true }
     );
 
-    const seller = await userModel.findOne({ _id: sellerId });
+    const seller = await userModel.findOne({ _id: recievedby });
 
 
-    if (buyerResult && sellerResult) {
+    if (sentresult && recievedresult) {
       console.log("Proposal sent and received successfully");
       return res.status(200).json({
         success: true,
@@ -463,7 +463,7 @@ export const addtowishlistcontroller = async (req, res) => {
     const { uid, pid } = req.body;
 
     // Update the user document to add the pid to the wishlist array if it doesn't already exist
-    await userModel.findByIdAndUpdate(uid, { $addToSet: { wishlist: pid } });
+    const result=await userModel.findByIdAndUpdate(uid, { $addToSet: { wishlist: pid } });
 
     res.status(200).json({ success: true, message: 'Product added to wishlist successfully' });
   } catch (error) {

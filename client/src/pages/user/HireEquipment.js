@@ -4,6 +4,7 @@ import Footer from '../../components/layouts/Footer'
 import { NavLink } from 'react-router-dom';
 import axios from "axios"
 import toast from 'react-hot-toast';
+import TopFilterBar from '../../components/CardRelated/buycommodity/TopFilterBar';
 
 const HireEquipment = () => {
 
@@ -18,7 +19,7 @@ const HireEquipment = () => {
 
 
 
-    const getEquientHire = async () => {
+    const getEquipmentHire = async () => {
         try {
             const res = await axios.get(`${process.env.REACT_APP_API}/api/v1/equipment/gethireequipment`)
             if (res.data.success) {
@@ -36,7 +37,7 @@ const HireEquipment = () => {
     }
 
     useEffect(() => {
-        getEquientHire();
+        getEquipmentHire();
     }, [])
 
     const conditionalHire=async()=>{
@@ -65,6 +66,7 @@ const HireEquipment = () => {
         <>
             <Nav />
             <Breadcrumb />
+            <TopFilterBar/>
             <div className="container" style={{ minHeight: "50vh" }}>
                 <div className="" style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-evenly" }}>
                     {equip.map(item => (

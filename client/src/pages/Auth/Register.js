@@ -23,27 +23,15 @@ export const Register = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    getLocation();
+    await getLocation();
     if (pincode.length > 6) {
       toast("Please enter valid pincode");
     } else {
       e.preventDefault();
 
       try {
-        const res = await axios.post(
-          `${process.env.REACT_APP_API}/api/v1/auth/register`,
-          {
-            name,
-            email,
-            password,
-            phone,
-            answer,
-            address,
-            pincode,
-            latitude,
-            longitude,
-          }
-        );
+        const passeddata={ name,email,password,phone,answer,address,pincode,latitude,longitude,}
+        const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/register`,passeddata);
 
         if (res.data.success) {
           toast.success(res.data.message);
