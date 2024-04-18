@@ -319,50 +319,46 @@ export const postToNegHisRequirementController = async (req, res) => {
 //propose offer controller on begining a conversation with user seller from buyer prodetneg page
 export const proposeOfferController = async (req, res) => {
 
-  const { pid, sentBy, recievedby, quantity, price, notes, date } = req.body;
-
-  const proposalObj = { pid, sentBy, recievedby, quantity, price, notes, date };
-
+  const { pid, sentBy, recievedby,sentname,phone } = req.body;
+  const obj={sentBy,sentname,phone}
   try {
-    // Update the buyer's document to push the proposal into proposalsSent array
-    const sentresult = await userModel.findOneAndUpdate(
-      { _id: sentBy },
-      { $push: { proposalsSent: proposalObj } },
-      { new: true }
+
+    const proposalsent = await userModel.findByIdAndUpdate(
+      { _id: req?.user?._id },
+      { $addToSet: { proposalsSentIds: pid } }
+
     );
 
-    // Update the seller's document to push the proposal into proposalsReceived array
-    const recievedresult = await userModel.findOneAndUpdate(
-      { _id: recievedby, [`proposalsReceived.${pid}.sentBy`]: { $ne: proposalObj.sentBy } },
-      { $addToSet: { [`proposalsReceived.${pid}`]: proposalObj } },
-      { new: true }
+    const prop = await userModel.findOneAndUpdate(
+      { _id: recievedby }, // Assuming receivedBy is the user ID
+      { $addToSet: { [`proposalsReceived.${pid}`]: obj } },
+      { new: true } // To return the updated document
     );
 
-    const seller = await userModel.findOne({ _id: recievedby });
 
+    console.log(prop, pid)
 
-    if (sentresult && recievedresult) {
-      console.log("Proposal sent and received successfully");
-      return res.status(200).json({
+    if (proposalsent) {
+      return res.status(200).send({
+        message: "add to proposalsentids",
         success: true,
-        message: "Proposal sent and received successfully",
-        buyer: buyerResult,
-        seller: sellerResult
-      });
-    } else {
-      console.log("Database operation error");
-      return res.status(400).json({
-        success: false,
-        message: "Failed to send or receive proposal"
-      });
+        proposalsent
+      })
     }
-  } catch (error) {
-    console.log("Error:", error.message);
-    return res.status(500).json({
+    else {
+      console.log("might be some error")
+    }
+    return res.status(408).send({
+      message: "somethign done unknown",
       success: false,
-      message: "Failed to propose offer"
-    });
+      proposalsent
+    })
+  } catch (error) {
+    console.log(error)
   }
+
+
+
 };
 
 
@@ -463,7 +459,7 @@ export const addtowishlistcontroller = async (req, res) => {
     const { uid, pid } = req.body;
 
     // Update the user document to add the pid to the wishlist array if it doesn't already exist
-    const result=await userModel.findByIdAndUpdate(uid, { $addToSet: { wishlist: pid } });
+    const result = await userModel.findByIdAndUpdate(uid, { $addToSet: { wishlist: pid } });
 
     res.status(200).json({ success: true, message: 'Product added to wishlist successfully' });
   } catch (error) {

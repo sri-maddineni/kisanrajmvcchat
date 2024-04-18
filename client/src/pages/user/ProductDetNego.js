@@ -55,19 +55,7 @@ const ProductDetNego = () => {
     };
 
 
-    const Breadcrumb = () => {
-        return (
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
-                    <li class="breadcrumb-item"><NavLink to="/dashboard/user/buy-commodity/all">buy-commodity</NavLink></li>
-                    <li className="breadcrumb-item"><NavLink to={`/dashboard/user/buy-commodity/${product?.commodityId?.catslug}`}>{product?.commodityId?.category}</NavLink></li>
-
-                    <li class="breadcrumb-item active" aria-current="page">product details - {product?.name}</li>
-                </ol>
-            </nav>
-        );
-    };
+    
 
     const formattedDate = (timestamp) => {
         return format(new Date(timestamp), 'dd-MMM hh:mm a');
@@ -95,7 +83,6 @@ const ProductDetNego = () => {
             const res = await axios.get(`${process.env.REACT_APP_API}/api/v1/products/get-product/${params.pid}`);
             if (res.data.success) {
                 setProduct(res.data.product);
-                getchats();
             }
         } catch (error) {
             console.log(error);
@@ -135,9 +122,14 @@ const ProductDetNego = () => {
             const pid = params.pid;
             const sentBy = auth?.user?._id;
             const recievedby = product.sellerId._id
+            const sentname=auth?.user?.name
+            const phone=auth?.user?.phone
+
+            // const propose=await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/proposalsent`,{pid})
+
 
             const obj = { pid, sentBy, recievedby, quantity, price, notes, date }
-            const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/propose-offer`, { obj })
+            const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/propose-offer`, {pid,sentBy,recievedby,sentname,phone})
             if (res.data.success) {
                 console.log("done")
                 toast.success("done")
@@ -147,6 +139,20 @@ const ProductDetNego = () => {
             console.log(error)
         }
     }
+
+    const Breadcrumb = () => {
+        return (
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
+                    <li class="breadcrumb-item"><NavLink to="/dashboard/user/buy-commodity/all">buy-commodity</NavLink></li>
+                    <li className="breadcrumb-item"><NavLink to={`/dashboard/user/buy-commodity/${product?.commodityId?.catslug}`}>{product?.commodityId?.category}</NavLink></li>
+
+                    <li class="breadcrumb-item active" aria-current="page">product details - {product?.name}</li>
+                </ol>
+            </nav>
+        );
+    };
 
 
     if (loading) {

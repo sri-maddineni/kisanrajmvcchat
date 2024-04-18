@@ -261,6 +261,31 @@ export const getUserData = async (req, res) => {
   }
 };
 
+export const getBasicDetails=async(req,res)=>{
+  try {
+    const uid=req.params.uid;
+
+    const user=await userModel.find({_id:uid}).select("name phone")
+
+    if(user){
+      return res.status(200).send({
+        success:true,
+        message:"basic details obtained",
+        user
+      })
+    }
+    
+    return res.status(59).send({
+      success:false,
+      message:"not obtained",
+      user
+    })
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
 
 export const updateUserData = async (req, res) => {

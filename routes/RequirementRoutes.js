@@ -22,6 +22,8 @@ const router = express.Router();
 //propose offer
 router.post("/propose-offer",requireSignIn,isUser,proposeOfferController)
 
+
+
 //propose offer
 router.post("/decline",declineOfferController)
 

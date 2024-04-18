@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../../components/layouts/Header";
+
 import Footer from "../../components/layouts/Footer";
-import UserMenu from "./UserMenu";
+
 import axios from "axios";
 import Nav from '../../components/UIComponents/Nav';
 import AuthContext from "../../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Spinner from "../../components/UIComponents/Spinner";
+import { IoArrowBackCircle } from "react-icons/io5";
+
 
 const ProposalsRecieved = () => {
   const [auth] = useContext(AuthContext); //for maintaining session data
@@ -15,6 +17,35 @@ const ProposalsRecieved = () => {
   const [productData, setProductData] = useState({});
   const [loading, setLoading] = useState(true)
   const [activeSection, setActiveSection] = useState("responses"); // State to manage active section
+
+  const navigate = useNavigate();
+
+
+  // Breadcrumb component directly integrated
+  const Breadcrumb = () => {
+
+
+    return (
+      <>
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="mr-2" style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+              <abbr title="Go back">
+                <IoArrowBackCircle style={{ fontSize: '1.8rem' }} />
+              </abbr>
+            </li>
+            <li className="breadcrumb-item">
+              <NavLink to="/">Home</NavLink>
+            </li>
+
+            <li className="breadcrumb-item active" aria-current="page">
+              Proposals Recieved
+            </li>
+          </ol>
+        </nav>
+      </>
+    );
+  };
 
   const getProductData = async (pid) => {
     setLoading(true)
@@ -40,7 +71,7 @@ const ProposalsRecieved = () => {
     setLoading(true)
     try {
       const uid = auth?.user?._id;
-      const res = await axios.get(`${process.env.REACT_APP_API}/api/v1/users/${uid}`);
+      const res = await axios.get(`${process.env.REACT_APP_API}/api/v1/users/profile/${uid}`);
       if (res.data.success) {
         const proposalsData = res.data.user?.proposalsReceived;
 
@@ -77,6 +108,7 @@ const ProposalsRecieved = () => {
   if (loading) {
     return (<>
       <Nav />
+      <Breadcrumb />
       <div className="container" style={{ minHeight: "50vh" }}>
         <Spinner />
       </div>
@@ -89,48 +121,50 @@ const ProposalsRecieved = () => {
   return (
     <>
       <Nav />
-      <div style={{ display: 'flex', flexDirection: "row", minHeight: "50vh" }}>
+      <Breadcrumb />
+
+      <div className="container" style={{ display: 'flex', flexDirection: "row", minHeight: "50vh" }}>
         {Object.entries(proposals).map(([productId, count]) => (
-          <div key={productId}>
-            <div className="card">
-              <div>
-                {productData[productId] ? (
-                  <>
-                    <img
-                      src={`/api/v1/products/product-photo/${productId}`}
-                      alt="ima"
-                      style={{ objectFit: "cover", height: "18vh" }}
-                    />
-                    <p>
-                      Product Name: {productData[productId].name}
-                    </p>
-                    <p>
-                      Description: {productData[productId].description}
-                    </p>
-                    <p>
-                      Price: {productData[productId].price}/-
-                    </p>
-                    <p>
-                      Quantity: {productData[productId].quantity} {productData[productId].quantityUnit}s
-                    </p>
-                  </>
-                ) : (
-                  <p>Loading...</p>
-                )}
-                <Link
-                  to={`/dashboard/user/${activeSection}/${productId}`}
-                >
-                  <button className="btn btn-primary">
-                    {count}{" "}
-                    {activeSection === "responses"
-                      ? "responses"
-                      : "negotiations"}{" "}
-                    received
-                  </button>
-                </Link>
-              </div>
+
+          <div key={productId} className="card">
+            <div>
+              {productData[productId] ? (
+                <>
+                  <img
+                    src={`/api/v1/products/product-photo/${productId}`}
+                    alt="ima"
+                    style={{ objectFit: "cover", height: "18vh" }}
+                  />
+                  <p>
+                    Product Name: {productData[productId].name}
+                  </p>
+                  <p>
+                    Description: {productData[productId].description}
+                  </p>
+                  <p>
+                    Price: {productData[productId].price}/-
+                  </p>
+                  <p>
+                    Quantity: {productData[productId].quantity} {productData[productId].quantityUnit}s
+                  </p>
+                </>
+              ) : (
+                <p>Loading...</p>
+              )}
+              <Link
+                to={`/dashboard/user/${activeSection}/${productId}`}
+              >
+                <button className="btn btn-primary">
+                  {count}{" "}
+                  {activeSection === "responses"
+                    ? "responses"
+                    : "negotiations"}{" "}
+                  received
+                </button>
+              </Link>
             </div>
           </div>
+
         ))}
         {
           !Object.entries(proposals).length && (

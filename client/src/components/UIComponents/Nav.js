@@ -102,10 +102,12 @@ export default function Nav() {
                                         </ul>
                                     </li>
 
-                                    
+
                                     <li className="nav-item">
                                         <Link className="nav-link active p-3" aria-current="page" to="/dashboard/user/proposals-recieved">Responses</Link>
                                     </li>
+
+
 
 
                                     {/* <li className="nav-item dropdown">
@@ -134,7 +136,7 @@ export default function Nav() {
 
                                         <a className="nav-link me-auto text-white disabled text-danger" href='#' data-bs-toggle="dropdown"><span className='text-warning'>{auth?.user?.name}</span>   <i className="fa-solid fa-sort-down"></i></a>
                                         <ul className="dropdown-menu">
-                                            <li><Link className="dropdown-item" to={`/dashboard/user/profile/${auth?.user?._id}`}> Profile</Link></li>
+                                            <li><Link className="dropdown-item" to={`/dashboard/user/profile`}> Profile</Link></li>
                                             <li><a className="dropdown-item" onClick={handleLogout}> Logout </a></li>
                                         </ul>
                                     </li>

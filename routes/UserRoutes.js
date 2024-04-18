@@ -3,7 +3,8 @@ import {
     getUserData,updateUserData,
     followController,
     getalluserscontroller,
-    getorderscontroller
+    getorderscontroller,
+    getBasicDetails
 } from "../controllers/authController.js";
 
 
@@ -15,7 +16,8 @@ const router = express.Router();
 
 router.get("/profile/:uid", getUserData);
 
-
+//get user basic details
+router.get("/profile/basic/:uid",getBasicDetails)
 
 //to get orders of user
 router.get("/profile/orders/:uid", getorderscontroller);
