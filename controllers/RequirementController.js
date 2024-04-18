@@ -319,8 +319,11 @@ export const postToNegHisRequirementController = async (req, res) => {
 //propose offer controller on begining a conversation with user seller from buyer prodetneg page
 export const proposeOfferController = async (req, res) => {
 
-  const { pid, sentBy, recievedby,sentname,phone } = req.body;
-  const obj={sentBy,sentname,phone}
+  const { pid, sentBy, recievedby, sentname, phone, quantity, quantityUnit, price, notes, date, rating, address } = req.body;
+  
+  const obj = { sentBy, sentname, phone }
+  const chatobj = { pid, sentBy, recievedby, sentname, phone, quantity, quantityUnit, price, notes, date, rating, address,timestamp: new Date() }
+
   try {
 
     const proposalsent = await userModel.findByIdAndUpdate(
@@ -335,10 +338,23 @@ export const proposeOfferController = async (req, res) => {
       { new: true } // To return the updated document
     );
 
+    //to add to chats here
+    // user contins a chat field and i want to add the chatobj to this user with sentby id
 
-    console.log(prop, pid)
+    const sentbychat = await userModel.findByIdAndUpdate(
+      { _id: sentBy },
+      { $addToSet: { chats: chatobj } }
+    );
 
-    if (proposalsent) {
+    const recievedbychat = await userModel.findByIdAndUpdate(
+      { _id: recievedby },
+      { $addToSet: { chats: chatobj } }
+    );
+
+
+
+
+    if (proposalsent && prop && sentbychat && recievedbychat) {
       return res.status(200).send({
         message: "add to proposalsentids",
         success: true,
@@ -357,9 +373,13 @@ export const proposeOfferController = async (req, res) => {
     console.log(error)
   }
 
-
-
 };
+
+
+
+
+
+
 
 
 //decline offer controller here

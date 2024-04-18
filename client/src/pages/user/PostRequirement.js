@@ -4,12 +4,13 @@ import Footer from "../../components/layouts/Footer";
 import { Radio } from "antd";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import AuthContext from "../../context/AuthContext";
 import commodities from "../../Data/Commodities"; // Import the data from Commodities.js
 import Nav from "../../components/UIComponents/Nav";
 import Spinner from "../../components/UIComponents/Spinner";
+import { IoArrowBackCircle } from "react-icons/io5";
 
 const PostRequirement = () => {
   const navigate = useNavigate();
@@ -118,10 +119,38 @@ const PostRequirement = () => {
   };
 
 
+  const Breadcrumb = () => {
+    const navigate = useNavigate();
+
+    return (
+      <>
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="mr-2" style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+              <abbr title="Go back">
+                <IoArrowBackCircle style={{ fontSize: '1.8rem' }} />
+              </abbr>
+            </li>
+            <li className="breadcrumb-item">
+              <NavLink to="/">Home</NavLink>
+            </li>
+
+            <li className="breadcrumb-item active" aria-current="page">
+              Post requirement
+            </li>
+          </ol>
+        </nav>
+      </>
+    );
+  };
+
+
+
 
   return (
     <>
       <Nav />
+      <Breadcrumb/>
       <div>
         <div className="row">
           <h2 className="text-center m-3">Fill Product details</h2>

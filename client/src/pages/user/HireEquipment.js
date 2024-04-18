@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import Nav from '../../components/UIComponents/Nav'
 import Footer from '../../components/layouts/Footer'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import axios from "axios"
 import toast from 'react-hot-toast';
 import TopFilterBar from '../../components/CardRelated/buycommodity/TopFilterBar';
+import { IoArrowBackCircle } from 'react-icons/io5';
 
 const HireEquipment = () => {
 
     const [equip, setequip] = useState([])
+
+    const navigate=useNavigate();
 
     const images = {
         "Tractors": "https://www.agrifarming.in/wp-content/uploads/2019/01/Importance-of-Tractors-in-Agriculture..jpg",
@@ -52,6 +55,11 @@ const HireEquipment = () => {
         return (
             <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
+                <li className="mr-2" style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+                        <abbr title="Go back">
+                            <IoArrowBackCircle style={{ fontSize: '1.8rem' }} />
+                        </abbr>
+                    </li>
                     <li className="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
 
 

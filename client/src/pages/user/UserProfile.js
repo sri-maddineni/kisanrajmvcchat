@@ -225,22 +225,22 @@ const UserProfile = () => {
                   className={`btn btn-sm btn-primary ${auth?.user?._id === params.uid ? "disabled" : ""} ${followers.includes(auth?.user?._id) ? "btn-outline-secondary" : "btn-primary"}`}
                   onClick={followfun}
                 >
-                  {followers.includes(auth?.user?._id) ? "Unfollow" : "Follow"}
+                  {followers.includes(auth?.user?._id) ? "Following" : "Follow"}
                 </button>
               </div>
               <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
                 <p className="foltxt">{user?.following?.length}</p>
                 <p style={{ cursor: "pointer" }}>Following</p>
-                <button className={`btn btn-sm btn-primary ${auth?.user?._id === params.uid ? "disabled" : ""}`}>
+                {/* <button className={`btn btn-sm btn-primary ${auth?.user?._id === params.uid ? "disabled" : ""}`}>
                   Message
-                </button>
+                </button> */}
               </div>
               <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
                 <p className="foltxt">{user?.listings?.length}</p>
                 <p>{auth?.user?._id === params.uid ? "My posts" : "Posts"}</p>
-                <button className="btn btn-sm btn-primary">
+                {/* <button className="btn btn-sm btn-primary">
                   share
-                </button>
+                </button> */}
               </div>
               <div className="followers m-2 p-3" style={{ display: 'flex', flexDirection: "column" }}>
                 <p className="foltxt">{user?.transactions ? user?.transactions : "0"}</p>

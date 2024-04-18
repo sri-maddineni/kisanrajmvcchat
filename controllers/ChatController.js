@@ -83,7 +83,7 @@ export const getChatsController = async (req, res) => {
 
         const chats = await userModel.findOne(
             {
-                "_id": seller, // Match user by _id
+                "_id": buyer, // Match user by _id
                 "chats.pid": pid, // Match chats by pid
                 $or: [
                     { "chats.sentBy": buyer },
@@ -92,9 +92,18 @@ export const getChatsController = async (req, res) => {
             },
             { chats: 1 } // Projection to retrieve only the chats array
         );
+
+
+        if(chats){
+            console.log(chats)
+            return res.status(200).json({ success: true, message: "Chats retrieved successfully", chats });
+        }
+        else{
+            console.log(chats,"chats")
+        }
  
 
-        console.log(chats,"chats")
+       
 
 
 

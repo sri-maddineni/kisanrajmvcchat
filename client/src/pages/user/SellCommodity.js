@@ -7,6 +7,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import commodities from "../../Data/Commodities"; // Import the data from Commodities.js
 import Nav from '../../components/UIComponents/Nav';
+import {IoArrowBackCircle} from "react-icons/io5"
 
 
 
@@ -112,6 +113,11 @@ const SellCommodity = () => {
     return (
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
+        <li className="mr-2" style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+            <abbr title="Go back">
+              <IoArrowBackCircle style={{ fontSize: '1.8rem' }} />
+            </abbr>
+          </li>
           <li class="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
           
           <li class="breadcrumb-item active" aria-current="page">sell-commodity</li>

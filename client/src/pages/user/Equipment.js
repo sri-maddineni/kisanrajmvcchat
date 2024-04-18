@@ -6,11 +6,15 @@ import AuthContext from '../../context/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { add } from 'date-fns';
+import { NavLink,useNavigate } from 'react-router-dom';
+import { IoArrowBackCircle } from 'react-icons/io5';
 
 
 const Equipment = () => {
 
   const [auth, setAuth] = useContext(AuthContext)
+
+  const navigate=useNavigate();
 
   
   const owner = auth?.user?._id;
@@ -45,10 +49,30 @@ const Equipment = () => {
     }
   }
 
+  const Breadcrumb = () => {
+    return (
+        <nav aria-label="breadcrumb">
+            <ol className="breadcrumb">
+            <li className="mr-2" style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+                    <abbr title="Go back">
+                        <IoArrowBackCircle style={{ fontSize: '1.8rem' }} />
+                    </abbr>
+                </li>
+                <li className="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
+
+
+                <li className="breadcrumb-item active" aria-current="page">Post Equipment</li>
+            </ol>
+        </nav>
+    );
+};
+
+
 
   return (
     <>
       <Nav />
+      <Breadcrumb/>
       <div className="container">
         <div className="register-photo">
           <div className="form-container">

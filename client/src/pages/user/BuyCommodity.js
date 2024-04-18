@@ -29,7 +29,7 @@ const BuyCommodity = () => {
   const [products, setProducts] = useState([]);
 
   const [wishlist, setwishlist] = useState([])
-  const navigate=useNavigate()
+  const navigate = useNavigate()
 
   useEffect(() => {
     getuserdata()
@@ -123,9 +123,9 @@ const BuyCommodity = () => {
       const userdata = await axios.get(`${process.env.REACT_APP_API}/api/v1/users/profile/${uid}`);
 
       if (userdata.data.success) {
-        
+
         const wishlistIds = userdata.data.user.wishlist.map(item => item._id);
-        
+
         setwishlist(wishlistIds);
 
       }
@@ -236,7 +236,7 @@ const BuyCommodity = () => {
     return (
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
-        <li className="mr-2" style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+          <li className="mr-2" style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
             <abbr title="Go back">
               <IoArrowBackCircle style={{ fontSize: '1.8rem' }} />
             </abbr>
@@ -298,16 +298,16 @@ const BuyCommodity = () => {
 
       <Breadcrumb />
 
-      <TopFilterBar/>
+      <TopFilterBar />
 
 
       <div className="row m-3" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
         <div style={{ minHeight: "50vh", width: "100%" }}>
-          
+
 
           {/* <Filtersbar onProductSelect={handlecategoryFilter} />*/}
           <div className="container" style={{ display: 'flex', flexDirection: "row" }}>
-            
+
             <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }} >
 
 
@@ -315,14 +315,14 @@ const BuyCommodity = () => {
                 filteredProducts.map((p) => {
 
                   return (
-                    auth?.user ? <ProductCard key={p._id} wish={wishlist.includes(p._id)} product={p}  /> : <Prod key={p._id} product={p} />
+                    auth?.user ? <ProductCard key={p._id} wish={wishlist.includes(p._id)} product={p} /> : <Prod key={p._id} product={p} />
                   );
                 })
               ) : (
                 products
                   .filter((p) => p.name.toLowerCase().includes(searchitem.toLowerCase()))
                   .map((p) => {
-                    
+
 
                     return (
                       auth?.user ? <ProductCard key={p._id} wish={wishlist.includes(p._id)} product={p} /> : <Prod key={p._id} product={p} />

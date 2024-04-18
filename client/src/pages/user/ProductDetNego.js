@@ -55,27 +55,27 @@ const ProductDetNego = () => {
     };
 
 
-    
+
 
     const formattedDate = (timestamp) => {
         return format(new Date(timestamp), 'dd-MMM hh:mm a');
     }
 
-    const authdata = async () => {
-        try {
-            const res = await axios.get(`${process.env.REACT_APP_API}/api/users/${auth?.user?._id}`)
-            if (res.data.success) {
-                setproposals(res?.data?.user?.proposalsSentids)
-                console.log(res.data.user)
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // const authdata = async () => {
+    //     try {
+    //         const res = await axios.get(`${process.env.REACT_APP_API}/api/users/${auth?.user?._id}`)
+    //         if (res.data.success) {
+    //             setproposals(res?.data?.user?.proposalsSentids)
+    //             console.log(res.data.user)
+    //         }
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 
-    useEffect(() => {
-        authdata();
-    }, [])
+    // useEffect(() => {
+    //     authdata();
+    // }, [])
 
     const getProductData = async () => {
         setLoading(true);
@@ -104,17 +104,21 @@ const ProductDetNego = () => {
 
             const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/chats/getchats`, chat)
             if (res.data.success) {
-                setChats(res.data.chats)
+                setChats(res.data.chats.chats)
                 console.log(res)
-
             }
             else {
                 console.log("failed to fetch chats")
             }
         } catch (error) {
-
+            console.log(error)
         }
     }
+
+
+    useEffect(() => {
+        getchats();
+    }, [])
 
     const sendoffer = async () => {
 
@@ -122,23 +126,35 @@ const ProductDetNego = () => {
             const pid = params.pid;
             const sentBy = auth?.user?._id;
             const recievedby = product.sellerId._id
-            const sentname=auth?.user?.name
-            const phone=auth?.user?.phone
+            const sentname = auth?.user?.name
+            const quantityUnit = product.quantityUnit
+            const phone = auth?.user?.phone
+            const rating = auth?.user?.rating
+            const address = auth?.user?.address
+
+            console.log(quantityUnit)
+
+
+
 
             // const propose=await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/proposalsent`,{pid})
 
 
-            const obj = { pid, sentBy, recievedby, quantity, price, notes, date }
-            const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/propose-offer`, {pid,sentBy,recievedby,sentname,phone})
+            const obj = { pid, sentBy, recievedby, sentname, phone, quantity, quantityUnit, price, notes, date, rating, address }
+            const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/propose-offer`, obj)
             if (res.data.success) {
                 console.log("done")
                 toast.success("done")
+                getchats();
             }
         } catch (error) {
             toast.error("not done")
             console.log(error)
         }
     }
+
+
+
 
     const Breadcrumb = () => {
         return (
@@ -216,14 +232,30 @@ const ProductDetNego = () => {
 
 
                     <div style={{ display: "flex", flexDirection: 'column', width: "60%" }}>
-                        <div className='mt-4' style={{ border: "solid 1px black", minHeight: "50vh", overflowY: "auto" }}>
-                            {isClicked && (
-                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
-                                    <button className='btn btn-primary m-1'>Accept and place order</button>
-                                    <button className='btn btn-warning m-1'>Negotiate requirements</button>
-                                </div>
-                            )}
+                        <div className='mt-4' style={{ border: "solid 1px black", height: "50vh", overflowY: "auto" }}>
+                            
+
+                            <div style={{ height:"50vh",  }}> {/* Subtracting button height */}
+                                {chats.map((chat, index) => (
+                                    <div
+                                        key={index}
+                                        className="card"
+                                        style={{
+                                            width: "15rem",
+                                            marginLeft: auth?.user?._id === chat.sentBy ? "575px" : "0",
+                                            background:auth?.user?._id === chat.sentBy ? "red" : "",
+                                            color:auth?.user?._id === chat.sentBy ? "white" : "0",
+                                        }}
+                                    >
+                                        <p style={{margin:"0",padding:"0"}}>{chat.quantity} {chat.quantityUnit} required by {chat.date} with &#8377;{chat.price} per {chat.quantityUnit}</p>
+                                        
+                                    </div>
+                                ))}
+
+
+                            </div>
                         </div>
+
 
                         <div className="format my-1" style={{ border: "solid 1px black", display: 'flex', flexDirection: 'column' }}>
                             <div style={{ display: "flex", flexDirection: "row" }}>
@@ -280,7 +312,7 @@ const ProductDetNego = () => {
                                 </div>
 
                                 <button className="btn btn-sm btn-primary m-3" onClick={() => sendoffer()}>send offer</button>
-                                <button className="btn btn-sm btn-primary m-3">Accept offer</button> {/*  on clicking on accept offer the response should be sent to sellers transactos page */}
+                                <button className="btn btn-sm btn-success m-3">Accept offer</button> {/*  on clicking on accept offer the response should be sent to sellers transactos page */}
                             </div>
                         </div>
 

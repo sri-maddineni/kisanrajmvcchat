@@ -263,9 +263,11 @@ export const getUserData = async (req, res) => {
 
 export const getBasicDetails=async(req,res)=>{
   try {
-    const uid=req.params.uid;
+    const uid=req?.params?.uid;
 
-    const user=await userModel.find({_id:uid}).select("name phone")
+    
+
+    const user=await userModel.find({_id:uid}).select("name phone rating")
 
     if(user){
       return res.status(200).send({

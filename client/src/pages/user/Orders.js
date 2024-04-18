@@ -3,17 +3,20 @@ import UserMenu from './UserMenu'
 import Header from '../../components/layouts/Header'
 import Footer from '../../components/layouts/Footer'
 import Nav from '../../components/UIComponents/Nav'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import AuthContext from '../../context/AuthContext'
 import { toast } from "react-hot-toast"
 import TopFilterBar from "../../components/CardRelated/buycommodity/TopFilterBar";
+import { IoArrowBackCircle } from 'react-icons/io5'
 
 const Orders = () => {
 
     const [auth] = useContext(AuthContext)
     const [orders, setorders] = useState([])
     const [wishlist,setwishlist]=useState([])
+
+    const navigate=useNavigate();
 
     const getuserdata = async () => {
         try {
@@ -42,6 +45,11 @@ const Orders = () => {
         return (
             <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
+                <li className="mr-2" style={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+              <abbr title="Go back">
+                <IoArrowBackCircle style={{ fontSize: '1.8rem' }} />
+              </abbr>
+            </li>
                     <li className="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
                     <li className="breadcrumb-item"><NavLink to="/dashboard/user/profile">Profile</NavLink></li>
                     <li className="breadcrumb-item active" aria-current="page">orders</li>
