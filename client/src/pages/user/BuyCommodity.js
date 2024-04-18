@@ -28,6 +28,10 @@ const BuyCommodity = () => {
   const [proposedlist, setProposedlist] = useState([]);
   const [products, setProducts] = useState([]);
 
+  const [category, setCategory] = useState('all');
+  const [filterState, setFilterstate] = useState(false);
+  const [sortOrder, setSortOrder] = useState('asc');
+
   const [wishlist, setwishlist] = useState([])
   const navigate = useNavigate()
 
@@ -37,24 +41,16 @@ const BuyCommodity = () => {
 
 
 
-  const handleCategoryFilter = (selectedCategory) => {
 
-    if (selectedCategory) {
-
-      const filtered = products.filter((p) => {
-        const category = p?.commodityId?.category;
-        return category && category.toLowerCase() === selectedCategory.toLowerCase();
-      });
-
-      if (filtered.length > 0) {
-      } else {
-        setFilteredProducts([])
-      }
-      setFilteredProducts(filtered);
-    } else {
-      setFilteredProducts(products)
-    }
+  const handleCategoryChange = (selectedCategory) => {
+    setCategory(selectedCategory);
+    setFilterstate(selectedCategory !== 'all');
   };
+
+  const handleSortChange = (order) => {
+    setSortOrder(order);
+  };
+
 
 
 
@@ -74,17 +70,6 @@ const BuyCommodity = () => {
     }
   }, [searchitem, isFocused]);
 
-  // const handleSelect = (suggest) => {
-  //   setSearchitem(suggest);
-  //   setSuggestions([]);
-  //   handleProductFilter(suggest);
-  // };
-
-  // const handleBlur = () => {
-  //   setTimeout(() => {
-  //     setIsFocused(false); // Set input focus state to false after a delay
-  //   }, 100);
-  // };
 
 
   //api call to propose offer
@@ -165,24 +150,17 @@ const BuyCommodity = () => {
   }, []);
 
 
-  const handleDecline = async (pid, sellerid) => {
-    try {
-      console.log("clicked on hndledecline")
-      const buyerid = auth?.user._id;
-      const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/decline`, { buyerid, pid, sellerid });
-      console.log(res)
-      if (res?.data?.success) {
-        toast.success("Offer declined!");
-        setProposedlist(proposedlist.filter((id) => id !== pid));
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Decline failed!");
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sortOrder === 'asc') {
+      return a.price - b.price;
+    } else {
+      return b.price - a.price;
     }
-    finally {
-      setLoading(false)
-    }
-  };
+  });
+
+
+
+
 
 
 
@@ -215,10 +193,10 @@ const BuyCommodity = () => {
     getAllProducts();
   }, []);
 
-  const handleProductFilter = (productName) => {
-    const filtered = products.filter((product) => product.name === productName);
-    setFilteredProducts(filtered);
-  };
+  // const handleProductFilter = (productName) => {
+  //   const filtered = products.filter((product) => product.name === productName);
+  //   setFilteredProducts(filtered);
+  // };
 
 
   if (loading) {
@@ -249,46 +227,6 @@ const BuyCommodity = () => {
     );
   };
 
-  const FilterSearch = () => {
-    return (
-      <>
-        <div className="d-flex align-items-center" style={{ display: 'flex', flexDirection: "row" }}>
-          <input
-            className="form-control mr-sm-2 m-3"
-            type="search"
-            placeholder={`search among ${products.length} products available`}
-            value={searchitem}
-            onChange={(e) => {
-              setSearchitem(e.target.value);
-            }}
-            aria-label="Search"
-            onFocus={() => setIsFocused(true)}
-          // onBlur={handleBlur}
-          />
-          {searchitem && ( // Render the cross button only when search item is not empty
-            <button
-              className="fa-solid fa-multiply btn-sm btn"
-              onClick={() => {
-                setSearchitem("")
-                setFilteredProducts([])
-
-              }} // Clear the search input when the cross button is clicked
-            ></button>
-          )}
-          <button
-            className="btn btn-outline-info btn-sm m-3"
-            onClick={() => {
-              handleProductFilter(
-                searchitem.charAt(0).toUpperCase() + searchitem.slice(1)
-              );
-            }}
-          >
-            Search
-          </button>
-        </div>
-      </>
-    )
-  }
 
 
 
@@ -298,7 +236,38 @@ const BuyCommodity = () => {
 
       <Breadcrumb />
 
-      <TopFilterBar />
+      <div className="container" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
+        {/* Search input */}
+        <input type="search" className='form-control m-2' placeholder='Search for products or use filters' style={{ height: "35px" }} />
+        <i className='fa fa-search m-3' style={{ cursor: "pointer" }}></i>
+
+        {/* Filter dropdown */}
+        <div className="dropdown">
+          <button className="btn btn-sm bg-primary text-white m-1 p-2 btn-light dropdown-toggle" style={{ width: "150px" }} type='button' data-bs-toggle="dropdown" aria-expanded="false">
+            {category}
+          </button>
+          <ul className="dropdown-menu">
+            <li><a className="dropdown-item" onClick={() => handleCategoryChange("all")} href="#">All</a></li>
+            <li><a className="dropdown-item" onClick={() => handleCategoryChange("FOOD GRAINS/ CEREALS")} href="#">FOOD GRAINS/CEREALS</a></li>
+            <li><a className="dropdown-item" onClick={() => handleCategoryChange("OILSEEDS")} href="#">OILSEEDS</a></li>
+            <li><a className="dropdown-item" onClick={() => handleCategoryChange("FRUITS")} href="#">FRUITS</a></li>
+            <li><a className="dropdown-item" onClick={() => handleCategoryChange("VEGETABLES")} href="#">VEGETABLES</a></li>
+            <li><a className="dropdown-item" onClick={() => handleCategoryChange("SPICES")} href="#">SPICES</a></li>
+            <li><a className="dropdown-item" onClick={() => handleCategoryChange("MISC")} href="#">MISC</a></li>
+          </ul>
+        </div>
+
+        {/* Sorting dropdown */}
+        <div className="dropdown">
+          <button className="btn btn-sm bg-primary text-white m-1 p-2 btn-light dropdown-toggle" style={{ width: "80px" }} type='button' data-bs-toggle="dropdown" aria-expanded="false">
+            Sort
+          </button>
+          <ul className="dropdown-menu">
+            <li><a className="dropdown-item" onClick={() => handleSortChange('asc')} href="#">Price - low to high</a></li>
+            <li><a className="dropdown-item" onClick={() => handleSortChange('desc')} href="#">Price - high to low</a></li>
+          </ul>
+        </div>
+      </div>
 
 
       <div className="row m-3" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
@@ -311,24 +280,20 @@ const BuyCommodity = () => {
             <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }} >
 
 
-              {filteredProducts.length > 0 ? (
-                filteredProducts.map((p) => {
+              {sortedProducts.map((p) => {
+                console.log(p)
+                if (filterState && p.commodityId.category !== category) {
+                  return null;
+                }
+                return (
+                  auth?.user ? (
+                    <ProductCard key={p._id} wish={wishlist.includes(p._id)} product={p} />
+                  ) : (
+                    <Prod key={p._id} product={p} />
+                  )
+                );
+              })}
 
-                  return (
-                    auth?.user ? <ProductCard key={p._id} wish={wishlist.includes(p._id)} product={p} /> : <Prod key={p._id} product={p} />
-                  );
-                })
-              ) : (
-                products
-                  .filter((p) => p.name.toLowerCase().includes(searchitem.toLowerCase()))
-                  .map((p) => {
-
-
-                    return (
-                      auth?.user ? <ProductCard key={p._id} wish={wishlist.includes(p._id)} product={p} /> : <Prod key={p._id} product={p} />
-                    );
-                  })
-              )}
 
 
 
@@ -350,45 +315,172 @@ export default BuyCommodity;
 
 
 
-export const FilterSearch = ({ products, handleProductFilter }) => {
-  const [searchitem, setSearchitem] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
-
-  const clearSearch = () => {
-    setSearchitem('');
-    handleProductFilter('');
-  };
-
-  return (
-    <div className="d-flex align-items-center" style={{ display: 'flex', flexDirection: "row" }}>
-      <input
-        className="form-control mr-sm-2 m-3"
-        type="search"
-        placeholder={`search among ${products.length} products available`}
-        value={searchitem}
-        onChange={(e) => setSearchitem(e.target.value)}
-        aria-label="Search"
-        onFocus={() => setIsFocused(true)}
-      // onBlur={handleBlur}
-      />
-      {searchitem && ( // Render the cross button only when search item is not empty
-        <button
-          className="fa-solid fa-multiply btn-sm btn"
-          onClick={clearSearch} // Clear the search input when the cross button is clicked
-        ></button>
-      )}
-      <button
-        className="btn btn-outline-info btn-sm m-3"
-        onClick={() => {
-          handleProductFilter(
-            searchitem.charAt(0).toUpperCase() + searchitem.slice(1)
-          );
-        }}
-      >
-        Search
-      </button>
-    </div>
-  );
-};
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export const FilterSearch = ({ products, handleProductFilter }) => {
+//   const [searchitem, setSearchitem] = useState('');
+//   const [isFocused, setIsFocused] = useState(false);
+
+//   const clearSearch = () => {
+//     setSearchitem('');
+//     handleProductFilter('');
+//   };
+
+//   return (
+//     <div className="d-flex align-items-center" style={{ display: 'flex', flexDirection: "row" }}>
+//       <input
+//         className="form-control mr-sm-2 m-3"
+//         type="search"
+//         placeholder={`search among ${products.length} products available`}
+//         value={searchitem}
+//         onChange={(e) => setSearchitem(e.target.value)}
+//         aria-label="Search"
+//         onFocus={() => setIsFocused(true)}
+//       // onBlur={handleBlur}
+//       />
+//       {searchitem && ( // Render the cross button only when search item is not empty
+//         <button
+//           className="fa-solid fa-multiply btn-sm btn"
+//           onClick={clearSearch} // Clear the search input when the cross button is clicked
+//         ></button>
+//       )}
+//       <button
+//         className="btn btn-outline-info btn-sm m-3"
+//         onClick={() => {
+//           handleProductFilter(
+//             searchitem.charAt(0).toUpperCase() + searchitem.slice(1)
+//           );
+//         }}
+//       >
+//         Search
+//       </button>
+//     </div>
+//   );
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const FilterSearch = () => {
+//   return (
+//     <>
+//       <div className="d-flex align-items-center" style={{ display: 'flex', flexDirection: "row" }}>
+//         <input
+//           className="form-control mr-sm-2 m-3"
+//           type="search"
+//           placeholder={`search among ${products.length} products available`}
+//           value={searchitem}
+//           onChange={(e) => {
+//             setSearchitem(e.target.value);
+//           }}
+//           aria-label="Search"
+//           onFocus={() => setIsFocused(true)}
+//         // onBlur={handleBlur}
+//         />
+//         {searchitem && ( // Render the cross button only when search item is not empty
+//           <button
+//             className="fa-solid fa-multiply btn-sm btn"
+//             onClick={() => {
+//               setSearchitem("")
+//               setFilteredProducts([])
+
+//             }} // Clear the search input when the cross button is clicked
+//           ></button>
+//         )}
+//         <button
+//           className="btn btn-outline-info btn-sm m-3"
+//           onClick={() => {
+//             handleProductFilter(
+//               searchitem.charAt(0).toUpperCase() + searchitem.slice(1)
+//             );
+//           }}
+//         >
+//           Search
+//         </button>
+//       </div>
+//     </>
+//   )
+// }
+
+
+// const handleDecline = async (pid, sellerid) => {
+//   try {
+//     console.log("clicked on hndledecline")
+//     const buyerid = auth?.user._id;
+//     const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/decline`, { buyerid, pid, sellerid });
+//     console.log(res)
+//     if (res?.data?.success) {
+//       toast.success("Offer declined!");
+//       setProposedlist(proposedlist.filter((id) => id !== pid));
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     toast.error("Decline failed!");
+//   }
+//   finally {
+//     setLoading(false)
+//   }
+// };

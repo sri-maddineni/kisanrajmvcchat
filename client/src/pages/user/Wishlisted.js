@@ -10,6 +10,8 @@ import AuthContext from '../../context/AuthContext';
 import TopFilterBar from '../../components/CardRelated/buycommodity/TopFilterBar';
 
 const Wishlisted = () => {
+
+
   const [auth] = useContext(AuthContext);
   const [wishlist, setwishlist] = useState([]);
   const [loading, setloading] = useState(true);
@@ -27,7 +29,7 @@ const Wishlisted = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setloading(false);  
+      setloading(false);
     }
   };
 
@@ -94,8 +96,8 @@ const Wishlisted = () => {
       <>
         <Nav />
         <Breadcrumb />
-        <TopFilterBar/>
-        <div className="container" style={{minHeight:"50vh"}}>
+        <TopFilterBar />
+        <div className="container" style={{ minHeight: "50vh" }}>
           <Spinner />
         </div>
         <Footer />
@@ -109,7 +111,7 @@ const Wishlisted = () => {
       <Nav />
       <Breadcrumb />
       <div className="container" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
-        
+
         <div className="container" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
           {/* Search input */}
           <input type="search" className='form-control m-2' placeholder='Search for products or use filters' style={{ height: "35px" }} />
