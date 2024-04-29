@@ -542,7 +542,10 @@ export const getSameNamedController = async (req, res) => {
         const { name, id } = req.body;
 
         // Find products with the same name but not equal to the provided id
-        const products = await ProductModel.find({ name: name, _id: { $ne: id } });
+        const products = await ProductModel.find({ name: name, _id: { $ne: id } }).populate({
+            path:"commodityId",
+            model:"commodities"
+          })
 
         // Return the found products
         if(products){
