@@ -535,3 +535,22 @@ export const getcatproductscontroller = async (req, res) => {
         console.log(error)
     }
 }
+
+
+export const getSameNamedController = async (req, res) => {
+    try {
+        const { name, id } = req.body;
+
+        // Find products with the same name but not equal to the provided id
+        const products = await ProductModel.find({ name: name, _id: { $ne: id } });
+
+        // Return the found products
+        if(products){
+            return res.status(200).json({ success: true, products });
+        }
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+}

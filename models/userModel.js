@@ -67,6 +67,8 @@ const userSchema = new mongoose.Schema(
     },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }], // Array to store user IDs of followers
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
+    equipmentsale: [{ type: mongoose.Schema.Types.ObjectId, ref: 'equipment' }],
+    equipmenthire: [{ type: mongoose.Schema.Types.ObjectId, ref: 'equipment' }],
     potentials: [{ type: mongoose.Schema.Types.ObjectId, ref: 'potentials' }],// Array to store user IDs of following
     roles: {
       type: Array,

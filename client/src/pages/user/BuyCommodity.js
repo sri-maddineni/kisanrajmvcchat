@@ -33,6 +33,7 @@ const BuyCommodity = () => {
   const [sortOrder, setSortOrder] = useState('asc');
 
   const [wishlist, setwishlist] = useState([])
+  const [wishstate,setwishstate]=useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -112,6 +113,7 @@ const BuyCommodity = () => {
         const wishlistIds = userdata.data.user.wishlist.map(item => item._id);
 
         setwishlist(wishlistIds);
+        setwishstate(true)
 
       }
       else {
@@ -280,22 +282,22 @@ const BuyCommodity = () => {
             <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }} >
 
 
-              {sortedProducts.map((p) => {
-                console.log(p)
-                if (filterState && p.commodityId.category !== category) {
-                  return null;
-                }
-                return (
-                  auth?.user ? (
-                    <ProductCard key={p._id} wish={wishlist.includes(p._id)} product={p} />
-                  ) : (
-                    <Prod key={p._id} product={p} />
-                  )
-                );
-              })}
-
-
-
+              {
+                wishstate && sortedProducts.map((p) => {
+                  console.log(p)
+                  if (filterState && p.commodityId.category !== category) {
+                    return null;
+                  }
+                  return (
+                    auth?.user ? (
+                      <ProductCard key={p._id} wish={wishlist.includes(p._id)} product={p} />
+                    ) : (
+                      <Prod key={p._id} product={p} />
+                    )
+                  );
+                })
+              }
+              
 
             </div>
           </div>

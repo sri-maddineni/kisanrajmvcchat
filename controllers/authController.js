@@ -220,6 +220,18 @@ export const getUserData = async (req, res) => {
           model: "commodities"
         }
       })
+      .populate({
+        path:"potentials",
+        model:"potentials"
+      })
+      .populate({
+        path:"equipmenthire",
+        model:"equipment"
+      })
+      .populate({
+        path:"equipmentsale",
+        model:"equipment"
+      })
 
 
 

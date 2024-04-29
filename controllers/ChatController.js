@@ -95,11 +95,12 @@ export const getChatsController = async (req, res) => {
 
 
         if(chats){
-            console.log(chats)
+            
             return res.status(200).json({ success: true, message: "Chats retrieved successfully", chats });
         }
         else{
-            console.log(chats,"chats")
+            console.log("chats fetching failed")
+            // console.log(chats,"chats")
         }
  
 

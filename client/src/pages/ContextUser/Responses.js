@@ -99,7 +99,7 @@ const Responses = () => {
 
     useEffect(() => {
         getchats();
-    }, [])
+    }, [selecteduser])
 
     const sendoffer = async () => {
 

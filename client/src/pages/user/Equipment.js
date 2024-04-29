@@ -33,6 +33,7 @@ const Equipment = () => {
     try {
       const res=await axios.post(`${process.env.REACT_APP_API}/api/v1/equipment/postequipment`,formdata)
       console.log(res)
+
       if(res.data.success){
         console.log("success")
         toast.success("equipment posted successfully!")
@@ -87,6 +88,7 @@ const Equipment = () => {
                   <option value="Sprayers" />
                   <option value="Seeders / Harvestors" />
                   <option value="JCB" />
+                  <option value="Water tanks" />
                   <option value="Others" />
                  
                 </datalist>

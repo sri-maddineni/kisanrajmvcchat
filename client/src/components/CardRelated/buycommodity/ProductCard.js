@@ -118,7 +118,7 @@ export const Prod = (props) => {
 
                     <div className="mt-1">
                         <button className="btn btn-sm btn-primary mx-1" onClick={() => navigate(`/dashboard/user/buy-commodity/${p.commodityId.slug}/${p._id}`)}>view details</button>
-                        <button className="btn btn-sm btn-primary mx-1" onClick={() => navigate(`/dashboard/user/buy-commodity/${p.commodityId.slug}/${p._id}`)}>order it</button>
+                        <button className="btn btn-sm btn-success mx-1" onClick={() => navigate(`/dashboard/user/buy-commodity/${p.commodityId.slug}/${p._id}`)}>order it</button>
                     </div>
 
 
@@ -267,7 +267,7 @@ const ProductCard = (props) => {
 
                     <div className="btns">
                         <button className="btn btn-sm btn-primary mx-1" onClick={() => navigate(`/dashboard/user/buy-commodity/${p.commodityId.catslug}/${p.commodityId.slug}/${p._id}`)}>view details</button>
-                        <button className="btn btn-sm btn-primary mx-1" onClick={() => { addtoorders(p._id) }}>order it</button>
+                        <button className="btn btn-sm btn-success mx-1" onClick={() => { addtoorders(p._id) }}>order it</button>
                     </div>
 
                 </div>

@@ -14,7 +14,8 @@ import {
     proposalsRecievedList,
     getProductsController,
     removefromwishlistcontroller,
-    getcatproductscontroller
+    getcatproductscontroller,
+    getSameNamedController,
 }
     from "../controllers/ProductController.js";
 import formidable from "express-formidable";
@@ -62,6 +63,9 @@ router.post("/addtoorders", requireSignIn, isUser, addtoorderscontroller)
 
 //add to orders
 router.post("/removefromwishlist", requireSignIn, isUser, removefromwishlistcontroller)
+
+//get products of same name for oterh sellers in productdetnegotiation page
+router.post("/get-same-named",requireSignIn,isUser,getSameNamedController)
 
 
 //get products based on category slug in params

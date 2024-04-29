@@ -2,13 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import Nav from "../../components/UIComponents/Nav";
 import Footer from "../../components/layouts/Footer";
 import "./usercss/UserProfile.css"
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../../components/UIComponents/Spinner";
 import AuthContext from "../../context/AuthContext";
 import toast from "react-hot-toast";
 import { format } from "date-fns";
 import { Radio } from 'antd';
+import randint from "random-int"
 
 const UserProfile = () => {
 
@@ -18,29 +19,43 @@ const UserProfile = () => {
   const [user, setUser] = useState("")
   const [followers, setFollowers] = useState([])
   const [following, setFollowing] = useState(false)
+  const [requirements, setrequirements] = useState([])
+  const [equiphire, setequiphire] = useState([])
+  const [equipsale,setequipsale]=useState([])
+  const [display, setdisplay] = useState("posts")
 
   const params = useParams();
   const [posts, setposts] = useState([])
+  const navigate = useNavigate()
+  const [auth] = useContext(AuthContext)
 
-  const [value, setValue] = useState(1);
-  const onChange = (e) => {
-    console.log('radio checked', e.target.value);
-    setValue(e.target.value);
-  };
+  const formatteddate = (date) => {
+    return format(new Date(date), 'dd MMM yyyy');
+  }
+
+  const images = ["https://domf5oio6qrcr.cloudfront.net/medialibrary/11499/3b360279-8b43-40f3-9b11-604749128187.jpg",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX_yl40Qybp1ky-9b2FJ5wZuipZOQlJwtQKCvOFvLItQ&s",
+    "https://www.hsph.harvard.edu/nutritionsource/wp-content/uploads/sites/30/2012/09/vegetables-and-fruits-farmers-market.jpg",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz-RM2iCQ9H-ZxOdmdwB8dmowa0ts_-6X_YvYgGrhRlg&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbeY69nOXHM5BNxFKLQbYSZDYjL-KObFv4QjOLtlPdqg&s"]
+
+
 
   const Breadcrumb = () => {
     return (
       <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
-          <li class="breadcrumb-item"><NavLink to="/dashboard/user/allusers">All users</NavLink></li>
-          <li class="breadcrumb-item active" aria-current="page">UserProfile - {user.name}</li>
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item"><NavLink to="/">Home</NavLink></li>
+          <li className="breadcrumb-item"><NavLink to="/dashboard/user/allusers">All users</NavLink></li>
+          <li className="breadcrumb-item active" aria-current="page">UserProfile - {user.name}</li>
         </ol>
       </nav>
     );
   };
 
 
+
+  //user data to display in user profile 
   const getuserdata = async () => {
     // setLoading(true)
     const uid = params.uid;
@@ -51,11 +66,17 @@ const UserProfile = () => {
         console.log(userdata.data.user.listings)
         console.log(userdata.data)
         setFollowers(userdata.data.user.followers)
+
         if (followers.includes(auth?.user?._id)) {
           setFollowing(true)
         }
         setUser(userdata.data.user)
         setposts(userdata.data.user.listings)
+        setrequirements(userdata.data.user.potentials)
+        setequiphire(userdata.data.user.equipmenthire)
+        setequipsale(userdata.data.user.equipmentsale)
+
+
       }
     } catch (error) {
       console.log(error)
@@ -71,11 +92,6 @@ const UserProfile = () => {
 
 
 
-  const [auth] = useContext(AuthContext)
-
-  const formatteddate = (date) => {
-    return format(new Date(date), 'dd MMM yyyy');
-  }
 
   const followfun = async () => {
 
@@ -117,7 +133,7 @@ const UserProfile = () => {
   const PostData = () => {
     return (
       <>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div style={{ display: 'flex', flexDirection: 'row',flexWrap:"wrap" }}>
           {posts.length ? (
             posts.map(post => (
               <div key={post._id} className="card" style={{ width: "16rem" }}>
@@ -143,30 +159,104 @@ const UserProfile = () => {
   }
 
   const RequirementsData = () => {
+
+
+
     return (
       <>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          {posts.length ? (
-            posts.map(post => (
-              <div key={post._id} className="card" style={{ width: "16rem" }}>
-                <div className="img">
-                  <img src={`/api/v1/products/product-photo/${post._id}`} alt="productpic" style={{ height: "25vh", objectFit: "cover" }} />
-                </div>
-                <div className="details">
-                  <p>{post.organic ? "organic" : "Inorganic"} {post.name}</p>
-                  <p><span style={{ fontWeight: "700" }}>&#8377;{post.price} per {post.quantityUnit} </span><span>{post.quantity} {post.quantityUnit}s Available</span></p>
-                  <p>Available by : {formatteddate(post.availableDate)}</p>
+          {
+            requirements?.length && requirements.map(item => (
+              <div key={item._id} className="card m-2" style={{ width: '16rem', minHeight: "16rem" }}>
+                <img src={images[randint(0, 4)]} alt="loading..." style={{ height: "25vh" }} />
+                <div className="card-body">
+
+                  <h5 className="card-title">{item.organic ? "Organic" : "Inorganic"} {item.productName}</h5>
+                  <p className="card-text text-muted">Quantity Required: {item.quantity} {item.quantityUnit}s</p>
+                  <p className="card-text">Price offered: <span style={{ fontWeight: "700", fontSize: "0.9rem" }}> &#8377;{item.price} per {item.quantityUnit}</span></p>
+
+                  {/* Add more fields as needed */}
                 </div>
               </div>
             ))
-          ) : (
-            <div className="container border border-secondary" style={{ display: "flex", flexDirection: 'row', alignContent: 'center', alignItems: "center", justifyContent: "center" }}>
-              <p className="h1 m-5">No posts yet</p>
-            </div>
-          )}
+          }
+          {
+            !requirements?.length &&
+            <>
+              <div className="container border border-secondary" style={{ display: "flex", flexDirection: 'row', alignContent: 'center', alignItems: "center", justifyContent: "center" }}>
+                <p className="h1 m-5">No Requirements posts yet</p>
+              </div>
+            </>
+          }
 
         </div>
       </>
+    )
+  }
+
+  const EqupmentHire = () => {
+    return (
+      <>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          {
+            equiphire?.length && equiphire.map(item => (
+              <div key={item._id} className="card m-2" style={{ width: '16rem', minHeight: "10rem" }}>
+                {/* <img src={images[randint(0, 4)]} alt="loading..." style={{ height: "25vh" }} /> */}
+                <div className="card-body">
+
+                  <h5 className="card-title">{item.item} {item.productName}</h5>
+                  <p className="card-text text-muted">Des : {item.des} {item.quantityUnit}s</p>
+                  <p className="card-text">Unit price : <span style={{ fontWeight: "700", fontSize: "0.9rem" }}> &#8377;{item.cost}</span></p>
+
+                  {/* Add more fields as needed */}
+                </div>
+              </div>
+            ))
+          }
+          {
+            !equiphire?.length &&
+            <>
+              <div className="container border border-secondary" style={{ display: "flex", flexDirection: 'row', alignContent: 'center', alignItems: "center", justifyContent: "center" }}>
+                <p className="h1 m-5">No equiphire posts yet</p>
+              </div>
+            </>
+          }
+
+        </div>
+      </>
+    )
+  }
+
+  const EqupmentSale = () => {
+    return (
+      <>
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        {
+          equipsale?.length && equipsale.map(item => (
+            <div key={item._id} className="card m-2" style={{ width: '16rem', minHeight: "10rem" }}>
+              {/* <img src={images[randint(0, 4)]} alt="loading..." style={{ height: "25vh" }} /> */}
+              <div className="card-body">
+
+                <h5 className="card-title">{item.item} {item.productName}</h5>
+                <p className="card-text text-muted">Des : {item.des} {item.quantityUnit}s</p>
+                <p className="card-text">Total cost : <span style={{ fontWeight: "700", fontSize: "0.9rem" }}> &#8377;{item.cost}</span></p>
+
+                {/* Add more fields as needed */}
+              </div>
+            </div>
+          ))
+        }
+        {
+          !equipsale?.length &&
+          <>
+            <div className="container border border-secondary" style={{ display: "flex", flexDirection: 'row', alignContent: 'center', alignItems: "center", justifyContent: "center" }}>
+              <p className="h1 m-5">No equipsale posts yet</p>
+            </div>
+          </>
+        }
+
+      </div>
+    </>
     )
   }
 
@@ -184,7 +274,7 @@ const UserProfile = () => {
 
 
       <div className="overall" style={{ display: "flex", flexDirection: "column" }}>
-
+        {/* profile insta type model section */}
         <div className="topsec" style={{ display: "flex", flexDirection: 'row', flexWrap: 'nowrap', justifyContent: "center" }}>
           <div className="left p-3">
             <div className="leftt my-1">
@@ -205,7 +295,7 @@ const UserProfile = () => {
                     </p>
                     <div className="d-flex" style={{ flexDirection: 'column' }}>
                       <p><i className="fa-solid fa-location-dot m-2"></i>{user?.address}</p>
-                      <p style={{ margin: "0", padding: "0" }} className="fw-bolder"><i class="fa-solid fa-phone mx-2"></i>{user.phone}</p>
+                      <p style={{ margin: "0", padding: "0" }} className="fw-bolder"><i className="fa-solid fa-phone mx-2"></i>{user.phone}</p>
                     </div>
                   </div>
                 </div>
@@ -255,38 +345,34 @@ const UserProfile = () => {
 
 
         </div>
-
-
-
+        {/* instagram view completed */}
 
         <div className="bottom container" style={{}}>
           <div className="mx-5 my-1">
 
             <div className="mx-3" >
 
-              <h1 className="fw-bolder">  <hr /></h1>
-              <Radio.Group className="d-flex justify-content-evenly" onChange={(e) => { setValue(e.target.value) }} value={value} style={{ display: "flex", flexDirection: 'row', flexWrap: "nowrap", justifyContent: "evenly" }}>
+              <Radio.Group className="d-flex justify-content-evenly" onChange={(e) => { setdisplay(e.target.value) }} value={display} style={{ display: "flex", flexDirection: 'row', flexWrap: "nowrap", justifyContent: "evenly" }}>
 
-                <h1> <Radio className="navi" value={1}>{auth?.user?._id === params.uid ? "My posts" : "Posts"}</Radio></h1>
-                {/* <h1><Radio className="navi" value={2}>Requirements</Radio></h1>
-                <h1><Radio className="navi" value={3}>Equipment For hire</Radio></h1>
-                <h1><Radio className="navi" value={4}>Equipment For sale</Radio></h1> */}
-
+                <h1> <Radio className="navi" value={"posts"}>{auth?.user?._id === params.uid ? "My posts" : "Posts"}</Radio></h1>
+                <h1><Radio className="navi" value={"requirements"} onClick={() => { setdisplay("requirements") }}>Requirements</Radio></h1>
+                <h1><Radio className="navi" value={"equipment"} onClick={() => { setdisplay("equipment") }}>Equipment For hire</Radio></h1>
+                <h1><Radio className="navi" value={"forsale"} onClick={() => { setdisplay("forsale") }}>Equipment For sale</Radio></h1>
 
               </Radio.Group>
-              <hr />
-
-
-
-
 
               <div className="bottomcontent" style={{ minHeight: '50vh' }}>
-                <PostData />
+                {display === "posts" && <PostData />}
+                {display === "requirements" && <RequirementsData />}
+                {display === "equipment" && <EqupmentHire />}
+                {display === "forsale" && <EqupmentSale />}
               </div>
-
             </div>
           </div>
         </div>
+
+
+
 
 
       </div>

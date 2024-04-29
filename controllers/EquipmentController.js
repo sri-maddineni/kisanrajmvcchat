@@ -1,5 +1,6 @@
 import EquipmentCategoryModel from "../models/EquipmentCategoryModel.js"
 import EquipmentModel from "../models/EquipmentModel.js";
+import userModel from "../models/userModel.js";
 
 
 
@@ -36,7 +37,6 @@ export const createEquipmentCategoryController = async (req, res) => {
 
 
 
-
 export const postEquipmentController = async (req, res) => {
     try {
         // Extracting data from the request body
@@ -48,30 +48,38 @@ export const postEquipmentController = async (req, res) => {
         }
 
         // Create new equipment object
-        const equipment = new EquipmentModel({
-            item,
-            cost,
-            phone,
-            address,
-            owner,
-            des,
-            purp
-        });
+        const equipment =await new EquipmentModel({ item, cost, phone, address, owner, des, purp }).save();
 
         // Save equipment to the database
-        await equipment.save();
+
+        let user;
+       
+
+        // Update the user document to include the ID of the equipment
+        if(purp==="hire"){
+             user = await userModel.findByIdAndUpdate(owner, { $addToSet: { equipmenthire: equipment._id } }, { new: true });
+
+        }
+        else{
+             user = await userModel.findByIdAndUpdate(owner, { $addToSet: { equipmentsale: equipment._id } }, { new: true });
+
+        }
+        console.log(user)
 
         // Respond with success message
-        res.status(201).send({ success: true, message: 'Equipment created successfully.', equipment });
+        if(user && equipment){
+            return res.status(201).send({ success: true, message: 'Equipment created successfully.', equipment });
+        }
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(500).send({
             success: false,
-            message: "Error in creating Euipment Category",
+            message: "Error in creating Equipment Category",
             error
-        })
+        });
     }
-}
+};
+
 
 
 export const getEquipmentCategoryController = async (req, res) => {

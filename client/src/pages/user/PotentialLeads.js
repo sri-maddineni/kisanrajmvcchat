@@ -18,7 +18,9 @@ const PotentialLeads = () => {
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX_yl40Qybp1ky-9b2FJ5wZuipZOQlJwtQKCvOFvLItQ&s",
     "https://www.hsph.harvard.edu/nutritionsource/wp-content/uploads/sites/30/2012/09/vegetables-and-fruits-farmers-market.jpg",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz-RM2iCQ9H-ZxOdmdwB8dmowa0ts_-6X_YvYgGrhRlg&s",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbeY69nOXHM5BNxFKLQbYSZDYjL-KObFv4QjOLtlPdqg&s"]
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbeY69nOXHM5BNxFKLQbYSZDYjL-KObFv4QjOLtlPdqg&s"]
+
+
 
   const potentialLeads = async () => {
     setLoading(true)

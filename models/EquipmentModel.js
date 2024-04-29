@@ -33,7 +33,7 @@ const equipmentSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Define the Equipment model
-export default mongoose.model('Equipment', equipmentSchema);
+export default mongoose.model('equipment', equipmentSchema);
 
 
 
