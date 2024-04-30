@@ -12,6 +12,7 @@ import EquipmentRoutes from "./routes/EquipmentRoutes.js"
 import RequirementRoutes from "./routes/RequirementRoutes.js"
 import chatRoutes from "./routes/chatRoutes.js"
 import coldroutes from "./routes/coldroutes.js"
+import TotalRoutes from "./routes/TotalRoutes.js"
 
 //configure environment
 dotenv.config();
@@ -55,6 +56,9 @@ app.use("/api/v1/users", UserRoutes)
 ////to get userdata
 app.use("/api/v1/cold", coldroutes)
 
+
+////to get total for transactional database
+app.use("/api/v1/total", TotalRoutes)
 //rest api
 app.get("/", (req, res) => {
   res.send("<h1>world</h1>");

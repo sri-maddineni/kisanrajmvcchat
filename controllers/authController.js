@@ -4,6 +4,8 @@ import { comparePassword, hashPassword } from "../helpers/authHelper.js";
 import Jwt from "jsonwebtoken";
 import mongoose from 'mongoose';
 import ProductModel from "../models/ProductModel.js";
+import TransactionalDb from "../models/TransactionalDb.js";
+
 
 export const registerController = async (req, res) => {
   try {
@@ -64,6 +66,10 @@ export const registerController = async (req, res) => {
       longitude
     }).save();
 
+    
+    const updatedTransaction = await TransactionalDb.findOneAndUpdate({},{ $inc: { totalusers: 1 } },  { new: true } );
+    console.log("updated",updatedTransaction)
+
     res.status(201).send({
       success: true,
       message: "Registered successfully",
@@ -95,7 +101,7 @@ export const loginController = async (req, res) => {
       });
     }
 
-    const user = await userModel.findOne({ email });
+    const user = await userModel.findOne({ email }).select("-password");
 
 
 

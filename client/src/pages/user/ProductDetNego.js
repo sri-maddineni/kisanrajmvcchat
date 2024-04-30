@@ -112,10 +112,14 @@ const ProductDetNego = () => {
             const seller = product?.sellerId?._id;
             const chat = { pid, seller, buyer }
 
+        if(product._id!==params.pid){
+            toast("hello nto equal")
+        }
+
             const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/chats/getchats`, chat)
             if (res.data.success) {
                 setChats(res.data.chats.chats)
-                console.log(res)
+              
                 messageendref.current?.scrollIntoView();
             }
             else {
@@ -145,9 +149,6 @@ const ProductDetNego = () => {
 
             console.log(quantityUnit)
 
-
-
-
             // const propose=await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/proposalsent`,{pid})
 
 
@@ -162,6 +163,8 @@ const ProductDetNego = () => {
                 setNotes("")
                 getchats();
             }
+
+
         } catch (error) {
             toast.error("not done")
             console.log(error)

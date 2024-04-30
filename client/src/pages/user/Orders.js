@@ -37,6 +37,22 @@ const Orders = () => {
         getuserdata();
     }, [])
 
+    const removeFromOrders=async(id)=>{
+        try {
+            const uid=auth?.user?._id
+            const res=await axios.post(`${process.env.REACT_APP_API}/api/v1/requirements/removefromorders`,{uid,id})
+            if(res.data.success){
+                console.log("removed from orders")
+                toast.success(res.data.message)
+                getuserdata()
+            }
+            else{
+                console.log(res)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
 
@@ -84,7 +100,7 @@ const Orders = () => {
                             <p>{item.availableDate}</p>
                             <div style={{display:"flex",flexDirection:"row",flexWrap:"nowrap"}}>
                             <button className='btn btn-warning btn-sm m-2'>Pending confirmation </button>
-                            <button className='btn btn-danger btn-sm m-2'>Cancel</button>
+                            <button className='btn btn-danger btn-sm m-2' onClick={()=>{removeFromOrders(item._id)}}>Cancel</button>
 
                             </div>
                         

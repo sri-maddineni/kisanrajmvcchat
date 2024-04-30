@@ -11,7 +11,8 @@ import {
     negotiateController,
     getAllPotentialsController,
     addidcontroller,
-    addtowishlistcontroller
+    addtowishlistcontroller,
+    removefromorderscontroller,
  } from "../controllers/RequirementController.js";
 
 import { isAdmin, isUser, requireSignIn } from "../middlewares/authMiddleware.js";
@@ -59,6 +60,10 @@ router.post("/addid",requireSignIn,isUser,addidcontroller)
 
 //wishlist an item
 router.post("/addtowishlist",requireSignIn,isUser,addtowishlistcontroller)
+
+
+//wishlist an item
+router.post("/removefromorders",requireSignIn,isUser,removefromorderscontroller)
 
 
 

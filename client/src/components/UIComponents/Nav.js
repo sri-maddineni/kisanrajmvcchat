@@ -124,9 +124,10 @@ export default function Nav() {
                                         <Link className="nav-link active p-3" aria-current="page" to="/dashboard/user/my-wishlist"><FaHeart /></Link>
                                     </li>
 
-                                    <li className="nav-item">
-                                        <Link className="nav-link active p-3" aria-current="page" to="/dashboard/user/orders"><FaCartShopping /></Link>
-                                    </li>
+                                    <Link className="nav-link active p-3" aria-current="page" to="/dashboard/user/orders">
+                                        <FaCartShopping />
+                                        {/* <span class="badge badge-sm badge-pill badge-danger">{auth?.user?.ordersplaced.length}</span> */}
+                                    </Link>
 
                                     {/* <li className="nav-item">
                                         <Link className="nav-link active p-3"> <FaUserCircle /></Link>

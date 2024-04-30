@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from 'mongoose';
 import coldmodel from "../models/ColdStorageModel.js"
+import TransactionalDb from "../models/TransactionalDb.js";
 
 
 
@@ -8,9 +9,9 @@ export const createcoldcontroller=async(req,res)=>{
     try {
         const {name, capacity, phone, address, pincode, description, link, license, owner}=req.body;
 
-        const cold = await new coldmodel({
-            name, capacity, phone, address, pincode, description, link, license, owner
-          }).save();
+        const cold = await new coldmodel({ name, capacity, phone, address, pincode, description, link, license, owner}).save();
+        const  updatedTransaction = await TransactionalDb.findOneAndUpdate({}, { $inc: { storages: 1 } }, { new: true });
+
 
           if(cold){
             res.status(200).send({

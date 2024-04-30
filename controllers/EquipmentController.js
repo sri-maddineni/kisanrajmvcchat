@@ -1,5 +1,6 @@
 import EquipmentCategoryModel from "../models/EquipmentCategoryModel.js"
 import EquipmentModel from "../models/EquipmentModel.js";
+import TransactionalDb from "../models/TransactionalDb.js";
 import userModel from "../models/userModel.js";
 
 
@@ -39,35 +40,37 @@ export const createEquipmentCategoryController = async (req, res) => {
 
 export const postEquipmentController = async (req, res) => {
     try {
-        // Extracting data from the request body
+
         const { item, cost, phone, address, owner, des, purp } = req.body;
 
-        // Validation
+
         if (!item || !cost || !phone || !address || !owner) {
             return res.status(400).send({ success: false, message: 'All fields are required.' });
         }
 
-        // Create new equipment object
-        const equipment =await new EquipmentModel({ item, cost, phone, address, owner, des, purp }).save();
 
-        // Save equipment to the database
+        const equipment = await new EquipmentModel({ item, cost, phone, address, owner, des, purp }).save();
+
+
 
         let user;
-       
+        let updatedTransaction;
 
-        // Update the user document to include the ID of the equipment
-        if(purp==="hire"){
-             user = await userModel.findByIdAndUpdate(owner, { $addToSet: { equipmenthire: equipment._id } }, { new: true });
+
+
+        if (purp === "hire") {
+            user = await userModel.findByIdAndUpdate(owner, { $addToSet: { equipmenthire: equipment._id } }, { new: true });
+            updatedTransaction = await TransactionalDb.findOneAndUpdate({}, { $inc: { equipmentforhire: 1 } }, { new: true });
 
         }
-        else{
-             user = await userModel.findByIdAndUpdate(owner, { $addToSet: { equipmentsale: equipment._id } }, { new: true });
-
+        else {
+            user = await userModel.findByIdAndUpdate(owner, { $addToSet: { equipmentsale: equipment._id } }, { new: true });
+            updatedTransaction = await TransactionalDb.findOneAndUpdate({}, { $inc: { equipmentforsale: 1 } }, { new: true });
         }
         console.log(user)
 
         // Respond with success message
-        if(user && equipment){
+        if (user && equipment) {
             return res.status(201).send({ success: true, message: 'Equipment created successfully.', equipment });
         }
     } catch (error) {
@@ -193,10 +196,10 @@ export const getEquipmentListing = async (req, res) => {
 export const gethireequipmentcontroller = async (req, res) => {
     try {
 
-        const uid=req?.user?._id;
-        
-        const equip = await EquipmentModel.find({ purp: "hire" , owner: { $ne: uid }}).populate("owner");
-        
+        const uid = req?.user?._id;
+
+        const equip = await EquipmentModel.find({ purp: "hire", owner: { $ne: uid } }).populate("owner");
+
         res.status(200).json({
             success: true,
             message: "Hire equipment fetched successfully",
@@ -218,14 +221,14 @@ export const getbuyequipmentcontroller = async (req, res) => {
         const uid = req?.user?._id;
         const equip = await EquipmentModel.find({ purp: "sale", owner: { $ne: uid } }).populate("owner");
 
-        if(equip){
+        if (equip) {
             res.status(200).json({
                 success: true,
                 message: "Buy equipment fetched successfully",
                 equip: equip
             });
         }
-        else{
+        else {
             console.log("something went wrong")
         }
     } catch (error) {

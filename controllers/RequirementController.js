@@ -1,10 +1,11 @@
-import e from "express";
+import express from "express";
 import PotentialModel from "../models/PotentialModel.js";
 import RequirementModel from "../models/RequirementModel.js";
 import NegHistory from "../models/NegHistoryModel.js"
 import proposalModal from "../models/ProposalModel.js"
 import slugify from "slugify";
 import userModel from "../models/userModel.js";
+import TransactionalDb from "../models/TransactionalDb.js";
 
 export const postRequirementController = async (req, res) => {
   try {
@@ -142,20 +143,12 @@ export const postPotentialController = async (req, res) => {
 
     const { productName, buyerId, quantity, quantityUnit, date, price, organic, shipping, notes } = req.body;
 
-    const result = await new PotentialModel({
-      productName,
-      productSlug: slugify(productName),
-      buyerId,
-      quantity,
-      quantityUnit,
-      date,
-      price,
-      organic,
-      shipping,
-      notes,
-    }).save();
+    const result = await new PotentialModel({ productName, productSlug: slugify(productName), buyerId, quantity, quantityUnit, date, price, organic, shipping, notes }).save();
+
+    const updatedTransaction = await TransactionalDb.findOneAndUpdate({}, { $inc: { potentials: 1 } }, { new: true });
 
     console.log(result._id)
+    console.log(updatedTransaction._id)
 
     const userupdate = await userModel.findByIdAndUpdate(
       { _id: buyerId },
@@ -320,9 +313,9 @@ export const postToNegHisRequirementController = async (req, res) => {
 export const proposeOfferController = async (req, res) => {
 
   const { pid, sentBy, recievedby, sentname, phone, quantity, quantityUnit, price, notes, date, rating, address } = req.body;
-  
+
   const obj = { sentBy, sentname, phone }
-  const chatobj = { pid, sentBy, recievedby, sentname, phone, quantity, quantityUnit, price, notes, date, rating, address,timestamp: new Date() }
+  const chatobj = { pid, sentBy, recievedby, sentname, phone, quantity, quantityUnit, price, notes, date, rating, address, timestamp: new Date() }
 
   try {
 
@@ -487,3 +480,25 @@ export const addtowishlistcontroller = async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
+
+
+//remove an item from orders
+export const removefromorderscontroller = async (req, res) => {
+  try {
+    const { uid,id } = req.body
+    const result = await userModel.findByIdAndUpdate( { _id: uid},{ $pull: { ordersplaced: id } }, { new: true });
+    if(result){
+      return res.status(200).send({
+        message:"removed successfully!",
+        success:true,
+        result
+      })
+    }
+    else{
+      console.log("something database error")
+    }
+  }
+  catch(error){
+    console.log(error)
+  }
+}

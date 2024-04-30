@@ -3,6 +3,7 @@ import ProductModel from "../models/ProductModel.js"
 import fs from "fs";
 import userModel from "../models/userModel.js";
 import CommodityModel from "../models/CommodityModel.js";
+import TransactionalDb from "../models/TransactionalDb.js";
 
 
 export const createProductController = async (req, res) => {
@@ -45,6 +46,13 @@ export const createProductController = async (req, res) => {
         }
 
         await product.save()
+
+        //update productscount of transactionaldb by 1
+
+        const updatedTransaction = await TransactionalDb.findOneAndUpdate({},{ $inc: { productscount: 1 } },  { new: true } );
+        console.log(updatedTransaction)
+
+        
         res.status(201).send({
             success: true,
             message: "product created successfully!",
@@ -218,10 +226,11 @@ export const deleteProductController = async (req, res) => {
 
 
         await ProductModel.findByIdAndDelete(req?.params.pid).select("-photo")
+        const updatedTransaction = await TransactionalDb.findOneAndUpdate({},{ $inc: { productscount: -1 } },  { new: true } );
+        console.log(updatedTransaction)
         res.status(200).send({
             success: true,
             message: "Product deleted succcessfully!",
-
         })
 
     } catch (error) {
