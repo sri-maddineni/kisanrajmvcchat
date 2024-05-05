@@ -4,56 +4,41 @@ import { comparePassword, hashPassword } from "../helpers/authHelper.js";
 import Jwt from "jsonwebtoken";
 import mongoose from 'mongoose';
 import ProductModel from "../models/ProductModel.js";
-import TransactionalDb from "../models/TransactionalDb.js";
-
-
 export const registerController = async (req, res) => {
   try {
     const { name, email, password, phone, address, answer, pincode, latitude, longitude } = req.body;
-
     if (!name) {
       return res.send({ message: "Name is required" });
     }
-
     if (!email) {
       return res.send({ message: "email is required" });
     }
-
     if (!password) {
       return res.send({ message: "password is required" });
     }
-
     if (!phone) {
       return res.send({ message: "phone no is required" });
     }
-
     if (!address) {
       return res.send({ message: "address is required" });
     }
-
     if (!answer) {
       return res.send({ message: "answer is required" });
     }
     if (!pincode) {
       return res.send({ message: "pincode is required" });
     }
-
     //existing user checking
-
     const existingUser = await userModel.findOne({ email });
-
     if (existingUser) {
       return res.status(200).send({
         success: false,
         message: "Already registered please login",
       });
     }
-
     //register user
     const hashedPassword = await hashPassword(password);
-
     //save
-
     const user = await new userModel({
       name,
       email,
@@ -65,11 +50,6 @@ export const registerController = async (req, res) => {
       latitude,
       longitude
     }).save();
-
-    
-    const updatedTransaction = await TransactionalDb.findOneAndUpdate({},{ $inc: { totalusers: 1 } },  { new: true } );
-    console.log("updated",updatedTransaction)
-
     res.status(201).send({
       success: true,
       message: "Registered successfully",
@@ -84,15 +64,10 @@ export const registerController = async (req, res) => {
     });
   }
 };
-
-
-
-
 //login controller
 export const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     // Validation
     if (!email || !password) {
       return res.status(400).send({
@@ -100,11 +75,7 @@ export const loginController = async (req, res) => {
         message: "Invalid email or password",
       });
     }
-
-    const user = await userModel.findOne({ email }).select("-password");
-
-
-
+    const user = await userModel.findOne({ email });
     const match = await comparePassword(password, user.password);
     if (!match) {
       return res.status(401).send({
@@ -112,26 +83,19 @@ export const loginController = async (req, res) => {
         message: "Invalid password",
       });
     }
-
     // Generate token
     const token = await Jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
-
     res.status(200).send({
       success: true,
       message: "Login success",
       user,
       token
     });
-
-
   } catch (error) {
-
     console.log(error);
-
     console.log("Internal server error");
-
     res.status(500).send({
       success: false,
       message: "Error in login",
@@ -139,29 +103,21 @@ export const loginController = async (req, res) => {
     });
   }
 };
-
 //forgot password controller
-
 export const forgotPasswordController = async (req, res) => {
   try {
     const { email, answer, newPassword } = req.body;
-
     if (!email) {
       res.status(400).send({ message: "Email is required" });
     }
-
     if (!answer) {
       res.status(400).send({ message: "answer is required" });
     }
-
     if (!newPassword) {
       res.status(400).send({ message: "newPassword is required" });
     }
-
     //check email and answer
-
     const user = await userModel.findOne({ email, answer })
-
     //validation
     if (!user) {
       return res.status(404).send({
@@ -169,14 +125,12 @@ export const forgotPasswordController = async (req, res) => {
         message: "Wrong email or answer"
       })
     }
-
     const hashed = await hashPassword(newPassword)
     await userModel.findByIdAndUpdate(user._id, { password: hashed })
     res.status(200).send({
       success: "true",
       message: "Password reset success!"
     })
-
   } catch (error) {
     console.log(error)
     res.status(500).send({
@@ -186,25 +140,18 @@ export const forgotPasswordController = async (req, res) => {
     })
   }
 }
-
 export const testController = (req, res) => {
   res.send({
     message: "hello world",
   });
   console.log("protected route");
 };
-
-
-
-
 export const getUserData = async (req, res) => {
   try {
     const { uid } = req.params;
-
     if (!uid) {
       return res.status(400).send({ message: "id is required" });
     }
-
     const user = await userModel
       .findById(uid)
       .select("-password")
@@ -242,13 +189,22 @@ export const getUserData = async (req, res) => {
 
 
 
+    
+          
+            
+    
+
+          
+          
+    
+    
+  
     if (!user) {
       return res.status(404).send({
         success: false,
         message: "User not found",
       });
     }
-
     // Convert proposalsReceived Map to an array of objects
     const proposalsReceivedArray = Array.from(user.proposalsReceived.values())
       .flat()
@@ -256,19 +212,15 @@ export const getUserData = async (req, res) => {
         ...proposal,
         pid: new mongoose.Types.ObjectId(proposal.pid) // Convert pid to ObjectId
       }));
-
     // Populate the 'pid' field in each proposal object
     await userModel.populate(proposalsReceivedArray, { path: 'pid', model: 'products' });
-
     // Replace the original proposalsReceived map with the populated array
     user.proposalsReceived = new Map(proposalsReceivedArray.map(proposal => [proposal.pid, [proposal]]));
-
     res.status(200).send({
       success: true,
       message: "User data obtained",
       user: user
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).send({
@@ -278,15 +230,11 @@ export const getUserData = async (req, res) => {
     });
   }
 };
-
 export const getBasicDetails=async(req,res)=>{
   try {
     const uid=req?.params?.uid;
-
     
-
     const user=await userModel.find({_id:uid}).select("name phone rating")
-
     if(user){
       return res.status(200).send({
         success:true,
@@ -300,18 +248,13 @@ export const getBasicDetails=async(req,res)=>{
       message:"not obtained",
       user
     })
-
   } catch (error) {
     console.log(error)
   }
 }
-
-
-
 export const updateUserData = async (req, res) => {
   const userId = req.params.uid;
   const updates = req.body; // Assuming the request body contains updated user details
-
   try {
     // Find the user by ID and update the fields
     const updatedUser = await userModel.findByIdAndUpdate(userId, updates, { new: true });
@@ -319,38 +262,29 @@ export const updateUserData = async (req, res) => {
     if (!updatedUser) {
       return res.status(404).json({ message: 'User not found', success: false });
     }
-
     res.json(updatedUser);
   } catch (error) {
     console.error('Error updating user:', error);
     res.status(500).json({ message: 'Server error' });
   }
 }
-
-
-
 export const followController = async (req, res) => {
   try {
     const { myid, hisid } = req.body;
-
     const result1 = await userModel.findByIdAndUpdate(
       { _id: myid },
       { $addToSet: { following: hisid } },
       { new: true } // To return the updated document
     );
-
     const result2 = await userModel.findByIdAndUpdate(
       { _id: hisid },
       { $addToSet: { followers: myid } },
       { new: true } // To return the updated document
     );
-
-
     if (result1 && result2) {
       res.status(200).send({
         message: "success",
         success: true,
-
       })
     }
     else {
@@ -359,7 +293,6 @@ export const followController = async (req, res) => {
         message: "failed to follow"
       })
     }
-
   } catch (error) {
     console.log(error)
     res.status(256).send({
@@ -368,8 +301,6 @@ export const followController = async (req, res) => {
     })
   }
 }
-
-
 export const getalluserscontroller = async (req, res) => {
   try {
     const userid = req?.user?._id;
@@ -380,14 +311,10 @@ export const getalluserscontroller = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
-
-
-
 // To get orders of a particular user
 export const getorderscontroller = async (req, res) => {
   try {
     const { uid } = req.params;
-
     const user = await userModel.findById(uid).populate({
       path: 'ordersplaced',
       populate: [
@@ -396,11 +323,8 @@ export const getorderscontroller = async (req, res) => {
         { path: 'itemid', model: "products" } // Populate the product field with products collection
       ]
     });
-
     const orders = user.ordersplaced;
-
     console.log(orders);
-
     if (orders) {
       return res.status(200).send({
         success: true,
@@ -417,4 +341,4 @@ export const getorderscontroller = async (req, res) => {
       message: "Did not get results!"
     });
   }
-};
+}; 

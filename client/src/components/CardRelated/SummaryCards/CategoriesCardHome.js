@@ -70,6 +70,10 @@ function CategoriesCardHome() {
       image: "https://www.deere.com.au/assets/images/region-4/products/harvesting/harvesting-hero-r4f086239-rrd.jpg"
     },
     {
+      name: "WATER TANKERS",
+      image: "https://5.imimg.com/data5/RC/TW/MY-34785017/tractor-water-tanker-1000x1000.jpg"
+    },
+    {
       name: "OTHERS",
       image: "https://aseamarine.sg/wp-content/uploads/2020/06/Others.png"
     },
@@ -79,27 +83,33 @@ function CategoriesCardHome() {
   const features = [
     {
       name: "users",
-      value: alldata.totalusers
+      value: alldata.totalusers,
+      link:"/"
     },
     {
       name: "products",
-      value: alldata.productscount
+      value: alldata.productscount,
+      link:"/dashboard/user/buy-commodity/all"
     },
     {
       name: "Equipment for hire",
-      value: alldata.equipmentforhire
+      value: alldata.equipmentforhire,
+      link:"/dashboard/user/hire-equipment"
     },
     {
       name: "Equipment for sale",
-      value: alldata.equipmentforsale
+      value: alldata.equipmentforsale,
+      link:"/dashboard/user/buy-equipment"
     },
     {
       name: "Requirements",
-      value:alldata.potentials
+      value:alldata.potentials,
+      link:"/dashboard/user/potential-leads"
     },
     {
       name: "storages",
-      value: alldata.storages
+      value: alldata.storages,
+      link:"/dashboard/user/coldstorages"
     }
   ]
 
@@ -109,15 +119,13 @@ function CategoriesCardHome() {
     <>
       <div className="container">
 
-
-
         <h2 className='text-center m-3'>Our Features</h2>
 
         <div className="row" style={{ display: 'flex', flexDirection: 'row', flexWrap: "nowrap", justifyContent: 'space-around', borderBottom: "solid 1px black" }}>
           {
             features.map(item => (
               <>
-                <div onClick={() => navigate(`/dashboard/user/buy-commodity/${slugify(item.name.toLowerCase())}`)} className='p-1 m-1 d-flex flex-column justify-content-center align-items-center' style={{ width: "12rem", cursor: 'pointer' }}>
+                <div onClick={() => navigate(item.link)} className='p-1 m-1 d-flex flex-column justify-content-center align-items-center' style={{ width: "12rem", cursor: 'pointer' }}>
                  <h1 className='bg-secondary text-white p-5' style={{borderRadius:"48%"}}>{item.value}+</h1>
                   <p className='my-3' style={{ fontWeight: "400", fontSize: "0.9rem" }}>{item.name}</p>
                 </div>
@@ -152,8 +160,8 @@ function CategoriesCardHome() {
           {
             equipcategories.map(category => (
               <>
-                <div onClick={() => navigate(`/dashboard/user/hire-equipment/${slugify(category.name.toLowerCase())}`)} className='p-1 m-1 d-flex flex-column justify-content-center align-items-center' style={{ width: "18rem", cursor: 'pointer' }}>
-                  <img src={category.image} alt="catimage" style={{ objectFit: "cover", width: "175px", height: "175px", borderRadius: "75%" }} />
+                <div onClick={() => navigate(`/dashboard/user/hire-equipment/${slugify(category.name.toLowerCase())}`)} className='p-1 m-1 d-flex flex-column justify-content-center align-items-center' style={{ width: "14rem", cursor: 'pointer' }}>
+                  <img src={category.image} alt="catimage" style={{ objectFit: "cover", width: "150PX", height: "150PX", borderRadius: "75%" }} />
                   <p className='my-3' style={{ fontWeight: "400", fontSize: "0.9rem" }}>{category.name}</p>
                 </div>
               </>

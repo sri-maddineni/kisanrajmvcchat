@@ -16,7 +16,7 @@ const HireEquipment = () => {
     const images = {
         "Tractors": ["https://www.agrifarming.in/wp-content/uploads/2019/01/Importance-of-Tractors-in-Agriculture..jpg","per day"],
         "Sprayers": ["https://assets-global.website-files.com/5e270c1f7082827312b019e1/5e4ed105c71462dd83eb59ef_F1060A-1%201000%20Field%20Sprayer-60%27%20Boom-p-500.jpeg","per acre"],
-        "Seeders / Harvestors": ["https://toscano.com.tr/wp-content/uploads/2023/02/toscano-seeder.jpeg",'per day'],
+        "Seeders / Harvestors": ["https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/National_Agro_Happy_Seeder.jpg/1200px-National_Agro_Happy_Seeder.jpg",'per day'],
         "Water tanks": ["https://i.ytimg.com/vi/40rV3JPa3pU/maxresdefault.jpg","per tank"]
     }
 
